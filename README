@@ -1,0 +1,3 @@
+ObjectGL is a free open source .NET library based on OpenTK that provides access to OpenGL functions in object-oriented manner, not the painful and error-prone 'bind-to-edit' model.
+
+Please note, that the first priority of ObjectGL is to provide access to the core OpenGL 3.x functionality with some ARB extensions, that are core in OpenGL 4.2.
