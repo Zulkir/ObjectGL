@@ -27,51 +27,31 @@ using System;
 
 namespace ObjectGL
 {
-    public class PipelineTextures
+    public class PipelineSamplers
     {
-        readonly Texture[] textures;
-        int enabledTextureRange;
+        readonly Sampler[] samplers;
 
-        internal PipelineTextures(int maxTextureUnits)
+        internal PipelineSamplers(int maxTextureUnits)
         {
-            textures = new Texture[maxTextureUnits];
+            samplers = new Sampler[maxTextureUnits];
         }
 
-        public Texture this[int unit]
+        public Sampler this[int unit]
         {
             set
             {
-                if (unit < 0 || unit >= textures.Length) throw new ArgumentOutOfRangeException("unit");
+                if (unit < 0 || unit >= samplers.Length) throw new ArgumentOutOfRangeException("unit");
+                if (value == null) throw new ArgumentNullException("value");
 
-                textures[unit] = value;
-
-                if (value == null && unit == enabledTextureRange - 1)
-                {
-                    while (textures[enabledTextureRange - 1] == null)
-                    {
-                        enabledTextureRange--;
-                    }
-                }
-                else if (value != null && unit >= enabledTextureRange)
-                {
-                    enabledTextureRange = unit + 1;
-                }
+                samplers[unit] = value;
             }
         }
 
-        public void UnsetAllStartingFrom(int unit)
-        {
-            if (enabledTextureRange > unit)
-            {
-                enabledTextureRange = unit;
-            }
-        }
-
-        internal void Bind(Context context)
+        internal void Bind(Context context, int enabledTextureRange)
         {
             for (int i = 0; i < enabledTextureRange; i++)
             {
-                context.BindTexture(textures[i].Target, textures[i].Handle);
+                context.BindSamplerForDrawing(i, samplers[i].Handle);
             }
         }
     }

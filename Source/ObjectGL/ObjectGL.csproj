@@ -49,6 +49,8 @@
     <Compile Include="FragmentShader.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Pipeline.cs" />
+    <Compile Include="PipelineSamplers.cs" />
+    <Compile Include="PipelineUniformBuffers.cs" />
     <Compile Include="RedundantEquatable.cs" />
     <Compile Include="Buffer.cs" />
     <Compile Include="Capabilities.cs" />
@@ -61,7 +63,7 @@
     <Compile Include="ShaderProgram.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="Texture1D.cs" />
-    <Compile Include="TextureSetters.cs" />
+    <Compile Include="PipelineTextures.cs" />
     <Compile Include="UniformBufferBinding.cs" />
     <Compile Include="VertexArray.cs" />
     <Compile Include="VertexArraySetFunction.cs" />

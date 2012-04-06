@@ -27,51 +27,43 @@ using System;
 
 namespace ObjectGL
 {
-    public class PipelineTextures
+    public class PipelineUniformBuffers
     {
-        readonly Texture[] textures;
-        int enabledTextureRange;
+        readonly Buffer[] uniformBuffers;
+        int enabledUniformBufferRange;
 
-        internal PipelineTextures(int maxTextureUnits)
+        internal PipelineUniformBuffers(int maxUniformBufferBindings)
         {
-            textures = new Texture[maxTextureUnits];
+            uniformBuffers = new Buffer[maxUniformBufferBindings];
         }
 
-        public Texture this[int unit]
+        public Buffer this[int binding]
         {
             set
             {
-                if (unit < 0 || unit >= textures.Length) throw new ArgumentOutOfRangeException("unit");
+                if (binding < 0 || binding >= uniformBuffers.Length) throw new ArgumentOutOfRangeException("binding");
 
-                textures[unit] = value;
+                uniformBuffers[binding] = value;
 
-                if (value == null && unit == enabledTextureRange - 1)
+                if (value == null && binding == enabledUniformBufferRange - 1)
                 {
-                    while (textures[enabledTextureRange - 1] == null)
+                    while (uniformBuffers[enabledUniformBufferRange - 1] == null)
                     {
-                        enabledTextureRange--;
+                        enabledUniformBufferRange--;
                     }
                 }
-                else if (value != null && unit >= enabledTextureRange)
+                else if (value != null && binding >= enabledUniformBufferRange)
                 {
-                    enabledTextureRange = unit + 1;
+                    enabledUniformBufferRange = binding + 1;
                 }
             }
         }
 
-        public void UnsetAllStartingFrom(int unit)
+        public void UnsetAllStartingFrom(int binding)
         {
-            if (enabledTextureRange > unit)
+            if (enabledUniformBufferRange > binding)
             {
-                enabledTextureRange = unit;
-            }
-        }
-
-        internal void Bind(Context context)
-        {
-            for (int i = 0; i < enabledTextureRange; i++)
-            {
-                context.BindTexture(textures[i].Target, textures[i].Handle);
+                enabledUniformBufferRange = binding;
             }
         }
     }

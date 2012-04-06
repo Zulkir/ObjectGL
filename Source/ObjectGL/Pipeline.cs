@@ -36,11 +36,10 @@ namespace ObjectGL
 
         VertexArray vertexArray;
         PipelineTextures textures;
-
-        readonly Sampler[] samplers;
+        PipelineSamplers samplers;
+        
         ShaderProgram program;
-        readonly Buffer[] uniformBuffers;
-        int enabledUniformBufferRange;
+        PipelineUniformBuffers uniformBuffers;
 
         PolygonMode polygonMode;
         CullFaceMode cullFaceMode;
@@ -49,15 +48,13 @@ namespace ObjectGL
         bool multisampleEnabled = true;
 
 
-
-
         internal Pipeline(Context context)
         {
             this.context = context;
 
             textures = new PipelineTextures(context.Capabilities.MaxCombinedTextureImageUnits);
-            samplers = new Sampler[context.Capabilities.MaxCombinedTextureImageUnits];
-            uniformBuffers = new Buffer[context.Capabilities.MaxUniformBufferBindings];
+            samplers = new PipelineSamplers(context.Capabilities.MaxCombinedTextureImageUnits);
+            uniformBuffers = new PipelineUniformBuffers(context.Capabilities.MaxUniformBufferBindings);
         }
 
         #region Setters
@@ -74,53 +71,22 @@ namespace ObjectGL
         #endregion
 
         #region Textures and Samplers
-
-
-        
-
-        public void SetSampler(int unit, Sampler sampler)
-        {
-            if (unit < 0 || unit >= samplers.Length) throw new ArgumentOutOfRangeException("unit");
-            if (sampler == null) throw new ArgumentNullException("sampler");
-
-            samplers[unit] = sampler;
-        }
+        public PipelineTextures Textures { get { return textures; } }
+        public PipelineSamplers Samplers { get { return samplers; } }
         #endregion
 
         #region Program and Uniform Buffers
-        public void SetProgram(ShaderProgram program)
+        public ShaderProgram Program
         {
-            if (program == null) throw new ArgumentNullException("program");
-
-            this.program = program;
-        }
-
-        public void SetUniformBuffer(int binding, Buffer uniformBuffer)
-        {
-            if (binding < 0 || binding >= uniformBuffers.Length) throw new ArgumentOutOfRangeException("binding");
-
-            uniformBuffers[binding] = uniformBuffer;
-
-            if (uniformBuffer == null && binding == enabledUniformBufferRange - 1)
+            set
             {
-                while (uniformBuffers[enabledUniformBufferRange - 1] == null)
-                {
-                    enabledUniformBufferRange--;
-                }
-            }
-            else if (uniformBuffer != null && binding >= enabledUniformBufferRange)
-            {
-                enabledUniformBufferRange = binding + 1;
+                if (value == null) throw new ArgumentNullException("value");
+
+                program = value;
             }
         }
 
-        public void UnsetAllUniformBuffersStartingFrom(int binding)
-        {
-            if (enabledUniformBufferRange > binding)
-            {
-                enabledUniformBufferRange = binding;
-            }
-        }
+        public PipelineUniformBuffers UniformBuffers { get { return uniformBuffers; } }
         #endregion
 
         #region Rasterizer State
