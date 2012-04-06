@@ -61,6 +61,7 @@
     <Compile Include="ShaderProgram.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="Texture1D.cs" />
+    <Compile Include="TextureSetters.cs" />
     <Compile Include="UniformBufferBinding.cs" />
     <Compile Include="VertexArray.cs" />
     <Compile Include="VertexArraySetFunction.cs" />

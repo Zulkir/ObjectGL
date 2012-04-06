@@ -35,8 +35,8 @@ namespace ObjectGL
         public Context Context { get { return context; } }
 
         VertexArray vertexArray;
-        int enabledTextureRange;
-        readonly Texture[] textures;
+        PipelineTextures textures;
+
         readonly Sampler[] samplers;
         ShaderProgram program;
         readonly Buffer[] uniformBuffers;
@@ -45,54 +45,38 @@ namespace ObjectGL
         PolygonMode polygonMode;
         CullFaceMode cullFaceMode;
         FrontFaceDirection frontFaceDirection;
+        bool scissorEnabled;
+        bool multisampleEnabled = true;
+
+
+
 
         internal Pipeline(Context context)
         {
             this.context = context;
 
-            textures = new Texture[context.Capabilities.MaxCombinedTextureImageUnits];
+            textures = new PipelineTextures(context.Capabilities.MaxCombinedTextureImageUnits);
             samplers = new Sampler[context.Capabilities.MaxCombinedTextureImageUnits];
             uniformBuffers = new Buffer[context.Capabilities.MaxUniformBufferBindings];
         }
 
         #region Setters
         #region VertexArray
-        public void SetVertexArray(VertexArray vertexArray)
+        public VertexArray VertexArray
         {
-            if (vertexArray == null) throw new ArgumentNullException("vertexArray");
+            set
+            {
+                if (vertexArray == null) throw new ArgumentNullException("value");
 
-            this.vertexArray = vertexArray;
+                vertexArray = value;
+            }
         }
         #endregion
 
         #region Textures and Samplers
-        public void SetTexture(int unit, Texture texture)
-        {
-            if (unit < 0 || unit >= textures.Length) throw new ArgumentOutOfRangeException("unit");
 
-            textures[unit] = texture;
 
-            if (texture == null && unit == enabledTextureRange - 1)
-            {
-                while (textures[enabledTextureRange - 1] == null)
-                {
-                    enabledTextureRange--;
-                }
-            }
-            else if (texture != null && unit >= enabledTextureRange)
-            {
-                enabledTextureRange = unit + 1;
-            }
-        }
         
-
-        public void UnsetAllTexturesStartingFrom(int unit)
-        {
-            if (enabledTextureRange > unit)
-            {
-                enabledTextureRange = unit;
-            }
-        }
 
         public void SetSampler(int unit, Sampler sampler)
         {
@@ -113,7 +97,7 @@ namespace ObjectGL
 
         public void SetUniformBuffer(int binding, Buffer uniformBuffer)
         {
-            if (binding < 0 || binding >= textures.Length) throw new ArgumentOutOfRangeException("binding");
+            if (binding < 0 || binding >= uniformBuffers.Length) throw new ArgumentOutOfRangeException("binding");
 
             uniformBuffers[binding] = uniformBuffer;
 
@@ -137,6 +121,10 @@ namespace ObjectGL
                 enabledUniformBufferRange = binding;
             }
         }
+        #endregion
+
+        #region Rasterizer State
+
         #endregion
         #endregion
 
