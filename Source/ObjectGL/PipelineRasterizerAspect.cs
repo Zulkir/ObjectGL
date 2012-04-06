@@ -31,16 +31,23 @@ namespace ObjectGL
     {
         public class RasterizerAspect
         {
-            public PolygonMode PolygonMode { get; set; }
+            public PolygonMode PolygonModeFront { get; set; }
+            public PolygonMode PolygonModeBack { get; set; }
             public CullFaceMode CullFaceMode { get; set; }
-            public FrontFaceDirection FrontFaceDirection { get; set; }
+            public FrontFaceDirection FrontFace { get; set; }
             public bool ScissorEnabled { get; set; }
             public bool MultisampleEnabled { get; set; }
             public bool LineSmooth { get; set; }
 
             public RasterizerAspect()
             {
+                PolygonModeFront = PolygonMode.Fill;
+                PolygonModeBack = PolygonMode.Fill;
+                CullFaceMode = CullFaceMode.Back;
+                FrontFace = FrontFaceDirection.Ccw;
+                ScissorEnabled = false;
                 MultisampleEnabled = true;
+                LineSmooth = false;
             }
         }
     }

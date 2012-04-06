@@ -23,10 +23,7 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
@@ -34,7 +31,46 @@ namespace ObjectGL
     {
         public class DepthStencilAspect
         {
-            public bool DepthTestEnable { get; set; }
+            #region Nested class Side
+            public class Side
+            {
+                public int StencilWriteMask { get; set; }
+                public int StencilFuncMask { get; set; }
+                public StencilFunction StencilFunc { get; set; }
+                public int StencilRef { get; set; }
+                public StencilOp StencilFailOp { get; set; }
+                public StencilOp DepthFailOp { get; set; }
+                public StencilOp DepthPassOp { get; set; }
+
+                internal Side()
+                {
+                    StencilWriteMask = 1;
+                    StencilFunc = StencilFunction.Always;
+                    StencilRef = 0;
+                    StencilFuncMask = 1;
+                    StencilFailOp = StencilOp.Keep;
+                    DepthFailOp = StencilOp.Keep;
+                    DepthPassOp = StencilOp.Keep;
+                }
+            }
+            #endregion
+
+            public bool DepthTestEnabled { get; set; }
+            public bool DepthMask { get; set; }
+            public DepthFunction DepthFunc { get; set; }
+            public bool StencilTestEnabled { get; set; }
+            public Side Front { get; private set; }
+            public Side Back { get; private set; }
+
+            internal DepthStencilAspect()
+            {
+                DepthTestEnabled = false;
+                DepthMask = true;
+                DepthFunc = DepthFunction.Less;
+                StencilTestEnabled = false;
+                Front = new Side();
+                Back = new Side();
+            }
         }
     }
 }
