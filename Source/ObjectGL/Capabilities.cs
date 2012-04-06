@@ -33,6 +33,7 @@ namespace ObjectGL
         public int MaxCombinedTextureImageUnits { get; private set; }
         public int MaxUniformBufferBindings { get; private set; }
         public int MaxTransformFeedbackBuffers { get; private set; }
+        public int MaxDrawBuffers { get; private set; }
 
         internal unsafe Capabilities()
         {
@@ -49,6 +50,9 @@ namespace ObjectGL
 
             GL.GetInteger(GetPName.MaxTransformFeedbackBuffers, &localInt);
             MaxTransformFeedbackBuffers = localInt;
+
+            GL.GetInteger(GetPName.MaxDrawBuffers, &localInt);
+            MaxDrawBuffers = localInt;
         }
     }
 }

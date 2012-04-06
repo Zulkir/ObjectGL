@@ -41,6 +41,8 @@ namespace ObjectGL
         readonly UniformBuffersAspect uniformBuffers;
 
         readonly RasterizerAspect rasterizer;
+        readonly DepthStencilAspect depthStencil;
+        readonly BlendAspect blend;
 
 
         internal Pipeline(Context context)
@@ -51,6 +53,8 @@ namespace ObjectGL
             samplers = new SamplersAspect(context.Capabilities.MaxCombinedTextureImageUnits);
             uniformBuffers = new UniformBuffersAspect(context.Capabilities.MaxUniformBufferBindings);
             rasterizer = new RasterizerAspect();
+            depthStencil = new DepthStencilAspect();
+            blend = new BlendAspect(context.Capabilities.MaxDrawBuffers);
         }
 
         #region Setters
@@ -80,6 +84,8 @@ namespace ObjectGL
         public UniformBuffersAspect UniformBuffers { get { return uniformBuffers; } }
 
         public RasterizerAspect Rasterizer { get { return rasterizer; } }
+        public DepthStencilAspect DepthStencil { get { return depthStencil; } }
+        public BlendAspect Blend { get { return blend; } }
         #endregion
 
         #region Draw

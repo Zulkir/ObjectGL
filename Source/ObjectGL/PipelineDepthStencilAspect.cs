@@ -55,19 +55,19 @@ namespace ObjectGL
             }
             #endregion
 
-            public bool DepthTestEnabled { get; set; }
+            public bool DepthTestEnable { get; set; }
             public bool DepthMask { get; set; }
             public DepthFunction DepthFunc { get; set; }
-            public bool StencilTestEnabled { get; set; }
+            public bool StencilTestEnable { get; set; }
             public Side Front { get; private set; }
             public Side Back { get; private set; }
 
             internal DepthStencilAspect()
             {
-                DepthTestEnabled = false;
+                DepthTestEnable = false;
                 DepthMask = true;
                 DepthFunc = DepthFunction.Less;
-                StencilTestEnabled = false;
+                StencilTestEnable = false;
                 Front = new Side();
                 Back = new Side();
             }

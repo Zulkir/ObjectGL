@@ -35,8 +35,8 @@ namespace ObjectGL
             public PolygonMode PolygonModeBack { get; set; }
             public CullFaceMode CullFaceMode { get; set; }
             public FrontFaceDirection FrontFace { get; set; }
-            public bool ScissorEnabled { get; set; }
-            public bool MultisampleEnabled { get; set; }
+            public bool ScissorEnable { get; set; }
+            public bool MultisampleEnable { get; set; }
             public bool LineSmooth { get; set; }
 
             public RasterizerAspect()
@@ -45,8 +45,8 @@ namespace ObjectGL
                 PolygonModeBack = PolygonMode.Fill;
                 CullFaceMode = CullFaceMode.Back;
                 FrontFace = FrontFaceDirection.Ccw;
-                ScissorEnabled = false;
-                MultisampleEnabled = true;
+                ScissorEnable = false;
+                MultisampleEnable = true;
                 LineSmooth = false;
             }
         }

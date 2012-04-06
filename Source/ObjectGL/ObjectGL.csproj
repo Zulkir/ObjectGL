@@ -49,6 +49,7 @@
     <Compile Include="FragmentShader.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Pipeline.cs" />
+    <Compile Include="PipelineBlendAspect.cs" />
     <Compile Include="PipelineDepthStencilAspect.cs" />
     <Compile Include="PipelineRasterizerAspect.cs" />
     <Compile Include="PipelineSamplersAspect.cs" />
