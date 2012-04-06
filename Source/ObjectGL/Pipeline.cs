@@ -24,41 +24,36 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Pipeline
+    public partial class Pipeline
     {
         readonly Context context;
 
         public Context Context { get { return context; } }
 
         VertexArray vertexArray;
-        PipelineTextures textures;
-        PipelineSamplers samplers;
+        readonly TexturesAspect textures;
+        readonly SamplersAspect samplers;
         
         ShaderProgram program;
-        PipelineUniformBuffers uniformBuffers;
+        readonly UniformBuffersAspect uniformBuffers;
 
-        PolygonMode polygonMode;
-        CullFaceMode cullFaceMode;
-        FrontFaceDirection frontFaceDirection;
-        bool scissorEnabled;
-        bool multisampleEnabled = true;
+        readonly RasterizerAspect rasterizer;
 
 
         internal Pipeline(Context context)
         {
             this.context = context;
 
-            textures = new PipelineTextures(context.Capabilities.MaxCombinedTextureImageUnits);
-            samplers = new PipelineSamplers(context.Capabilities.MaxCombinedTextureImageUnits);
-            uniformBuffers = new PipelineUniformBuffers(context.Capabilities.MaxUniformBufferBindings);
+            textures = new TexturesAspect(context.Capabilities.MaxCombinedTextureImageUnits);
+            samplers = new SamplersAspect(context.Capabilities.MaxCombinedTextureImageUnits);
+            uniformBuffers = new UniformBuffersAspect(context.Capabilities.MaxUniformBufferBindings);
+            rasterizer = new RasterizerAspect();
         }
 
         #region Setters
-        #region VertexArray
         public VertexArray VertexArray
         {
             set
@@ -68,14 +63,10 @@ namespace ObjectGL
                 vertexArray = value;
             }
         }
-        #endregion
 
-        #region Textures and Samplers
-        public PipelineTextures Textures { get { return textures; } }
-        public PipelineSamplers Samplers { get { return samplers; } }
-        #endregion
+        public TexturesAspect Textures { get { return textures; } }
+        public SamplersAspect Samplers { get { return samplers; } }
 
-        #region Program and Uniform Buffers
         public ShaderProgram Program
         {
             set
@@ -86,12 +77,9 @@ namespace ObjectGL
             }
         }
 
-        public PipelineUniformBuffers UniformBuffers { get { return uniformBuffers; } }
-        #endregion
+        public UniformBuffersAspect UniformBuffers { get { return uniformBuffers; } }
 
-        #region Rasterizer State
-
-        #endregion
+        public RasterizerAspect Rasterizer { get { return rasterizer; } }
         #endregion
 
         #region Draw
