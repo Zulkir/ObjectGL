@@ -89,14 +89,6 @@ namespace ObjectGL
         #endregion
 
         #region Draw
-        void Bind()
-        {
-            context.BindVertexArray(vertexArray.Handle);
-            context.BindProgramForDrawing(program.Handle);
-            uniformBuffers.Bind();
-            textures.Bind();
-            samplers.Bind(textures.EnabledTextureRange);
-        }
         #endregion
     }
 }

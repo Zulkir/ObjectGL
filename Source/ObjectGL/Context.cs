@@ -43,30 +43,9 @@ namespace ObjectGL
             Capabilities = new Capabilities();
             Pipeline = new Pipeline(this);
 
-            transormFeedbackBufferIndexedBindings = new RedundantInt[Capabilities.MaxTransformFeedbackBuffers];
-            for (int i = 0; i < Capabilities.MaxTransformFeedbackBuffers; i++)
-            {
-                int iLoc = i;
-                transormFeedbackBufferIndexedBindings[i] = new RedundantInt(h =>
-                    { 
-                        GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, h);
-                        actualTransformFeedbackBuffer = h;
-                    });
-            }
+            
 
-            uniformBufferIndexedBindings = new RedundantInt[Capabilities.MaxUniformBufferBindings];
-            for (int i = 0; i < Capabilities.MaxUniformBufferBindings; i++)
-            {
-                int iLoc = i;
-                uniformBufferIndexedBindings[i] = new RedundantInt(h =>
-                    {
-                        GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, h);
-                        actualUniformBuffer = h;
-                    });
-            }
-
-            actualTextures = new int[Capabilities.MaxCombinedTextureImageUnits];
-            textureUnitForEditing = Capabilities.MaxCombinedTextureImageUnits - 1;
+            
 
             samplerBindings = new RedundantInt[Capabilities.MaxCombinedTextureImageUnits];
             for (int i = 0; i < Capabilities.MaxCombinedTextureImageUnits; i++)
@@ -77,94 +56,11 @@ namespace ObjectGL
         }
 
         #region Buffers
-        readonly RedundantInt vertexArrayBinding = new RedundantInt(GL.BindVertexArray);
-
-        readonly RedundantInt arrayBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.ArrayBuffer, h));
-        readonly RedundantInt copyReadBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.CopyReadBuffer, h));
-        readonly RedundantInt copyWriteBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.CopyWriteBuffer, h));
-        readonly RedundantInt elementArrayBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.ElementArrayBuffer, h));
-        readonly RedundantInt pixelPackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelPackBuffer, h));
-        readonly RedundantInt pixelUnpackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelUnpackBuffer, h));
-        readonly RedundantInt textureBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.TextureBuffer, h));
-        readonly RedundantInt[] transormFeedbackBufferIndexedBindings;
-        readonly RedundantInt[] uniformBufferIndexedBindings;
-
-        int actualTransformFeedbackBuffer;
-        int actualUniformBuffer;
-
-        internal void BindVertexArray(int vertexArrayHandle)
-        {
-            vertexArrayBinding.Set(vertexArrayHandle);
-        }
-
-        internal void BindBuffer(BufferTarget target, int bufferHandle)
-        {
-            if (target == BufferTarget.ElementArrayBuffer)
-                vertexArrayBinding.Set(0);
-
-            switch (target)
-            {
-                case BufferTarget.ArrayBuffer: arrayBufferBinding.Set(bufferHandle); return;
-                case BufferTarget.CopyReadBuffer: copyReadBufferBinding.Set(bufferHandle); return;
-                case BufferTarget.CopyWriteBuffer: copyWriteBufferBinding.Set(bufferHandle); return;
-                case BufferTarget.ElementArrayBuffer: elementArrayBufferBinding.Set(bufferHandle); return;
-                case BufferTarget.PixelPackBuffer: pixelPackBufferBinding.Set(bufferHandle); return;
-                case BufferTarget.PixelUnpackBuffer: pixelUnpackBufferBinding.Set(bufferHandle); return;
-                case BufferTarget.TextureBuffer: textureBufferBinding.Set(bufferHandle); return;
-                case BufferTarget.TransformFeedbackBuffer:
-                    {
-                        if (actualTransformFeedbackBuffer == bufferHandle) return;
-                        transormFeedbackBufferIndexedBindings[0].Force(bufferHandle);
-                        actualTransformFeedbackBuffer = bufferHandle;
-                        return;
-                    }
-                case BufferTarget.UniformBuffer:
-                    {
-                        if (actualUniformBuffer == bufferHandle) return;
-                        uniformBufferIndexedBindings[0].Force(bufferHandle);
-                        actualUniformBuffer = bufferHandle;
-                        return;
-                    }
-                default: throw new ArgumentOutOfRangeException("target");
-            }
-        }
-
-        internal void BindUniformBufferForDrawing(int binding, int bufferHandle)
-        {
-            uniformBufferIndexedBindings[binding].Set(bufferHandle);
-        }
+        
         #endregion
 
         #region Textures
-        readonly int textureUnitForEditing;
-        readonly RedundantInt activeTextureUnitBinding = new RedundantInt(i => GL.ActiveTexture(TextureUnit.Texture0 + i));
-
-        readonly int[] actualTextures;
-
-        internal void BindTexture(TextureTarget target, int textureHandle)
-        {
-            for (int i = 0; i < actualTextures.Length; i++)
-            {
-                if (actualTextures[i] == textureHandle)
-                {
-                    activeTextureUnitBinding.Set(i);
-                    return;
-                }
-            }
-
-            activeTextureUnitBinding.Set(textureUnitForEditing);
-            GL.BindTexture(target, textureHandle);
-            actualTextures[textureUnitForEditing] = textureHandle;
-        }
-
-        internal void BindTextureForDrawing(int unit, TextureTarget target, int textureHandle)
-        {
-            if (actualTextures[unit] == textureHandle) return;
-
-            activeTextureUnitBinding.Set(unit);
-            GL.BindTexture(target, textureHandle);
-            actualTextures[unit] = textureHandle;
-        }
+        
         #endregion
 
         #region Samplers

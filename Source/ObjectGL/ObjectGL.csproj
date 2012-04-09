@@ -48,8 +48,10 @@
   <ItemGroup>
     <Compile Include="CompareFunc.cs" />
     <Compile Include="ContextBlendAspect.cs" />
+    <Compile Include="ContextBuffersAspect.cs" />
     <Compile Include="ContextDepthStencilAspect.cs" />
     <Compile Include="ContextRasterizerAspect.cs" />
+    <Compile Include="ContextTexturesAspect.cs" />
     <Compile Include="FragmentShader.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Pipeline.cs" />

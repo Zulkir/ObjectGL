@@ -36,13 +36,13 @@ namespace ObjectGL
             readonly Buffer[] uniformBuffers;
             int enabledUniformBufferRange;
 
+            internal int EnabledUniformBufferRange { get { return enabledUniformBufferRange; } }
+
             internal UniformBuffersAspect(Context context)
             {
                 this.context = context;
                 uniformBuffers = new Buffer[context.Capabilities.MaxUniformBufferBindings];
             }
-
-            internal int EnabledUniformBufferRange { get { return enabledUniformBufferRange; } }
 
             public Buffer this[int binding]
             {
@@ -76,18 +76,6 @@ namespace ObjectGL
                 {
                     enabledUniformBufferRange = binding;
                 }
-            }
-
-            internal void Bind()
-            {
-                for (int i = 0; i < enabledUniformBufferRange; i++)
-                {
-                    context.BindUniformBufferForDrawing(i, uniformBuffers[i].Handle);
-                }/*
-                for (int i = enabledUniformBufferRange; i < uniformBuffers.Length; i++)
-                {
-                    context.BindUniformBufferForDrawing(i, 0);
-                }*/
             }
         }
     }
