@@ -27,13 +27,13 @@ using System;
 
 namespace ObjectGL
 {
-    class RedundantStruct<T> where T : struct
+    class RedundantBool
     {
-        readonly Action<T> action;
-        T currentValue;
+        readonly Action<bool> action;
+        bool currentValue;
         bool invalid;
 
-        public RedundantStruct(Action<T> action)
+        public RedundantBool(Action<bool> action)
         {
             if (action == null) throw new ArgumentNullException("action");
 
@@ -41,20 +41,20 @@ namespace ObjectGL
             invalid = true;
         }
 
-        public T Get()
+        public bool Get()
         {
             if (invalid) throw new InvalidOperationException("Trying to get a binding's value, while it is yet unknown.");
 
             return currentValue;
         }
 
-        public void Set(T value)
+        public void Set(bool value)
         {
             if (!invalid && value == currentValue) return;
             Force(value);
         }
 
-        public void Force(T value)
+        public void Force(bool value)
         {
             action(value);
             currentValue = value;

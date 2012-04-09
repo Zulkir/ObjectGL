@@ -54,7 +54,7 @@ namespace ObjectGL
             }
 
             readonly RedundantEnable depthTestEnable = new RedundantEnable(EnableCap.DepthTest);
-            readonly RedundantStruct<bool> depthMask = new RedundantStruct<bool>(GL.DepthMask);
+            readonly RedundantBool depthMask = new RedundantBool(GL.DepthMask);
             readonly RedundantInt depthFunc = new RedundantInt(x => GL.DepthFunc((DepthFunction)x));
             readonly RedundantEnable stencilTestEnable = new RedundantEnable(EnableCap.StencilTest);
             Side front = new Side();
@@ -68,6 +68,8 @@ namespace ObjectGL
 
             public void ConsumePipeline(Pipeline.DepthStencilAspect pipelineDepthStencil)
             {
+                // todo: ignore fields when disabled
+
                 depthTestEnable.Set(pipelineDepthStencil.DepthTestEnable);
                 depthMask.Set(pipelineDepthStencil.DepthMask);
                 depthFunc.Set((int)pipelineDepthStencil.DepthFunc);

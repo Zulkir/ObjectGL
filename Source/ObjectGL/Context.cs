@@ -43,22 +43,22 @@ namespace ObjectGL
             Capabilities = new Capabilities();
             Pipeline = new Pipeline(this);
 
-            transormFeedbackBufferIndexedBindings = new RedundantStruct<int>[Capabilities.MaxTransformFeedbackBuffers];
+            transormFeedbackBufferIndexedBindings = new RedundantInt[Capabilities.MaxTransformFeedbackBuffers];
             for (int i = 0; i < Capabilities.MaxTransformFeedbackBuffers; i++)
             {
                 int iLoc = i;
-                transormFeedbackBufferIndexedBindings[i] = new RedundantStruct<int>(h =>
+                transormFeedbackBufferIndexedBindings[i] = new RedundantInt(h =>
                     { 
                         GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, h);
                         actualTransformFeedbackBuffer = h;
                     });
             }
 
-            uniformBufferIndexedBindings = new RedundantStruct<int>[Capabilities.MaxUniformBufferBindings];
+            uniformBufferIndexedBindings = new RedundantInt[Capabilities.MaxUniformBufferBindings];
             for (int i = 0; i < Capabilities.MaxUniformBufferBindings; i++)
             {
                 int iLoc = i;
-                uniformBufferIndexedBindings[i] = new RedundantStruct<int>(h =>
+                uniformBufferIndexedBindings[i] = new RedundantInt(h =>
                     {
                         GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, h);
                         actualUniformBuffer = h;
@@ -68,28 +68,26 @@ namespace ObjectGL
             actualTextures = new int[Capabilities.MaxCombinedTextureImageUnits];
             textureUnitForEditing = Capabilities.MaxCombinedTextureImageUnits - 1;
 
-            samplerBindings = new RedundantStruct<int>[Capabilities.MaxCombinedTextureImageUnits];
+            samplerBindings = new RedundantInt[Capabilities.MaxCombinedTextureImageUnits];
             for (int i = 0; i < Capabilities.MaxCombinedTextureImageUnits; i++)
             {
                 int iLoc = i;
-                samplerBindings[i] = new RedundantStruct<int>(h => GL.BindSampler(iLoc, h));
+                samplerBindings[i] = new RedundantInt(h => GL.BindSampler(iLoc, h));
             }
-
-            Rasterizer = new ContextRasterizerAspect();
         }
 
         #region Buffers
-        readonly RedundantStruct<int> vertexArrayBinding = new RedundantStruct<int>(GL.BindVertexArray);
+        readonly RedundantInt vertexArrayBinding = new RedundantInt(GL.BindVertexArray);
 
-        readonly RedundantStruct<int> arrayBufferBinding = new RedundantStruct<int>(h => GL.BindBuffer(BufferTarget.ArrayBuffer, h));
-        readonly RedundantStruct<int> copyReadBufferBinding = new RedundantStruct<int>(h => GL.BindBuffer(BufferTarget.CopyReadBuffer, h));
-        readonly RedundantStruct<int> copyWriteBufferBinding = new RedundantStruct<int>(h => GL.BindBuffer(BufferTarget.CopyWriteBuffer, h));
-        readonly RedundantStruct<int> elementArrayBufferBinding = new RedundantStruct<int>(h => GL.BindBuffer(BufferTarget.ElementArrayBuffer, h));
-        readonly RedundantStruct<int> pixelPackBufferBinding = new RedundantStruct<int>(h => GL.BindBuffer(BufferTarget.PixelPackBuffer, h));
-        readonly RedundantStruct<int> pixelUnpackBufferBinding = new RedundantStruct<int>(h => GL.BindBuffer(BufferTarget.PixelUnpackBuffer, h));
-        readonly RedundantStruct<int> textureBufferBinding = new RedundantStruct<int>(h => GL.BindBuffer(BufferTarget.TextureBuffer, h));
-        readonly RedundantStruct<int>[] transormFeedbackBufferIndexedBindings;
-        readonly RedundantStruct<int>[] uniformBufferIndexedBindings;
+        readonly RedundantInt arrayBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.ArrayBuffer, h));
+        readonly RedundantInt copyReadBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.CopyReadBuffer, h));
+        readonly RedundantInt copyWriteBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.CopyWriteBuffer, h));
+        readonly RedundantInt elementArrayBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.ElementArrayBuffer, h));
+        readonly RedundantInt pixelPackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelPackBuffer, h));
+        readonly RedundantInt pixelUnpackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelUnpackBuffer, h));
+        readonly RedundantInt textureBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.TextureBuffer, h));
+        readonly RedundantInt[] transormFeedbackBufferIndexedBindings;
+        readonly RedundantInt[] uniformBufferIndexedBindings;
 
         int actualTransformFeedbackBuffer;
         int actualUniformBuffer;
@@ -139,7 +137,7 @@ namespace ObjectGL
 
         #region Textures
         readonly int textureUnitForEditing;
-        readonly RedundantStruct<int> activeTextureUnitBinding = new RedundantStruct<int>(i => GL.ActiveTexture(TextureUnit.Texture0 + i));
+        readonly RedundantInt activeTextureUnitBinding = new RedundantInt(i => GL.ActiveTexture(TextureUnit.Texture0 + i));
 
         readonly int[] actualTextures;
 
@@ -170,7 +168,7 @@ namespace ObjectGL
         #endregion
 
         #region Samplers
-        readonly RedundantStruct<int>[] samplerBindings;
+        readonly RedundantInt[] samplerBindings;
 
         internal void BindSamplerForDrawing(int unit, int samplerHandle)
         {
@@ -179,7 +177,7 @@ namespace ObjectGL
         #endregion
 
         #region Programs
-        readonly RedundantStruct<int> programBinding = new RedundantStruct<int>(GL.UseProgram);
+        readonly RedundantInt programBinding = new RedundantInt(GL.UseProgram);
 
         internal void BindProgramForDrawing(int programHandle)
         {
@@ -188,7 +186,6 @@ namespace ObjectGL
         #endregion
 
         #region Render States
-        internal ContextRasterizerAspect Rasterizer { get; private set; }
         
         #endregion
     }

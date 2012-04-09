@@ -49,9 +49,9 @@ namespace ObjectGL
         {
             this.context = context;
 
-            textures = new TexturesAspect(context.Capabilities.MaxCombinedTextureImageUnits);
-            samplers = new SamplersAspect(context.Capabilities.MaxCombinedTextureImageUnits);
-            uniformBuffers = new UniformBuffersAspect(context.Capabilities.MaxUniformBufferBindings);
+            textures = new TexturesAspect(context);
+            samplers = new SamplersAspect(context);
+            uniformBuffers = new UniformBuffersAspect(context);
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
             blend = new BlendAspect(context.Capabilities.MaxDrawBuffers);
@@ -93,9 +93,9 @@ namespace ObjectGL
         {
             context.BindVertexArray(vertexArray.Handle);
             context.BindProgramForDrawing(program.Handle);
-            uniformBuffers.Bind(context);
-            textures.Bind(context);
-            samplers.Bind(context, textures.EnabledTextureRange);
+            uniformBuffers.Bind();
+            textures.Bind();
+            samplers.Bind(textures.EnabledTextureRange);
         }
         #endregion
     }

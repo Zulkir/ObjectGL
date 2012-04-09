@@ -38,10 +38,10 @@ namespace ObjectGL
 
             internal int EnabledTextureRange { get { return enabledTextureRange; } }
 
-            internal TexturesAspect(Context context, int maxTextureUnits)
+            internal TexturesAspect(Context context)
             {
                 this.context = context;
-                textures = new Texture[maxTextureUnits];
+                textures = new Texture[context.Capabilities.MaxCombinedTextureImageUnits];
             }
 
             public Texture this[int unit]

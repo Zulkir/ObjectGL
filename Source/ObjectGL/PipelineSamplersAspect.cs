@@ -35,10 +35,10 @@ namespace ObjectGL
 
             readonly Sampler[] samplers;
 
-            internal SamplersAspect(Context context, int maxTextureUnits)
+            internal SamplersAspect(Context context)
             {
                 this.context = context;
-                samplers = new Sampler[maxTextureUnits];
+                samplers = new Sampler[context.Capabilities.MaxCombinedTextureImageUnits];
             }
 
             public Sampler this[int unit]

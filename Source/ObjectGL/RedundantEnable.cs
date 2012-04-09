@@ -23,15 +23,11 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    class RedundantEnable : RedundantStruct<bool>
+    class RedundantEnable : RedundantBool
     {
         public RedundantEnable(EnableCap cap) 
             : base(e => { if (e) GL.Enable(cap); else GL.Disable(cap); })
