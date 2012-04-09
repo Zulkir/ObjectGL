@@ -31,15 +31,18 @@ namespace ObjectGL
     {
         public class TexturesAspect
         {
+            private readonly Context context;
+
             readonly Texture[] textures;
             int enabledTextureRange;
 
-            internal TexturesAspect(int maxTextureUnits)
+            internal int EnabledTextureRange { get { return enabledTextureRange; } }
+
+            internal TexturesAspect(Context context, int maxTextureUnits)
             {
+                this.context = context;
                 textures = new Texture[maxTextureUnits];
             }
-
-            internal int EnambledTextureRange { get { return enabledTextureRange; } }
 
             public Texture this[int unit]
             {
@@ -73,6 +76,18 @@ namespace ObjectGL
                 {
                     enabledTextureRange = unit;
                 }
+            }
+
+            internal void Bind()
+            {
+                for (int i = 0; i < enabledTextureRange; i++)
+                {
+                    context.BindTextureForDrawing(i, textures[i].Target, textures[i].Handle);
+                }/*
+                for (int i = enabledTextureRange; i < textures.Length; i++)
+                {
+                    context.BindTextureForDrawing(i, TextureTarget.Texture2D, 0);
+                }*/
             }
         }
     }

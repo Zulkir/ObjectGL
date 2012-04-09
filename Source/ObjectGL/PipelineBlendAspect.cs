@@ -53,11 +53,13 @@ namespace ObjectGL
 
                 public Part Color { get; private set; }
                 public Part Alpha { get; private set; }
+                public bool SeparateAlphaBlendEnable { get; private set; }
 
                 internal Target()
                 {
                     Color = new Part();
                     Alpha = new Part();
+                    SeparateAlphaBlendEnable = false;
                 }
             }
 
@@ -85,6 +87,7 @@ namespace ObjectGL
             public bool AlphaToCoverageEnable { get; set; }
             public Color4 BlendColor { get; set; }
             public TargetCollection Targets { get; private set; }
+            public bool IndependentBlendEnable { get; private set; }
 
             internal BlendAspect(int maxDrawBuffers)
             {
@@ -92,6 +95,7 @@ namespace ObjectGL
                 AlphaToCoverageEnable = false;
                 BlendColor = new Color4(0f, 0f, 0f, 0f);
                 Targets = new TargetCollection(maxDrawBuffers);
+                IndependentBlendEnable = false;
             }
         }
     }

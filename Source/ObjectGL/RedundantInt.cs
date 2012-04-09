@@ -27,44 +27,10 @@ using System;
 
 namespace ObjectGL
 {
-    class RedundantEquatable<T> where T : IEquatable<T>
+    class RedundantInt : RedundantStruct<int>
     {
-        readonly Action<int> action;
-
-        int currentValue;
-        bool invalid;
-
-        public RedundantEquatable(Action<int> action)
+        public RedundantInt(Action<int> action) : base(action)
         {
-            if (action == null) throw new ArgumentNullException("action");
-
-            this.action = action;
-            invalid = true;
-        }
-
-        public int Get()
-        {
-            if (invalid) throw new InvalidOperationException("Trying to get a binding's value, while it is yet unknown.");
-
-            return currentValue;
-        }
-
-        public void Set(int value)
-        {
-            if (!invalid && value == currentValue) return;
-            Force(value);
-        }
-
-        public void Force(int value)
-        {
-            action(value);
-            currentValue = value;
-            invalid = false;
-        }
-
-        public void Invalidate()
-        {
-            invalid = true;
         }
     }
 }

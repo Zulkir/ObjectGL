@@ -23,34 +23,47 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using OpenTK.Graphics.OpenGL;
+using System;
 
 namespace ObjectGL
 {
-    public partial class Pipeline
+    class RedundantStruct<T> where T : struct
     {
-        public class RasterizerAspect
+        readonly Action<T> action;
+        T currentValue;
+        bool invalid;
+
+        public RedundantStruct(Action<T> action)
         {
-            readonly Context context;
+            if (action == null) throw new ArgumentNullException("action");
 
-            public PolygonMode PolygonModeFront { get; set; }
-            public PolygonMode PolygonModeBack { get; set; }
-            public CullFaceMode CullFace { get; set; }
-            public FrontFaceDirection FrontFace { get; set; }
-            public bool ScissorEnable { get; set; }
-            public bool MultisampleEnable { get; set; }
-            public bool LineSmoothEnable { get; set; }
+            this.action = action;
+            invalid = true;
+        }
 
-            public RasterizerAspect()
-            {
-                PolygonModeFront = PolygonMode.Fill;
-                PolygonModeBack = PolygonMode.Fill;
-                CullFace = CullFaceMode.Back;
-                FrontFace = FrontFaceDirection.Ccw;
-                ScissorEnable = false;
-                MultisampleEnable = true;
-                LineSmoothEnable = false;
-            }
+        public T Get()
+        {
+            if (invalid) throw new InvalidOperationException("Trying to get a binding's value, while it is yet unknown.");
+
+            return currentValue;
+        }
+
+        public void Set(T value)
+        {
+            if (!invalid && value == currentValue) return;
+            Force(value);
+        }
+
+        public void Force(T value)
+        {
+            action(value);
+            currentValue = value;
+            invalid = false;
+        }
+
+        public void Invalidate()
+        {
+            invalid = true;
         }
     }
 }

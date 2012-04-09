@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompareFunc.cs" />
+    <Compile Include="ContextDepthStencilAspect.cs" />
+    <Compile Include="ContextRasterizerAspect.cs" />
     <Compile Include="FragmentShader.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Pipeline.cs" />
@@ -54,7 +56,9 @@
     <Compile Include="PipelineRasterizerAspect.cs" />
     <Compile Include="PipelineSamplersAspect.cs" />
     <Compile Include="PipelineUniformBuffersAspect.cs" />
-    <Compile Include="RedundantEquatable.cs" />
+    <Compile Include="RedundantEnable.cs" />
+    <Compile Include="RedundantInt.cs" />
+    <Compile Include="RedundantStruct.cs" />
     <Compile Include="Buffer.cs" />
     <Compile Include="Capabilities.cs" />
     <Compile Include="ComplexBinding.cs" />

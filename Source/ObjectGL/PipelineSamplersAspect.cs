@@ -31,10 +31,13 @@ namespace ObjectGL
     {
         public class SamplersAspect
         {
+            readonly Context context;
+
             readonly Sampler[] samplers;
 
-            internal SamplersAspect(int maxTextureUnits)
+            internal SamplersAspect(Context context, int maxTextureUnits)
             {
+                this.context = context;
                 samplers = new Sampler[maxTextureUnits];
             }
 
@@ -50,6 +53,14 @@ namespace ObjectGL
                     if (value == null) throw new ArgumentNullException("value");
 
                     samplers[unit] = value;
+                }
+            }
+
+            internal void Bind(int enabledTextureRange)
+            {
+                for (int i = 0; i < enabledTextureRange; i++)
+                {
+                    context.BindSamplerForDrawing(i, samplers[i].Handle);
                 }
             }
         }

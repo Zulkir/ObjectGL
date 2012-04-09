@@ -23,34 +23,19 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public partial class Pipeline
+    class RedundantEnable : RedundantStruct<bool>
     {
-        public class RasterizerAspect
+        public RedundantEnable(EnableCap cap) 
+            : base(e => { if (e) GL.Enable(cap); else GL.Disable(cap); })
         {
-            readonly Context context;
-
-            public PolygonMode PolygonModeFront { get; set; }
-            public PolygonMode PolygonModeBack { get; set; }
-            public CullFaceMode CullFace { get; set; }
-            public FrontFaceDirection FrontFace { get; set; }
-            public bool ScissorEnable { get; set; }
-            public bool MultisampleEnable { get; set; }
-            public bool LineSmoothEnable { get; set; }
-
-            public RasterizerAspect()
-            {
-                PolygonModeFront = PolygonMode.Fill;
-                PolygonModeBack = PolygonMode.Fill;
-                CullFace = CullFaceMode.Back;
-                FrontFace = FrontFaceDirection.Ccw;
-                ScissorEnable = false;
-                MultisampleEnable = true;
-                LineSmoothEnable = false;
-            }
         }
     }
 }
