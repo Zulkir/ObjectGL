@@ -50,7 +50,9 @@
     <Compile Include="ContextBlendAspect.cs" />
     <Compile Include="ContextBuffersAspect.cs" />
     <Compile Include="ContextDepthStencilAspect.cs" />
+    <Compile Include="ContextProgramAspect.cs" />
     <Compile Include="ContextRasterizerAspect.cs" />
+    <Compile Include="ContextSamplersAspect.cs" />
     <Compile Include="ContextTexturesAspect.cs" />
     <Compile Include="FragmentShader.cs" />
     <Compile Include="Helpers.cs" />

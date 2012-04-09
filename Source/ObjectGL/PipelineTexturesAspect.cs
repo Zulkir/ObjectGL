@@ -77,18 +77,6 @@ namespace ObjectGL
                     enabledTextureRange = unit;
                 }
             }
-
-            internal void Bind()
-            {
-                for (int i = 0; i < enabledTextureRange; i++)
-                {
-                    context.BindTextureForDrawing(i, textures[i].Target, textures[i].Handle);
-                }/*
-                for (int i = enabledTextureRange; i < textures.Length; i++)
-                {
-                    context.BindTextureForDrawing(i, TextureTarget.Texture2D, 0);
-                }*/
-            }
         }
     }
 }

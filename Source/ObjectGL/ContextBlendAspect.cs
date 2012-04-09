@@ -140,9 +140,9 @@ namespace ObjectGL
 
             bool independentBlendEnable = false;
 
-            public BlendAspect(int maxDrawBuffers)
+            public BlendAspect(Capabilities capabilities)
             {
-                targets = new Target[maxDrawBuffers];
+                targets = new Target[capabilities.MaxDrawBuffers];
                 for (int i = 0; i < targets.Length; i++)
                 {
                     targets[i] = new Target(i);

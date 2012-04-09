@@ -23,7 +23,6 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -33,56 +32,49 @@ namespace ObjectGL
     {
         readonly GraphicsContext nativeContext;
 
-        public Capabilities Capabilities { get; private set; }
-        public Pipeline Pipeline { get; private set; }
+        readonly Capabilities capabilities;
+        readonly Pipeline pipeline;
+
+        readonly BuffersAspect buffers;
+        readonly TexturesAspect textures;
+        readonly SamplersAspect samplers;
+        readonly ProgramAspect program;
+        readonly RasterizerAspect rasterizer;
+        readonly DepthStencilAspect depthStencil;
+        readonly BlendAspect blend;
+
+        public Capabilities Capabilities { get { return capabilities; } }
+        public Pipeline Pipeline { get { return pipeline; } }
 
         public Context(GraphicsContext nativeContext)
         {
             this.nativeContext = nativeContext;
 
-            Capabilities = new Capabilities();
-            Pipeline = new Pipeline(this);
+            capabilities = new Capabilities();
+            pipeline = new Pipeline(this);
 
-            
-
-            
-
-            samplerBindings = new RedundantInt[Capabilities.MaxCombinedTextureImageUnits];
-            for (int i = 0; i < Capabilities.MaxCombinedTextureImageUnits; i++)
-            {
-                int iLoc = i;
-                samplerBindings[i] = new RedundantInt(h => GL.BindSampler(iLoc, h));
-            }
+            buffers = new BuffersAspect(capabilities);
+            textures = new TexturesAspect(capabilities);
+            samplers = new SamplersAspect(capabilities);
+            program = new ProgramAspect();
+            rasterizer = new RasterizerAspect();
+            depthStencil = new DepthStencilAspect();
+            blend = new BlendAspect(capabilities);
         }
 
-        #region Buffers
-        
-        #endregion
-
-        #region Textures
-        
-        #endregion
-
-        #region Samplers
-        readonly RedundantInt[] samplerBindings;
-
-        internal void BindSamplerForDrawing(int unit, int samplerHandle)
+        internal void BindVertexArray(int vertexArrayHandle)
         {
-            samplerBindings[unit].Set(samplerHandle);
+            buffers.BindVertexArray(vertexArrayHandle);
         }
-        #endregion
 
-        #region Programs
-        readonly RedundantInt programBinding = new RedundantInt(GL.UseProgram);
-
-        internal void BindProgramForDrawing(int programHandle)
+        internal void BindBuffer(BufferTarget target, int bufferHandle)
         {
-            programBinding.Set(programHandle);
+            buffers.BindBuffer(target, bufferHandle);
         }
-        #endregion
 
-        #region Render States
-        
-        #endregion
+        internal void BindTexture(TextureTarget target, int textureHandle)
+        {
+            textures.BindTexture(target, textureHandle);
+        }
     }
 }

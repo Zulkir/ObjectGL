@@ -23,38 +23,31 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
+using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public partial class Pipeline
+    public partial class Context
     {
-        public class SamplersAspect
+        private class SamplersAspect
         {
-            readonly Context context;
+            readonly RedundantInt[] samplerBindings;
 
-            readonly Sampler[] samplers;
-
-            internal SamplersAspect(Context context)
+            public SamplersAspect(Capabilities capabilities)
             {
-                this.context = context;
-                samplers = new Sampler[context.Capabilities.MaxCombinedTextureImageUnits];
+                samplerBindings = new RedundantInt[capabilities.MaxCombinedTextureImageUnits];
+                for (int i = 0; i < capabilities.MaxCombinedTextureImageUnits; i++)
+                {
+                    int iLoc = i;
+                    samplerBindings[i] = new RedundantInt(h => GL.BindSampler(iLoc, h));
+                }
             }
 
-            public Sampler this[int unit]
+            internal void BindSamplerForDrawing(int unit, int samplerHandle)
             {
-                get
-                {
-                    return samplers[unit];
-                }
-                set
-                {
-                    if (unit < 0 || unit >= samplers.Length) throw new ArgumentOutOfRangeException("unit");
-                    if (value == null) throw new ArgumentNullException("value");
-
-                    samplers[unit] = value;
-                }
+                samplerBindings[unit].Set(samplerHandle);
             }
         }
     }
+    
 }
