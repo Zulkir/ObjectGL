@@ -24,6 +24,7 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
+using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
@@ -91,6 +92,72 @@ namespace ObjectGL
         #endregion
 
         #region Draw
+        public void DrawArrays(BeginMode mode, int first, int count)
+        {
+            context.ConsumePipeline();
+            GL.DrawArrays(mode, first, count);
+        }
+
+        // todo: DrawArraysIndirect
+
+        public void DrawArraysInstanced(BeginMode mode, int first, int count, int primcount)
+        {
+            context.ConsumePipeline();
+            GL.DrawArraysInstanced(mode, first, count, primcount);
+        }
+
+        // todo: DrawArraysInstancedBaseInstance
+
+        public void DrawElements(BeginMode mode, int count, DrawElementsType type, int offset)
+        {
+            context.ConsumePipeline();
+            GL.DrawElements(mode, count, type, offset);
+        }
+
+        public void DrawElementsBaseVertex(BeginMode mode, int count, DrawElementsType type, int offset, int basevertex)
+        {
+            context.ConsumePipeline();
+            GL.DrawElementsBaseVertex(mode, count, type, (IntPtr)offset, basevertex);
+        } 
+
+        // todo: DrawElementsIndirect
+
+        public void DrawElementsInstanced(BeginMode mode, int count, DrawElementsType type, int offset, int primcount)
+        {
+            context.ConsumePipeline();
+            GL.DrawElementsInstanced(mode, count, type, (IntPtr)offset, primcount);
+        }
+
+        // todo: DrawElementsInstancedBaseInstance
+
+        public void DrawElementsInstancedBaseVertex(BeginMode mode, int count, DrawElementsType type, int offset, int primcount, int basevertex)
+        {
+            context.ConsumePipeline();
+            GL.DrawElementsInstancedBaseVertex(mode, count, type, (IntPtr)offset, primcount, basevertex);
+        }
+
+        // todo: DrawElementsInstancedBaseVertexBaseInstance
+
+        public void DrawRangeElements(BeginMode mode, int start, int end, int count, DrawElementsType type, int offset)
+        {
+            context.ConsumePipeline();
+            GL.DrawRangeElements(mode, start, end, count, type, (IntPtr)offset);
+        }
+
+        public void DrawRangeElementsBaseVertex(BeginMode mode, int start, int end, int count, DrawElementsType type, int offset, int basevertex)
+        {
+            context.ConsumePipeline();
+            GL.DrawRangeElementsBaseVertex(mode, start, end, count, type, (IntPtr)offset, basevertex);
+        }
+
+        // todo: DrawTransformFeedback
+
+        // todo: DrawTransformFeedbackInstanced
+
+        // todo: DrawTransformFeedbackStream
+
+        // todo: DrawTransformFeedbackStreamInstanced
+
         #endregion
     }
 }
