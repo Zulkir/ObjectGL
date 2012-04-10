@@ -76,5 +76,17 @@ namespace ObjectGL
         {
             textures.BindTexture(target, textureHandle);
         }
+
+        internal void ConsumePipeline()
+        {
+            program.ConsumePipelineProgram(pipeline.Program);
+            buffers.ConsumePipelineVertexArray(pipeline.VertexArray);
+            buffers.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
+            textures.ConsumePipelineTextures(pipeline.Textures);
+            samplers.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
+            rasterizer.ConsumePipelineRasterizer(pipeline.Rasterizer);
+            depthStencil.ConsumePipelineDepthStencil(pipeline.DepthStencil);
+            blend.ConsumePipelineBlend(pipeline.Blend);
+        }
     }
 }

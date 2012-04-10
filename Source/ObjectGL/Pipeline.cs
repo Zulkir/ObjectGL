@@ -60,6 +60,7 @@ namespace ObjectGL
         #region Setters
         public VertexArray VertexArray
         {
+            get { return vertexArray; }
             set
             {
                 if (vertexArray == null) throw new ArgumentNullException("value");
@@ -73,6 +74,7 @@ namespace ObjectGL
 
         public ShaderProgram Program
         {
+            get { return program; }
             set
             {
                 if (value == null) throw new ArgumentNullException("value");

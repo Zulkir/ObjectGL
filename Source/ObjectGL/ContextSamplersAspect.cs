@@ -43,9 +43,12 @@ namespace ObjectGL
                 }
             }
 
-            internal void BindSamplerForDrawing(int unit, int samplerHandle)
+            internal void ConsumePipelineSamplers(Pipeline.SamplersAspect pipelineSamplers, int enabledTextureRange)
             {
-                samplerBindings[unit].Set(samplerHandle);
+                for (int i = 0; i < enabledTextureRange; i++)
+                {
+                    samplerBindings[i].Set(pipelineSamplers[i].Handle);
+                }
             }
         }
     }

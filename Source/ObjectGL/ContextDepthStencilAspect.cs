@@ -66,7 +66,7 @@ namespace ObjectGL
                 back.Initialize();
             }
 
-            public void ConsumePipeline(Pipeline.DepthStencilAspect pipelineDepthStencil)
+            public void ConsumePipelineDepthStencil(Pipeline.DepthStencilAspect pipelineDepthStencil)
             {
                 // todo: ignore fields when disabled
 

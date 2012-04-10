@@ -149,7 +149,7 @@ namespace ObjectGL
                 }
             }
 
-            public void ConsumePipeline(Pipeline.BlendAspect pipelineBlend)
+            public void ConsumePipelineBlend(Pipeline.BlendAspect pipelineBlend)
             {
                 blendEnable.Set(pipelineBlend.BlendEnable);
                 if (!pipelineBlend.BlendEnable) return;

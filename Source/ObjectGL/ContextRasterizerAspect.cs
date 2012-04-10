@@ -40,7 +40,7 @@ namespace ObjectGL
             readonly RedundantEnable multisampleEnble = new RedundantEnable(EnableCap.Multisample);
             readonly RedundantEnable lineSmoothEnable = new RedundantEnable(EnableCap.LineSmooth);
 
-            public void ConsumePipeline(Pipeline.RasterizerAspect pipelineRasterizer)
+            public void ConsumePipelineRasterizer(Pipeline.RasterizerAspect pipelineRasterizer)
             {
                 if (polygonModeFront != pipelineRasterizer.PolygonModeFront && polygonModeBack != pipelineRasterizer.PolygonModeBack)
                 {

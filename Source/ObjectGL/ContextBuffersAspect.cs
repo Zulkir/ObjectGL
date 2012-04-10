@@ -112,6 +112,11 @@ namespace ObjectGL
                 }
             }
 
+            public void ConsumePipelineVertexArray(VertexArray vertexArray)
+            {
+                BindVertexArray(vertexArray.Handle);
+            }
+
             public void ConsumePipelineUniformBuffers(Pipeline.UniformBuffersAspect pipelineUniformBuffers)
             {
                 for (int i = 0; i < pipelineUniformBuffers.EnabledUniformBufferRange; i++)
