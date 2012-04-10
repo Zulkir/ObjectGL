@@ -31,13 +31,10 @@ namespace ObjectGL
     {
         public class SamplersAspect
         {
-            readonly Context context;
-
             readonly Sampler[] samplers;
 
             internal SamplersAspect(Context context)
             {
-                this.context = context;
                 samplers = new Sampler[context.Capabilities.MaxCombinedTextureImageUnits];
             }
 

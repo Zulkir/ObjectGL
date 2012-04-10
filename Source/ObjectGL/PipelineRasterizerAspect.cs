@@ -31,8 +31,6 @@ namespace ObjectGL
     {
         public class RasterizerAspect
         {
-            readonly Context context;
-
             public PolygonMode PolygonModeFront { get; set; }
             public PolygonMode PolygonModeBack { get; set; }
             public CullFaceMode CullFace { get; set; }

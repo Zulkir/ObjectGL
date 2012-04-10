@@ -70,7 +70,7 @@ namespace ObjectGL
                 return false;
             }
 
-            UniformBufferBinding[] uniformBufferBindings = new UniformBufferBinding[uniformBufferNames.Length];
+            var uniformBufferBindings = new UniformBufferBinding[uniformBufferNames.Length];
 
             for (int i = 0; i < uniformBufferNames.Length; i++)
             {

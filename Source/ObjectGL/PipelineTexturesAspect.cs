@@ -31,8 +31,6 @@ namespace ObjectGL
     {
         public class TexturesAspect
         {
-            private readonly Context context;
-
             readonly Texture[] textures;
             int enabledTextureRange;
 
@@ -40,7 +38,6 @@ namespace ObjectGL
 
             internal TexturesAspect(Context context)
             {
-                this.context = context;
                 textures = new Texture[context.Capabilities.MaxCombinedTextureImageUnits];
             }
 

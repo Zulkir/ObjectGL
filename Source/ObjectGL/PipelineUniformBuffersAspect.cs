@@ -31,8 +31,6 @@ namespace ObjectGL
     {
         public class UniformBuffersAspect
         {
-            readonly Context context;
-
             readonly Buffer[] uniformBuffers;
             int enabledUniformBufferRange;
 
@@ -40,7 +38,6 @@ namespace ObjectGL
 
             internal UniformBuffersAspect(Context context)
             {
-                this.context = context;
                 uniformBuffers = new Buffer[context.Capabilities.MaxUniformBufferBindings];
             }
 
