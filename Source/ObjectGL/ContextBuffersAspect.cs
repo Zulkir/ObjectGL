@@ -41,6 +41,7 @@ namespace ObjectGL
             readonly RedundantInt pixelPackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelPackBuffer, h));
             readonly RedundantInt pixelUnpackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelUnpackBuffer, h));
             readonly RedundantInt textureBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.TextureBuffer, h));
+            readonly RedundantInt drawIndirectBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.DrawIndirectBuffer, h));
             readonly RedundantInt[] transormFeedbackBufferIndexedBindings;
             readonly RedundantInt[] uniformBufferIndexedBindings;
 
@@ -94,6 +95,7 @@ namespace ObjectGL
                     case BufferTarget.PixelPackBuffer: pixelPackBufferBinding.Set(bufferHandle); return;
                     case BufferTarget.PixelUnpackBuffer: pixelUnpackBufferBinding.Set(bufferHandle); return;
                     case BufferTarget.TextureBuffer: textureBufferBinding.Set(bufferHandle); return;
+                    case BufferTarget.DrawIndirectBuffer: drawIndirectBufferBinding.Set(bufferHandle); return;
                     case BufferTarget.TransformFeedbackBuffer:
                         {
                             if (actualTransformFeedbackBuffer == bufferHandle) return;
