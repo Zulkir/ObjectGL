@@ -98,7 +98,11 @@ namespace ObjectGL
             GL.DrawArrays(mode, first, count);
         }
 
-        // todo: DrawArraysIndirect
+        public void DrawArraysIndirect(BeginMode mode, int offset)
+        {
+            context.ConsumePipeline();
+            GL.DrawArraysIndirect((ArbDrawIndirect) mode, (IntPtr)offset);
+        }
 
         public void DrawArraysInstanced(BeginMode mode, int first, int count, int primcount)
         {
@@ -118,9 +122,13 @@ namespace ObjectGL
         {
             context.ConsumePipeline();
             GL.DrawElementsBaseVertex(mode, count, type, (IntPtr)offset, basevertex);
-        } 
+        }
 
-        // todo: DrawElementsIndirect
+        public void DrawElementsIndirect(BeginMode mode, DrawElementsType type, int offset)
+        {
+            context.ConsumePipeline();
+            GL.DrawElementsIndirect((ArbDrawIndirect)mode, (ArbDrawIndirect)type, (IntPtr)offset);
+        }
 
         public void DrawElementsInstanced(BeginMode mode, int count, DrawElementsType type, int offset, int primcount)
         {
