@@ -30,22 +30,23 @@ namespace ObjectGL
 {
     public abstract class Texture : IDisposable
     {
-        readonly protected int handle;
+        readonly int handle;
 
-        readonly protected TextureTarget target;
-        readonly protected PixelInternalFormat internalFormat;
-        readonly protected int arraySize;
-        readonly protected int mipCount;
-
-        public int Handle { get { return handle; } }
-        public TextureTarget Target { get { return target; } }
-        public PixelInternalFormat InternalFormat { get { return internalFormat; } }
-        public int ArraySize { get { return arraySize; } }
-        public int MipCount { get { return mipCount; } }
+        readonly TextureTarget target;
+        readonly PixelInternalFormat internalFormat;
+        readonly int arraySize;
+        readonly int mipCount;
 
         int baseLevel;
         int maxLevel;
         float lodBias;
+
+        public int Handle { get { return handle; } }
+
+        public TextureTarget Target { get { return target; } }
+        public PixelInternalFormat InternalFormat { get { return internalFormat; } }
+        public int ArraySize { get { return arraySize; } }
+        public int MipCount { get { return mipCount; } }
 
         /*
         TextureMinFilter minFilter;
