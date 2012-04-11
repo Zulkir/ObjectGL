@@ -41,10 +41,10 @@ namespace ObjectGL
         {
             this.width = width;
 
-            currentContext.BindTexture(Target, handle);
+            currentContext.BindTexture(Target, Handle);
 
             int mipHeight = width;
-            for (int i = 0; i < mipCount; i++)
+            for (int i = 0; i < MipCount; i++)
             {
                 GL.TexImage1D(Target, i, internalFormat, mipHeight, 0, format, type, initialDataForMip(i));
                 mipHeight = Math.Max(mipHeight / 2, 1);
@@ -58,10 +58,10 @@ namespace ObjectGL
         {
             this.width = width;
 
-            currentContext.BindTexture(Target, handle);
+            currentContext.BindTexture(Target, Handle);
 
             int mipWidth = width;
-            for (int i = 0; i < mipCount; i++)
+            for (int i = 0; i < MipCount; i++)
             {
                 GL.CompressedTexImage1D(Target, i, internalFormat, mipWidth, 0, getComressedImageSizeForMip(i), getCompressedInitialDataForMip(i));
                 mipWidth = Math.Max(mipWidth / 2, 1);
