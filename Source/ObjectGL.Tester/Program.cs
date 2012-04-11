@@ -15,7 +15,9 @@ namespace ObjectGL.Tester
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+
+            var gameWindow = new MyGameWindow();
+            gameWindow.Run();
         }
     }
 }

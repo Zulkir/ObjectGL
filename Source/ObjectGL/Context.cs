@@ -30,7 +30,7 @@ namespace ObjectGL
 {
     public partial class Context
     {
-        readonly GraphicsContext nativeContext;
+        readonly IGraphicsContext nativeContext;
 
         readonly Capabilities capabilities;
         readonly Pipeline pipeline;
@@ -46,7 +46,7 @@ namespace ObjectGL
         public Capabilities Capabilities { get { return capabilities; } }
         public Pipeline Pipeline { get { return pipeline; } }
 
-        public Context(GraphicsContext nativeContext)
+        public Context(IGraphicsContext nativeContext)
         {
             this.nativeContext = nativeContext;
 
@@ -87,6 +87,17 @@ namespace ObjectGL
             rasterizer.ConsumePipelineRasterizer(pipeline.Rasterizer);
             depthStencil.ConsumePipelineDepthStencil(pipeline.DepthStencil);
             blend.ConsumePipelineBlend(pipeline.Blend);
+        }
+
+        public void SetViewport(int x, int y, int width, int height)
+        {
+            GL.Viewport(x, y, width, height);
+        }
+
+        public unsafe void Clear(Color4 color, float depth, int stencil)
+        {
+            GL.ClearBuffer(ClearBuffer.Color, 0, (float*)&color);
+            GL.ClearBuffer(ClearBuffer.DepthStencil, 0, depth, stencil);
         }
     }
 }
