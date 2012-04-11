@@ -70,25 +70,35 @@ namespace ObjectGL
                 return false;
             }
 
-            var uniformBufferBindings = new UniformBufferBinding[uniformBufferNames.Length];
+            UniformBufferBinding[] uniformBufferBindings;
 
-            for (int i = 0; i < uniformBufferNames.Length; i++)
+            if (uniformBufferNames != null)
             {
-                int programSpecificIndex = GL.GetUniformBlockIndex(handle, uniformBufferNames[i]);
-                if (programSpecificIndex == (int)Version31.InvalidIndex)
-                {
-                    program = null;
-                    errors = string.Format("Uniform Bufffer '{0}' not found.", uniformBufferNames[i]);
-                    return false;
-                }
+                uniformBufferBindings = new UniformBufferBinding[uniformBufferNames.Length];
 
-                GL.UniformBlockBinding(handle, programSpecificIndex, i);
-                uniformBufferBindings[i] = new UniformBufferBinding
+                for (int i = 0; i < uniformBufferNames.Length; i++)
                 {
-                    BufferName = uniformBufferNames[i],
-                    ProgramSpecificIndex = programSpecificIndex
-                };
+                    int programSpecificIndex = GL.GetUniformBlockIndex(handle, uniformBufferNames[i]);
+                    if (programSpecificIndex == (int)Version31.InvalidIndex)
+                    {
+                        program = null;
+                        errors = string.Format("Uniform Bufffer '{0}' not found.", uniformBufferNames[i]);
+                        return false;
+                    }
+
+                    GL.UniformBlockBinding(handle, programSpecificIndex, i);
+                    uniformBufferBindings[i] = new UniformBufferBinding
+                    {
+                        BufferName = uniformBufferNames[i],
+                        ProgramSpecificIndex = programSpecificIndex
+                    };
+                }
             }
+            else
+            {
+                uniformBufferBindings = new UniformBufferBinding[0];
+            }
+            
 
             program = new ShaderProgram(handle, uniformBufferBindings);
             errors = null;

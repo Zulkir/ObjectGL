@@ -37,7 +37,7 @@ namespace ObjectGL
 
         public int Handle { get { return handle; } }
 
-        internal unsafe VertexArray(Context context)
+        public unsafe VertexArray(Context context)
         {
             int handleProxy;
             GL.GenVertexArrays(1, &handleProxy);

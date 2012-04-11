@@ -23,24 +23,21 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-using System.Windows.Forms;
+using OpenTK;
 
 namespace ObjectGL.Tester
 {
-    static class Program
+    abstract class Scene
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+        protected Context Context { get; private set; }
 
-            var gameWindow = new MyGameWindow();
-            gameWindow.Run();
+        protected Scene(Context context)
+        {
+            Context = context;
         }
+
+        public abstract void Initialize();
+
+        public abstract void OnNewFrame(FrameEventArgs e);
     }
 }

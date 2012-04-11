@@ -64,7 +64,7 @@ namespace ObjectGL
             get { return vertexArray; }
             set
             {
-                if (vertexArray == null) throw new ArgumentNullException("value");
+                if (value == null) throw new ArgumentNullException("value");
 
                 vertexArray = value;
             }
