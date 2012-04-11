@@ -60,86 +60,86 @@ namespace ObjectGL
             GL.DeleteSamplers(1, &handleProxy);
         }
 
-        public void SetMinFilter(TextureMinFilter minFilter)
+        public void SetMinFilter(TextureMinFilter filter)
         {
-            if (this.minFilter == minFilter) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureMinFilter, (int)minFilter);
-            this.minFilter = minFilter;
+            if (minFilter == filter) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureMinFilter, (int)filter);
+            minFilter = filter;
         }
 
-        public void SetMagFilter(TextureMagFilter magFilter)
+        public void SetMagFilter(TextureMagFilter filter)
         {
-            if (this.magFilter == magFilter) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureMagFilter, (int)magFilter);
-            this.magFilter = magFilter;
+            if (magFilter == filter) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureMagFilter, (int)filter);
+            magFilter = filter;
         }
 
-        public void SetWrapS(TextureWrapMode wrapS)
+        public void SetWrapS(TextureWrapMode mode)
         {
-            if (this.wrapS == wrapS) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureWrapS, (int)wrapS);
-            this.wrapS = wrapS;
+            if (wrapS == mode) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureWrapS, (int)mode);
+            wrapS = mode;
         }
 
-        public void SetWrapT(TextureWrapMode wrapT)
+        public void SetWrapT(TextureWrapMode mode)
         {
-            if (this.wrapT == wrapT) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureWrapT, (int)wrapT);
-            this.wrapT = wrapT;
+            if (wrapT == mode) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureWrapT, (int)mode);
+            wrapT = mode;
         }
 
-        public void SetWrapR(TextureWrapMode wrapR)
+        public void SetWrapR(TextureWrapMode mode)
         {
-            if (this.wrapR == wrapR) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureWrapR, (int)wrapR);
-            this.wrapR = wrapR;
+            if (wrapR == mode) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureWrapR, (int)mode);
+            wrapR = mode;
         }
 
-        public void SetMaxAnisotropy(float maxAnisotropy)
+        public void SetMaxAnisotropy(float value)
         {
-            if (this.maxAnisotropy == maxAnisotropy) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureMaxAnisotropyExt, maxAnisotropy);
-            this.maxAnisotropy = maxAnisotropy;
+            if (maxAnisotropy == value) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureMaxAnisotropyExt, value);
+            maxAnisotropy = value;
         }
 
-        public void SetCompareMode(TextureCompareMode compareMode)
+        public void SetCompareMode(TextureCompareMode mode)
         {
-            if (this.compareMode == compareMode) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureCompareMode, (int)compareMode);
-            this.compareMode = compareMode;
+            if (compareMode == mode) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureCompareMode, (int)mode);
+            compareMode = mode;
         }
 
-        public void SetCompareFunc(CompareFunc compareFunc)
+        public void SetCompareFunc(CompareFunc func)
         {
-            if (this.compareFunc == compareFunc) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureCompareFunc, (int)compareFunc);
-            this.compareFunc = compareFunc;
+            if (compareFunc == func) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureCompareFunc, (int)func);
+            compareFunc = func;
         }
 
-        public unsafe void SetBorderColor(Color4 borderColor)
+        public unsafe void SetBorderColor(Color4 color)
         {
-            if (Helpers.ColorsEqual(ref this.borderColor, ref borderColor)) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureBorderColor, (float*)&borderColor);
+            if (Helpers.ColorsEqual(ref borderColor, ref color)) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureBorderColor, (float*)&color);
         }
 
-        public unsafe void SetBorderColor(float* borderColor)
+        public unsafe void SetBorderColor(float* color)
         {
-            if (Helpers.ColorsEqual(ref this.borderColor, ref *(Color4*)borderColor)) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureBorderColor, (float*)&borderColor);
+            if (Helpers.ColorsEqual(ref borderColor, ref *(Color4*)color)) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureBorderColor, (float*)&color);
         }
 
-        public void SetMinLod(float minLod)
+        public void SetMinLod(float value)
         {
-            if (this.minLod == minLod) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureMinLod, minLod);
-            this.minLod = minLod;
+            if (minLod == value) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureMinLod, value);
+            minLod = value;
         }
 
-        public void SetMaxLod(float maxLod)
+        public void SetMaxLod(float value)
         {
-            if (this.maxLod == maxLod) return;
-            GL.SamplerParameter(handle, SamplerParameter.TextureMaxLod, maxLod);
-            this.maxLod = maxLod;
+            if (maxLod == value) return;
+            GL.SamplerParameter(handle, SamplerParameter.TextureMaxLod, value);
+            maxLod = value;
         }
     }
 }

@@ -76,28 +76,28 @@ namespace ObjectGL
             handle = handleProxy;
         }
 
-        public void SetBaseLevel(Context currentContext, int baseLevel)
+        public void SetBaseLevel(Context currentContext, int value)
         {
-            if (this.baseLevel == baseLevel) return;
+            if (baseLevel == value) return;
             currentContext.BindTexture(target, handle);
-            GL.TexParameter(target, TextureParameterName.TextureBaseLevel, baseLevel);
-            this.baseLevel = baseLevel;
+            GL.TexParameter(target, TextureParameterName.TextureBaseLevel, value);
+            baseLevel = value;
         }
 
-        public void SetMaxLevel(Context currentContext, int maxLevel)
+        public void SetMaxLevel(Context currentContext, int value)
         {
-            if (this.maxLevel == maxLevel) return;
+            if (maxLevel == value) return;
             currentContext.BindTexture(target, handle);
-            GL.TexParameter(target, TextureParameterName.TextureMaxLevel, maxLevel);
-            this.maxLevel = maxLevel;
+            GL.TexParameter(target, TextureParameterName.TextureMaxLevel, value);
+            maxLevel = value;
         }
 
-        public void SetLodBias(Context currentContext, int lodBias)
+        public void SetLodBias(Context currentContext, int value)
         {
-            if (this.lodBias == lodBias) return;
+            if (lodBias == value) return;
             currentContext.BindTexture(target, handle);
-            GL.TexParameter(target, TextureParameterName.TextureLodBias, lodBias);
-            this.lodBias = lodBias;
+            GL.TexParameter(target, TextureParameterName.TextureLodBias, value);
+            lodBias = value;
         }
 
         public void GenerateMipmap(Context currentContext)
