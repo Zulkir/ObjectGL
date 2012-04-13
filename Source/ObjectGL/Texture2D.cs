@@ -38,7 +38,7 @@ namespace ObjectGL
 
         public Texture2D(Context currentContext,
             int width, int height,
-            PixelInternalFormat internalFormat, PixelFormat format, PixelType type, Func<int, IntPtr> initialDataForMip)
+            PixelInternalFormat internalFormat, PixelFormat format, PixelType type, Func<int, Data> initialDataForMip)
             : base(TextureTarget.Texture2D, internalFormat, 1, CalculateMipCount(width, height))
         {
             this.width = width;
@@ -50,7 +50,10 @@ namespace ObjectGL
             int mipHeight = height;
             for (int i = 0; i < MipCount; i++)
             {
-                GL.TexImage2D(Target, i, internalFormat, mipWidth, mipHeight, 0, format, type, initialDataForMip(i));
+                var data = initialDataForMip(i);
+                GL.TexImage2D(Target, i, internalFormat, mipWidth, mipHeight, 0, format, type, data.Pointer);
+                data.UnpinPointer();
+
                 mipWidth = Math.Max(mipWidth / 2, 1);
                 mipHeight = Math.Max(height/2, 1);
             }
@@ -58,7 +61,7 @@ namespace ObjectGL
 
         public Texture2D(Context currentContext,
             int width, int height,
-            PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip, Func<int, IntPtr> getCompressedInitialDataForMip)
+            PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip, Func<int, Data> getCompressedInitialDataForMip)
             : base(TextureTarget.Texture2D, internalFormat, 1, CalculateMipCount(width, height))
         {
             this.width = width;
@@ -69,7 +72,10 @@ namespace ObjectGL
             int mipHeight = height;
             for (int i = 0; i < MipCount; i++)
             {
-                GL.CompressedTexImage2D(Target, i, internalFormat, mipWidth, mipHeight, 0, getComressedImageSizeForMip(i), getCompressedInitialDataForMip(i));
+                var data = getCompressedInitialDataForMip(i);
+                GL.CompressedTexImage2D(Target, i, internalFormat, mipWidth, mipHeight, 0, getComressedImageSizeForMip(i), data.Pointer);
+                data.UnpinPointer();
+
                 mipWidth = Math.Max(mipWidth / 2, 1);
                 mipHeight = Math.Max(height / 2, 1);
             }

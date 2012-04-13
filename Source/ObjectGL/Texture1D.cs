@@ -36,7 +36,7 @@ namespace ObjectGL
 
         public Texture1D(Context currentContext,
             int width,
-            PixelInternalFormat internalFormat, PixelFormat format, PixelType type, Func<int, IntPtr> initialDataForMip)
+            PixelInternalFormat internalFormat, PixelFormat format, PixelType type, Func<int, Data> initialDataForMip)
             : base(TextureTarget.Texture1D, internalFormat, 1, CalculateMipCount(width))
         {
             this.width = width;
@@ -46,14 +46,17 @@ namespace ObjectGL
             int mipHeight = width;
             for (int i = 0; i < MipCount; i++)
             {
-                GL.TexImage1D(Target, i, internalFormat, mipHeight, 0, format, type, initialDataForMip(i));
+                var data = initialDataForMip(i);
+                GL.TexImage1D(Target, i, internalFormat, mipHeight, 0, format, type, data.Pointer);
+                data.UnpinPointer();
+
                 mipHeight = Math.Max(mipHeight / 2, 1);
             }
         }
 
         public Texture1D(Context currentContext,
             int width,
-            PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip, Func<int, IntPtr> getCompressedInitialDataForMip)
+            PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip, Func<int, Data> getCompressedInitialDataForMip)
             : base(TextureTarget.Texture1D, internalFormat, 1, CalculateMipCount(width))
         {
             this.width = width;
@@ -63,7 +66,10 @@ namespace ObjectGL
             int mipWidth = width;
             for (int i = 0; i < MipCount; i++)
             {
-                GL.CompressedTexImage1D(Target, i, internalFormat, mipWidth, 0, getComressedImageSizeForMip(i), getCompressedInitialDataForMip(i));
+                var data = getCompressedInitialDataForMip(i);
+                GL.CompressedTexImage1D(Target, i, internalFormat, mipWidth, 0, getComressedImageSizeForMip(i), data.Pointer);
+                data.UnpinPointer();
+
                 mipWidth = Math.Max(mipWidth / 2, 1);
             }
         }
