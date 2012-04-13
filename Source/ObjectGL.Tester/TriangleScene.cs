@@ -24,7 +24,6 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -33,7 +32,6 @@ namespace ObjectGL.Tester
 {
     class TriangleScene : Scene
     {
-        [StructLayout(LayoutKind.Sequential)]
         struct Vertex
         {
             public Vector4 Position;
@@ -110,8 +108,6 @@ void main()
         public override void OnNewFrame(FrameEventArgs e)
         {
             Context.Clear(Color4.CornflowerBlue, 1f, 0);
-
-            //Context.Pipeline.Rasterizer.MultisampleEnable = true;
 
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Program = program;
