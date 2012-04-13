@@ -77,24 +77,14 @@ void main()
 
         public unsafe override void Initialize()
         {
-            var verticesData = new[]
+            vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 3 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
                 new Vertex { Position = new Vector4(-0.5f, -0.5f, 0f, 1f), Color = Color4.Red},
                 new Vertex { Position = new Vector4(0.0f, 0.5f, 0f, 1f), Color = Color4.Green},
                 new Vertex { Position = new Vector4(0.5f, -0.5f, 0f, 1f), Color = Color4.Yellow},
-            };
+            }));
 
-            fixed (Vertex* p = verticesData)
-            {
-                vertices = new Buffer(Context, BufferTarget.ArrayBuffer, verticesData.Length * 8 * sizeof(float), BufferUsageHint.StaticDraw, (IntPtr)p);
-            }
-
-            var indicesData = new ushort[] {0, 1, 2, 0, 2, 3};
-
-            fixed (ushort* p = indicesData)
-            {
-                indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, indicesData.Length * sizeof(ushort), BufferUsageHint.StaticDraw, (IntPtr)p);
-            }
+            indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] { 0, 1, 2, 0, 2, 3 }));
 
             string shaderErrors;
 

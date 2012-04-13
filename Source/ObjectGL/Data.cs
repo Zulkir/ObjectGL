@@ -23,11 +23,32 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
+using System.Runtime.InteropServices;
+
 namespace ObjectGL
 {
-    struct UniformBufferBinding
+    public struct Data
     {
-        public string BufferName;
-        public int ProgramSpecificIndex;
+        public IntPtr Pointer;
+        public Action UnpinPointer;
+
+        public Data(IntPtr pointer)
+        {
+            Pointer = pointer;
+            UnpinPointer = () => { };
+        }
+
+        public unsafe Data(Array array, int byteOffset = 0)
+        {
+            GCHandle gcHandle = GCHandle.Alloc(array, GCHandleType.Pinned);
+            Pointer = (IntPtr)((byte*)gcHandle.AddrOfPinnedObject() + byteOffset);
+            UnpinPointer = gcHandle.Free;
+        }
+
+        public static implicit operator Data(IntPtr p)
+        {
+            return new Data {Pointer = p, UnpinPointer = () => { }};
+        }
     }
 }

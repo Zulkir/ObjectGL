@@ -43,7 +43,7 @@ namespace ObjectGL
         public Buffer(Context currentContext, BufferTarget creationTarget, int sizeInBytes, BufferUsageHint usage)
             : this(currentContext, creationTarget, sizeInBytes, usage, IntPtr.Zero) { }
 
-        public unsafe Buffer(Context currentContext, BufferTarget creationTarget, int sizeInBytes, BufferUsageHint usage, IntPtr initialData)
+        public unsafe Buffer(Context currentContext, BufferTarget creationTarget, int sizeInBytes, BufferUsageHint usage, Data initialData)
         {
             this.creationTarget = creationTarget;
             this.sizeInBytes = sizeInBytes;
@@ -54,7 +54,8 @@ namespace ObjectGL
             handle = handleProxy;
 
             currentContext.BindBuffer(creationTarget, handle);
-            GL.BufferData(creationTarget, (IntPtr)sizeInBytes, initialData, usage);
+            GL.BufferData(creationTarget, (IntPtr)sizeInBytes, initialData.Pointer, usage);
+            initialData.UnpinPointer();
         }
 
         public void SetData(Context currentContext, BufferTarget editingTarget, IntPtr data)

@@ -33,31 +33,19 @@ namespace ObjectGL
     public class ShaderProgram
     {
         readonly int handle;
-        readonly UniformBufferBinding[] uniformBufferBindings;
-        readonly Buffer[] uniformBuffers;
+        readonly Dictionary<string, int> uniformBufferIndices; 
 
         public int Handle { get { return handle; } }
 
-        internal UniformBufferBinding[] UniformBufferBindings { get { return uniformBufferBindings; } }
-        internal Buffer[] UniformBuffers { get { return uniformBuffers; } }
-
-        private ShaderProgram(int handle, UniformBufferBinding[] uniformBufferBindings)
+        private ShaderProgram(int handle, Dictionary<string, int> uniformBufferIndices)
         {
             this.handle = handle;
-            this.uniformBufferBindings = uniformBufferBindings;
-            uniformBuffers = new Buffer[uniformBufferBindings.Length];
+            this.uniformBufferIndices = uniformBufferIndices;
         }
 
         public int GetUniformBufferIndex(string name)
         {
-            return Enumerable.Range(0, uniformBufferBindings.Length).First(i => uniformBufferBindings[i].BufferName == name);
-        }
-
-        public void SetUniformBuffer(int index, Buffer buffer)
-        {
-            if (buffer == null) throw new ArgumentNullException("buffer");
-
-            uniformBuffers[index] = buffer;
+            return uniformBufferIndices[name];
         }
 
         public static unsafe bool TryLink(
@@ -94,7 +82,7 @@ namespace ObjectGL
                 return false;
             }
 
-            var uniformBufferBindings = new UniformBufferBinding[uniformBufferNames.Length];
+            var uniformBufferBindings = new Dictionary<string, int>(uniformBufferNames.Length);
 
             for (int i = 0; i < uniformBufferNames.Length; i++)
             {
@@ -107,11 +95,7 @@ namespace ObjectGL
                 }
 
                 GL.UniformBlockBinding(handle, programSpecificIndex, i);
-                uniformBufferBindings[i] = new UniformBufferBinding
-                {
-                    BufferName = uniformBufferNames[i],
-                    ProgramSpecificIndex = programSpecificIndex
-                };
+                uniformBufferBindings.Add(uniformBufferNames[i], programSpecificIndex);
             }
 
 

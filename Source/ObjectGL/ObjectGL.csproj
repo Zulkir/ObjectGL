@@ -54,6 +54,7 @@
     <Compile Include="ContextRasterizerAspect.cs" />
     <Compile Include="ContextSamplersAspect.cs" />
     <Compile Include="ContextTexturesAspect.cs" />
+    <Compile Include="Data.cs" />
     <Compile Include="FragmentShader.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Pipeline.cs" />
@@ -78,7 +79,6 @@
     <Compile Include="Texture1D.cs" />
     <Compile Include="PipelineTexturesAspect.cs" />
     <Compile Include="Texture2D.cs" />
-    <Compile Include="UniformBufferBinding.cs" />
     <Compile Include="VertexArray.cs" />
     <Compile Include="VertexArraySetFunction.cs" />
     <Compile Include="VertexAttributeDescription.cs" />
