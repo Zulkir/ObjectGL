@@ -24,9 +24,6 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -126,6 +123,7 @@ void main()
 
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Program = program;
+
             Context.Pipeline.DrawElements(BeginMode.Triangles, 3, DrawElementsType.UnsignedShort, 0);
         }
     }
