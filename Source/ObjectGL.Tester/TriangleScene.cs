@@ -98,13 +98,13 @@ void main()
             if (!FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors))
                 throw new ArgumentException("Fragment shader errors:\n\n" + shaderErrors);
 
-            if (!ShaderProgram.TryLink(vsh, fsh, null, out program, out shaderErrors))
+            if (!ShaderProgram.TryLink(vsh, fsh, new[]{"in_position", "in_color"}, null, out program, out shaderErrors))
                 throw new ArgumentException("Program linking errors:\n\n" + shaderErrors);
 
             vertexArray = new VertexArray(Context);
             vertexArray.SetElementArrayBuffer(Context, indices);
+            vertexArray.SetVertexAttributeF(Context, 0, vertices, 4, VertexAttribPointerType.Float, false, 32, 0);
             vertexArray.SetVertexAttributeF(Context, 1, vertices, 4, VertexAttribPointerType.Float, false, 32, 16);
-            vertexArray.SetVertexAttributeF(Context, 1, vertices, 4, VertexAttribPointerType.Float, false, 32, 0);
         }
 
         public override void OnNewFrame(FrameEventArgs e)

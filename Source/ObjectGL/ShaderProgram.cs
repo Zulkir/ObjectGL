@@ -33,24 +33,18 @@ namespace ObjectGL
     public class ShaderProgram
     {
         readonly int handle;
-        readonly Dictionary<string, int> uniformBufferBindings; 
 
         public int Handle { get { return handle; } }
 
-        private ShaderProgram(int handle, Dictionary<string, int> uniformBufferBindings)
+        private ShaderProgram(int handle)
         {
             this.handle = handle;
-            this.uniformBufferBindings = uniformBufferBindings;
-        }
-
-        public int GetUniformBufferBinding(string name)
-        {
-            return uniformBufferBindings[name];
         }
 
         public static unsafe bool TryLink(
             IEnumerable<VertexShader> vertexShaders,
             IEnumerable<FragmentShader> fragmentShaders,
+            string[] attributeNames,
             string[] uniformBufferNames,
             out ShaderProgram program,
             out string errors)
@@ -58,9 +52,11 @@ namespace ObjectGL
             if (vertexShaders == null) throw new ArgumentNullException("vertexShaders");
             if (fragmentShaders == null) throw new ArgumentNullException("fragmentShaders");
 
+            attributeNames = attributeNames ?? new string[0];
+            if (attributeNames.Any(x => attributeNames.Count(y => y == x) != 1))
+                throw new ArgumentException("All attribute names must be unique.");
+
             uniformBufferNames = uniformBufferNames ?? new string[0];
-            if (uniformBufferNames.Any(string.IsNullOrEmpty))
-                throw new ArgumentException("All uniform buffer names must be non-null and non-empty.");
             if (uniformBufferNames.Any(x => uniformBufferNames.Count(y => y == x) != 1))
                 throw new ArgumentException("All uniform buffer names must be unique.");
 
@@ -70,6 +66,12 @@ namespace ObjectGL
                 GL.AttachShader(handle, shader.Handle);
             foreach (var shader in fragmentShaders)
                 GL.AttachShader(handle, shader.Handle);
+
+            for (int i = 0; i < attributeNames.Length; i++)
+            {
+                if (attributeNames[i] != null)
+                    GL.BindAttribLocation(handle, i, attributeNames[i]);
+            }
 
             GL.LinkProgram(handle);
 
@@ -82,10 +84,16 @@ namespace ObjectGL
                 return false;
             }
 
-            var uniformBufferBindings = new Dictionary<string, int>(uniformBufferNames.Length);
+            for (int i = 0; i < attributeNames.Length; i++)
+            {
+                if (attributeNames[i] != null && GL.GetAttribLocation(handle, attributeNames[i]) != i)
+                    throw new ArgumentException(string.Format("Vertex attribute '{0}' is not present in the program.", attributeNames[i]));
+            }
 
             for (int i = 0; i < uniformBufferNames.Length; i++)
             {
+                if (uniformBufferNames[i] == null) continue;
+
                 int programSpecificIndex = GL.GetUniformBlockIndex(handle, uniformBufferNames[i]);
                 if (programSpecificIndex == (int)Version31.InvalidIndex)
                 {
@@ -95,10 +103,9 @@ namespace ObjectGL
                 }
 
                 GL.UniformBlockBinding(handle, programSpecificIndex, i);
-                uniformBufferBindings.Add(uniformBufferNames[i], i);
             }
 
-            program = new ShaderProgram(handle, uniformBufferBindings);
+            program = new ShaderProgram(handle);
             errors = null;
             return true;
         }
