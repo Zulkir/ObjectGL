@@ -39,8 +39,10 @@ namespace ObjectGL.Tester
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var gameWindow = new MyGameWindow();
-            gameWindow.Run();
+            using (var gameWindow = new MyGameWindow())
+            {
+                gameWindow.Run();
+            }
         }
     }
 }

@@ -24,6 +24,7 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
+using System.Runtime.InteropServices;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -32,14 +33,15 @@ namespace ObjectGL.Tester
 {
     class TriangleScene : Scene
     {
+        [StructLayout(LayoutKind.Sequential)]
         struct Vertex
         {
             public Vector4 Position;
             public Color4 Color;
         }
 
-        static readonly string VertexShaderText = 
-@"#version 110
+        static readonly string VertexShaderText =
+@"#version 150
 
 attribute vec4 in_position;
 attribute vec4 in_color;
@@ -54,7 +56,7 @@ void main()
 ";
 
         static readonly string FragmentShaderText =
-@"#version 110
+@"#version 150
 
 varying vec4 v_color;
 
@@ -101,15 +103,15 @@ void main()
 
             vertexArray = new VertexArray(Context);
             vertexArray.SetElementArrayBuffer(Context, indices);
-            vertexArray.SetVertexAttributeF(Context, 0, vertices, 4, VertexAttribPointerType.Float, false, 32, 0);
             vertexArray.SetVertexAttributeF(Context, 1, vertices, 4, VertexAttribPointerType.Float, false, 32, 16);
+            vertexArray.SetVertexAttributeF(Context, 1, vertices, 4, VertexAttribPointerType.Float, false, 32, 0);
         }
 
         public override void OnNewFrame(FrameEventArgs e)
         {
             Context.Clear(Color4.CornflowerBlue, 1f, 0);
 
-            Context.Pipeline.Rasterizer.MultisampleEnable = true;
+            //Context.Pipeline.Rasterizer.MultisampleEnable = true;
 
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Program = program;

@@ -33,19 +33,19 @@ namespace ObjectGL
     public class ShaderProgram
     {
         readonly int handle;
-        readonly Dictionary<string, int> uniformBufferIndices; 
+        readonly Dictionary<string, int> uniformBufferBindings; 
 
         public int Handle { get { return handle; } }
 
-        private ShaderProgram(int handle, Dictionary<string, int> uniformBufferIndices)
+        private ShaderProgram(int handle, Dictionary<string, int> uniformBufferBindings)
         {
             this.handle = handle;
-            this.uniformBufferIndices = uniformBufferIndices;
+            this.uniformBufferBindings = uniformBufferBindings;
         }
 
-        public int GetUniformBufferIndex(string name)
+        public int GetUniformBufferBinding(string name)
         {
-            return uniformBufferIndices[name];
+            return uniformBufferBindings[name];
         }
 
         public static unsafe bool TryLink(
@@ -95,9 +95,8 @@ namespace ObjectGL
                 }
 
                 GL.UniformBlockBinding(handle, programSpecificIndex, i);
-                uniformBufferBindings.Add(uniformBufferNames[i], programSpecificIndex);
+                uniformBufferBindings.Add(uniformBufferNames[i], i);
             }
-
 
             program = new ShaderProgram(handle, uniformBufferBindings);
             errors = null;
