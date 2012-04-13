@@ -38,7 +38,7 @@ namespace ObjectGL.Tester
             public Color4 Color;
         }
 
-        static readonly string VertexShaderText =
+        const string VertexShaderText = 
 @"#version 150
 
 attribute vec4 in_position;
@@ -53,7 +53,7 @@ void main()
 }
 ";
 
-        static readonly string FragmentShaderText =
+        const string FragmentShaderText = 
 @"#version 150
 
 varying vec4 v_color;
@@ -75,13 +75,13 @@ void main()
         {
         }
 
-        public unsafe override void Initialize()
+        public override void Initialize()
         {
             vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 3 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
                 new Vertex { Position = new Vector4(-0.5f, -0.5f, 0f, 1f), Color = Color4.Red},
                 new Vertex { Position = new Vector4(0.0f, 0.5f, 0f, 1f), Color = Color4.Green},
-                new Vertex { Position = new Vector4(0.5f, -0.5f, 0f, 1f), Color = Color4.Yellow},
+                new Vertex { Position = new Vector4(0.5f, -0.5f, 0f, 1f), Color = Color4.Yellow}
             }));
 
             indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 3 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] { 0, 1, 2 }));
@@ -89,15 +89,12 @@ void main()
             string shaderErrors;
 
             VertexShader vsh;
-            if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors))
-                throw new ArgumentException("Vertex shader errors:\n\n" + shaderErrors);
-
             FragmentShader fsh;
-            if (!FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors))
-                throw new ArgumentException("Fragment shader errors:\n\n" + shaderErrors);
 
-            if (!ShaderProgram.TryLink(vsh, fsh, new[]{"in_position", "in_color"}, null, out program, out shaderErrors))
-                throw new ArgumentException("Program linking errors:\n\n" + shaderErrors);
+            if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
+                !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
+                !ShaderProgram.TryLink(vsh, fsh, new[]{"in_position", "in_color"}, null, out program, out shaderErrors))
+                throw new ArgumentException("Program errors:\n\n" + shaderErrors);
 
             vertexArray = new VertexArray(Context);
             vertexArray.SetElementArrayBuffer(Context, indices);
