@@ -79,6 +79,7 @@
     <Compile Include="Texture1D.cs" />
     <Compile Include="PipelineTexturesAspect.cs" />
     <Compile Include="Texture2D.cs" />
+    <Compile Include="Texture3D.cs" />
     <Compile Include="VertexArray.cs" />
     <Compile Include="VertexArraySetFunction.cs" />
     <Compile Include="VertexAttributeDescription.cs" />

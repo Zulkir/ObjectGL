@@ -48,6 +48,7 @@ namespace ObjectGL
 
             int mipWidth = width;
             int mipHeight = height;
+
             for (int i = 0; i < MipCount; i++)
             {
                 var data = initialDataForMip(i);
@@ -55,7 +56,7 @@ namespace ObjectGL
                 data.UnpinPointer();
 
                 mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(height/2, 1);
+                mipHeight = Math.Max(mipHeight / 2, 1);
             }
         }
 
@@ -65,11 +66,13 @@ namespace ObjectGL
             : base(TextureTarget.Texture2D, internalFormat, 1, CalculateMipCount(width, height))
         {
             this.width = width;
+            this.height = height;
 
             currentContext.BindTexture(Target, Handle);
 
             int mipWidth = width;
             int mipHeight = height;
+
             for (int i = 0; i < MipCount; i++)
             {
                 var data = getCompressedInitialDataForMip(i);
@@ -77,7 +80,7 @@ namespace ObjectGL
                 data.UnpinPointer();
 
                 mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(height / 2, 1);
+                mipHeight = Math.Max(mipHeight / 2, 1);
             }
         }
     }
