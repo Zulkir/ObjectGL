@@ -56,7 +56,10 @@
     <Compile Include="ContextTexturesAspect.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="FragmentShader.cs" />
+    <Compile Include="FrameBuffer.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="LayeredImage.cs" />
     <Compile Include="Pipeline.cs" />
     <Compile Include="PipelineBlendAspect.cs" />
     <Compile Include="PipelineDepthStencilAspect.cs" />
