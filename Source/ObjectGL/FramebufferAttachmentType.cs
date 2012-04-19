@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -25,8 +25,10 @@ freely, subject to the following restrictions:
 
 namespace ObjectGL
 {
-    public class Framebuffer
+    enum FramebufferAttachmentType
     {
-
+        Renderbufer,
+        Texture,
+        TextureLayers
     }
 }

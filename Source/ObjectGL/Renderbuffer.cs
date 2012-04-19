@@ -25,8 +25,8 @@ freely, subject to the following restrictions:
 
 namespace ObjectGL
 {
-    public class Framebuffer
+    public class Renderbuffer
     {
-
+         
     }
 }

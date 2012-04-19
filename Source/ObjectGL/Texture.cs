@@ -93,7 +93,7 @@ namespace ObjectGL
             maxLevel = value;
         }
 
-        public void SetLodBias(Context currentContext, int value)
+        public void SetLodBias(Context currentContext, float value)
         {
             if (lodBias == value) return;
             currentContext.BindTexture(target, handle);

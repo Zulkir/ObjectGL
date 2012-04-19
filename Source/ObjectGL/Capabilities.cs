@@ -34,6 +34,7 @@ namespace ObjectGL
         public int MaxUniformBufferBindings { get; private set; }
         public int MaxTransformFeedbackBuffers { get; private set; }
         public int MaxDrawBuffers { get; private set; }
+        public int MaxColorAttachments { get; private set; }
 
         internal unsafe Capabilities()
         {
@@ -53,6 +54,9 @@ namespace ObjectGL
 
             GL.GetInteger(GetPName.MaxDrawBuffers, &localInt);
             MaxDrawBuffers = localInt;
+
+            GL.GetInteger(GetPName.MaxColorAttachments, &localInt);
+            MaxColorAttachments = localInt;
         }
     }
 }

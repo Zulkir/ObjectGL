@@ -23,10 +23,18 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using OpenTK.Graphics.OpenGL;
+
 namespace ObjectGL
 {
-    public class Framebuffer
+    struct FramebufferAttachment
     {
-
+        public FramebufferAttachmentType Type;
+        public TextureTarget TextureTarget;
+        public Texture Texture;
+        
+        
+        public int Level;
+        public int Layer;
     }
 }
