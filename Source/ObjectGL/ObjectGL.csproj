@@ -58,6 +58,7 @@
     <Compile Include="FragmentShader.cs" />
     <Compile Include="FrameBuffer.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="IImage.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="LayeredImage.cs" />
     <Compile Include="Pipeline.cs" />

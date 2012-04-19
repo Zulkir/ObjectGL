@@ -25,7 +25,8 @@ freely, subject to the following restrictions:
 
 namespace ObjectGL
 {
-    public class LayeredImage : IImage
+    public interface IImage
     {
+         
     }
 }

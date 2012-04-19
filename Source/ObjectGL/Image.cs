@@ -23,14 +23,9 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace ObjectGL
 {
-    public class Image
+    public class Image : IImage
     {
     }
 }
