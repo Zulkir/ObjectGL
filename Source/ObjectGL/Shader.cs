@@ -30,10 +30,11 @@ namespace ObjectGL
 {
     public abstract class Shader : IDisposable
     {
-        readonly protected int handle;
-        readonly protected ShaderType type;
+        readonly int handle;
+        readonly ShaderType type;
 
         public int Handle { get { return handle; } }
+        public ShaderType Type { get { return type; } }
 
         protected Shader(int handle, ShaderType type)
         {
