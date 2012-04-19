@@ -23,10 +23,36 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
+using OpenTK.Graphics.OpenGL;
+
 namespace ObjectGL
 {
-    public class Framebuffer
+    public class Framebuffer : IDisposable
     {
+        readonly int handle;
 
+        FramebufferAttachment[] colorAttachments;
+        FramebufferAttachment depthAttachment;
+        FramebufferAttachment stencilAttachment;
+
+        public int Handle { get { return handle; } }
+
+        public unsafe Framebuffer(Context currentContext)
+        {
+            int handleProxy;
+            GL.GenFramebuffers(1, &handleProxy);
+            handle = handleProxy;
+
+            colorAttachments = new FramebufferAttachment[currentContext.Capabilities.MaxColorAttachments];
+        }
+
+
+
+        public unsafe void Dispose()
+        {
+            int handleProxy;
+            GL.DeleteFramebuffers(1, &handleProxy);
+        }
     }
 }

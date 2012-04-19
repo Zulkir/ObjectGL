@@ -52,6 +52,7 @@
     <Compile Include="ContextDepthStencilAspect.cs" />
     <Compile Include="ContextProgramAspect.cs" />
     <Compile Include="ContextRasterizerAspect.cs" />
+    <Compile Include="ContextFramebufferAspect.cs" />
     <Compile Include="ContextSamplersAspect.cs" />
     <Compile Include="ContextTexturesAspect.cs" />
     <Compile Include="Data.cs" />

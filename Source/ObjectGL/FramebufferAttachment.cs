@@ -23,6 +23,7 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
@@ -32,9 +33,29 @@ namespace ObjectGL
         public FramebufferAttachmentType Type;
         public TextureTarget TextureTarget;
         public Texture Texture;
-        
+        public Renderbuffer Renderbuffer;
         
         public int Level;
         public int Layer;
+
+        public static bool Equals(ref FramebufferAttachment a1, ref FramebufferAttachment a2)
+        {
+            switch (a1.Type)
+            {
+                case FramebufferAttachmentType.Disabled:
+                    return a2.Type == FramebufferAttachmentType.Disabled;
+                case FramebufferAttachmentType.Renderbufer:
+                    return a2.Type == FramebufferAttachmentType.Renderbufer &&
+                           a1.Renderbuffer == a2.Renderbuffer;
+                case FramebufferAttachmentType.Texture:
+                case FramebufferAttachmentType.TextureLayers:
+                    return a1.Type == a2.Type &&
+                           a1.TextureTarget == a2.TextureTarget &&
+                           a1.Texture == a2.Texture &&
+                           a1.Level == a2.Level &&
+                           a1.Layer == a2.Layer;
+                default: throw new ArgumentOutOfRangeException("a1.Type");
+            }
+        }
     }
 }

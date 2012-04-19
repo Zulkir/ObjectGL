@@ -37,6 +37,7 @@ namespace ObjectGL
 
         readonly BuffersAspect buffers;
         readonly TexturesAspect textures;
+        readonly FramebufferAspect framebuffers;
         readonly SamplersAspect samplers;
         readonly ProgramAspect program;
         readonly RasterizerAspect rasterizer;
@@ -55,6 +56,7 @@ namespace ObjectGL
 
             buffers = new BuffersAspect(capabilities);
             textures = new TexturesAspect(capabilities);
+            framebuffers = new FramebufferAspect();
             samplers = new SamplersAspect(capabilities);
             program = new ProgramAspect();
             rasterizer = new RasterizerAspect();
@@ -75,6 +77,26 @@ namespace ObjectGL
         internal void BindTexture(TextureTarget target, int textureHandle)
         {
             textures.BindTexture(target, textureHandle);
+        }
+
+        internal void BindRenderbuffer(int renderbufferHandle)
+        {
+            framebuffers.BindRenderbuffer(renderbufferHandle);
+        }
+
+        internal void BindDrawFramebuffer(int framebufferHandle)
+        {
+            framebuffers.BindDrawFramebuffer(framebufferHandle);
+        }
+
+        internal void BindReadFramebuffer(int framebufferHandle)
+        {
+            framebuffers.BindReadFramebuffer(framebufferHandle);
+        }
+
+        internal FramebufferTarget BindAnyFramebuffer(int framebufferHandle)
+        {
+            return framebuffers.BindAnyFramebuffer(framebufferHandle);
         }
 
         internal void ConsumePipeline()

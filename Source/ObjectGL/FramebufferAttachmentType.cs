@@ -27,6 +27,7 @@ namespace ObjectGL
 {
     enum FramebufferAttachmentType
     {
+        Disabled,
         Renderbufer,
         Texture,
         TextureLayers

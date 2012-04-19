@@ -23,10 +23,60 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
+using OpenTK.Graphics.OpenGL;
+
 namespace ObjectGL
 {
-    public class Renderbuffer
+    public class Renderbuffer : IDisposable
     {
-         
+        readonly int handle;
+
+        readonly RenderbufferTarget target;
+        readonly PixelInternalFormat internalFormat;
+
+        readonly int width;
+        readonly int height;
+        readonly int samples;
+
+        public int Handle { get { return handle; } }
+
+        public RenderbufferTarget Target { get { return target; } }
+        public PixelInternalFormat InternalFormat { get { return internalFormat; } }
+
+        public int Width { get { return width; } }
+        public int Height { get { return height; } }
+        public int Samples { get { return samples; } }
+
+        public unsafe Renderbuffer(Context currentContext, PixelInternalFormat internalFormat, int width, int height, int samples = 0)
+        {
+            this.target = RenderbufferTarget.Renderbuffer;
+            this.internalFormat = internalFormat;
+            this.width = width;
+            this.height = height;
+            this.samples = samples;
+
+            int handleProxy;
+            GL.GenRenderbuffers(1, &handleProxy);
+            handle = handleProxy;
+
+            currentContext.BindRenderbuffer(handle);
+
+            if (samples == 0)
+            {
+                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, (RenderbufferStorage)internalFormat, width, height);
+            }
+            else
+            {
+                GL.RenderbufferStorageMultisample(RenderbufferTarget.Renderbuffer, samples, (RenderbufferStorage)internalFormat, width, height);
+            }
+            
+        }
+
+        public unsafe void Dispose()
+        {
+            int handleProxy = handle;
+            GL.DeleteRenderbuffers(1, &handleProxy);
+        }
     }
 }

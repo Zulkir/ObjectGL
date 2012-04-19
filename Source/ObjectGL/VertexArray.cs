@@ -33,18 +33,19 @@ namespace ObjectGL
         readonly int handle;
 
         readonly VertexAttributeDescription[] vertexAttributes;
+        //int enabledVertexAttributes;
         Buffer elementArrayBuffer;
 
         public int Handle { get { return handle; } }
 
-        public unsafe VertexArray(Context context)
+        public unsafe VertexArray(Context currentContext)
         {
             int handleProxy;
             GL.GenVertexArrays(1, &handleProxy);
             handle = handleProxy;
 
             elementArrayBuffer = null;
-            vertexAttributes = new VertexAttributeDescription[context.Capabilities.MaxVertexAttributes];
+            vertexAttributes = new VertexAttributeDescription[currentContext.Capabilities.MaxVertexAttributes];
         }
 
         public void SetElementArrayBuffer(Context currentContext, Buffer buffer)
