@@ -47,7 +47,10 @@ namespace ObjectGL
             colorAttachments = new FramebufferAttachment[currentContext.Capabilities.MaxColorAttachments];
         }
 
-
+        public void AttachColorTexture1D(int attachmentSlot, Texture1D texture, int layer)
+        {
+            
+        }
 
         public unsafe void Dispose()
         {

@@ -33,7 +33,7 @@ namespace ObjectGL
         readonly int handle;
 
         readonly VertexAttributeDescription[] vertexAttributes;
-        //int enabledVertexAttributes;
+        int enabledVertexAttributes;
         Buffer elementArrayBuffer;
 
         public int Handle { get { return handle; } }
@@ -59,26 +59,43 @@ namespace ObjectGL
 
         public void DisableVertexAttribute(Context currentContext, int index)
         {
+            if (index >= enabledVertexAttributes) return;
             if (!vertexAttributes[index].IsEnabled) return;
 
             currentContext.BindVertexArray(handle);
             GL.DisableVertexAttribArray(index);
 
             vertexAttributes[index].IsEnabled = false;
+
+            if (enabledVertexAttributes == index)
+            {
+                while (enabledVertexAttributes > 0 && !vertexAttributes[enabledVertexAttributes - 1].IsEnabled)
+                {
+                    enabledVertexAttributes--;
+                }   
+            }
         }
 
         public void DisableVertexAttributesStartingFrom(Context currentContext, int startIndex)
         {
+            if (startIndex >= enabledVertexAttributes) return;
+
             for (int i = startIndex; i < vertexAttributes.Length; i++)
             {
                 DisableVertexAttribute(currentContext, i);
             }
+
+            enabledVertexAttributes = startIndex;
+            while (enabledVertexAttributes > 0 && !vertexAttributes[enabledVertexAttributes - 1].IsEnabled)
+            {
+                enabledVertexAttributes--;
+            }   
         }
 
         public void SetVertexAttributeF(Context currentContext, int index, Buffer buffer,
             byte dimension, VertexAttribPointerType type, bool normalized, int stride, int offset)
         {
-            VertexAttributeDescription newDesc = new VertexAttributeDescription
+            var newDesc = new VertexAttributeDescription
             {
                 IsEnabled = true,
                 SetFunction = VertexArraySetFunction.Float,
@@ -101,12 +118,15 @@ namespace ObjectGL
             GL.VertexAttribPointer(index, dimension, type, normalized, stride, offset);
 
             vertexAttributes[index] = newDesc;
+
+            if (index >= enabledVertexAttributes)
+                enabledVertexAttributes = index + 1;
         }
 
         public void SetVertexAttributeI(Context currentContext, int index, Buffer buffer,
             byte dimension, VertexAttribIPointerType type, int stride, int offset)
         {
-            VertexAttributeDescription newDesc = new VertexAttributeDescription
+            var newDesc = new VertexAttributeDescription
             {
                 IsEnabled = true,
                 SetFunction = VertexArraySetFunction.Int,
@@ -128,6 +148,9 @@ namespace ObjectGL
             GL.VertexAttribIPointer(index, dimension, type, stride, (IntPtr)offset);
 
             vertexAttributes[index] = newDesc;
+
+            if (index >= enabledVertexAttributes)
+                enabledVertexAttributes = index + 1;
         }
 
         public unsafe void Dispose()
