@@ -30,7 +30,7 @@ namespace ObjectGL
 {
     public class Framebuffer : IDisposable
     {
-        delegate void GlFramebufferCall(FramebufferTarget framebufferTarget, FramebufferAttachment framebufferAttachment, ref FramebufferAttachmentDescription description);
+        delegate void GLFramebufferSomething(FramebufferTarget framebufferTarget, FramebufferAttachment framebufferAttachment, ref FramebufferAttachmentDescription description);
 
         readonly int handle;
 
@@ -52,12 +52,12 @@ namespace ObjectGL
         }
 
         #region Color
-        void AttachColor(Context currentContext, int index, ref FramebufferAttachmentDescription newDesc, GlFramebufferCall glCall)
+        void AttachColor(Context currentContext, int index, ref FramebufferAttachmentDescription newDesc, GLFramebufferSomething glFramebufferSomething)
         {
             if (FramebufferAttachmentDescription.Equals(ref newDesc, ref colorAttachments[index])) return;
 
             var framebufferTarget = currentContext.BindAnyFramebuffer(handle);
-            glCall(framebufferTarget, (FramebufferAttachment)((int)FramebufferAttachment.ColorAttachment0 + index), ref newDesc);
+            glFramebufferSomething(framebufferTarget, (FramebufferAttachment)((int)FramebufferAttachment.ColorAttachment0 + index), ref newDesc);
             colorAttachments[index] = newDesc;
 
             if (index >= enabledColorAttachmentsRange)
@@ -153,7 +153,110 @@ namespace ObjectGL
         }
         #endregion
 
+        #region DepthStencil
+        void AttachDepthStencil(Context currentContext, DepthStencil target, ref FramebufferAttachmentDescription newDesc, GLFramebufferSomething glFramebufferSomething)
+        {
+            if (target == DepthStencil.None) throw new ArgumentException("'target' cannot be 'None'");
 
+            if (((target & DepthStencil.Depth) == 0   || FramebufferAttachmentDescription.Equals(ref newDesc, ref depthAttachment)) &&
+                ((target & DepthStencil.Stencil) == 0 || FramebufferAttachmentDescription.Equals(ref newDesc, ref stencilAttachment))) return;
+
+            var framebufferTarget = currentContext.BindAnyFramebuffer(handle);
+            var framebufferAttachment = target == DepthStencil.Both 
+                ? FramebufferAttachment.DepthStencilAttachment
+                : target == DepthStencil.Depth
+                ? FramebufferAttachment.DepthAttachment
+                : target == DepthStencil.Stencil
+                ? FramebufferAttachment.StencilAttachment
+                : 0;
+            glFramebufferSomething(framebufferTarget, framebufferAttachment, ref newDesc);
+
+            if ((target & DepthStencil.Depth) != 0)
+                depthAttachment = newDesc;
+
+            if ((target & DepthStencil.Stencil) != 0)
+                stencilAttachment = newDesc;
+        }
+
+        public void AttachDepthStencilRenderbuffer(Context currentContext, DepthStencil target, Renderbuffer renderbuffer)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Renderbufer,
+                Renderbuffer = renderbuffer,
+            };
+
+            AttachDepthStencil(currentContext, target, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferRenderbuffer(ft, fa, RenderbufferTarget.Renderbuffer, d.Renderbuffer.Handle));
+        }
+
+        public void AttachDepthStencilTexture1D(Context currentContext, DepthStencil target, Texture1D texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture1D,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachDepthStencil(currentContext, target, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture1D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachDepthStencilTexture2D(Context currentContext, DepthStencil target, Texture2D texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture2D,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachDepthStencil(currentContext, target, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture2D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachDepthStencilTexture3D(Context currentContext, DepthStencil target, Texture3D texture, int level, int depthLayer)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture3D,
+                Texture = texture,
+                Level = level,
+                Layer = depthLayer
+            };
+
+            AttachDepthStencil(currentContext, target, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTextureLayer(ft, fa, d.Texture.Handle, d.Level, d.Layer));
+        }
+
+        public void DetachColor(Context currentContext, DepthStencil target)
+        {
+            if (target == DepthStencil.None) throw new ArgumentException("'target' cannot be 'None'");
+
+            if (((target & DepthStencil.Depth) == 0 || depthAttachment.Type == FramebufferAttachmentType.Disabled) &&
+                ((target & DepthStencil.Stencil) == 0 || stencilAttachment.Type == FramebufferAttachmentType.Disabled)) return;
+
+            var framebufferTarget = currentContext.BindAnyFramebuffer(handle);
+            var framebufferAttachment = target == DepthStencil.Both
+                ? FramebufferAttachment.DepthStencilAttachment
+                : target == DepthStencil.Depth
+                ? FramebufferAttachment.DepthAttachment
+                : target == DepthStencil.Stencil
+                ? FramebufferAttachment.StencilAttachment
+                : 0;
+            GL.FramebufferTexture2D(framebufferTarget, framebufferAttachment, TextureTarget.Texture2D, 0, 0);
+
+            if ((target & DepthStencil.Depth) != 0)
+                depthAttachment.Type = FramebufferAttachmentType.Disabled;
+
+            if ((target & DepthStencil.Stencil) != 0)
+                stencilAttachment.Type = FramebufferAttachmentType.Disabled;
+        }
+        #endregion
 
         public unsafe void Dispose()
         {
