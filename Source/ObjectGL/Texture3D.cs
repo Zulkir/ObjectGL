@@ -38,9 +38,10 @@ namespace ObjectGL
         public int Height { get { return height; } }
         public int Depth { get { return depth; } }
 
-        public Texture3D(Context currentContext,
-            int width, int height, int depth,
-            PixelInternalFormat internalFormat, PixelFormat format, PixelType type, Func<int, Data> initialDataForMip)
+        Texture3D(Context currentContext,
+                  int width, int height, int depth,
+                  PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
+                  Action<TextureTarget, int, PixelInternalFormat, int, int, int, IntPtr> glTexImage)
             : base(TextureTarget.Texture3D, internalFormat, 1, CalculateMipCount(width, height, depth))
         {
             this.width = width;
@@ -55,41 +56,33 @@ namespace ObjectGL
 
             for (int i = 0; i < MipCount; i++)
             {
-                var data = initialDataForMip(i);
-                GL.TexImage3D(Target, i, internalFormat, mipWidth, mipHeight, mipDepth, 0, format, type, data.Pointer);
+                Data data = getInitialDataForMip(i);
+                glTexImage(Target, i, internalFormat, mipWidth, mipHeight, mipDepth, data.Pointer);
                 data.UnpinPointer();
 
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-                mipDepth = Math.Max(mipDepth / 2, 1);
+                mipWidth = Math.Max(mipWidth/2, 1);
+                mipHeight = Math.Max(mipHeight/2, 1);
+                mipDepth = Math.Max(mipDepth/2, 1);
             }
         }
 
         public Texture3D(Context currentContext,
-            int width, int height, int depth,
-            PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip, Func<int, Data> getCompressedInitialDataForMip)
-            : base(TextureTarget.Texture3D, internalFormat, 1, CalculateMipCount(width, height, depth))
+                         int width, int height, int depth,
+                         PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
+                         Func<int, Data> getInitialDataForMip)
+            : this(currentContext, width, height, depth, internalFormat, getInitialDataForMip,
+                   (tt, l, f, w, h, d, p) => GL.TexImage3D(tt, l, f, w, h, d, 0, format, type, p))
         {
-            this.width = width;
-            this.height = height;
-            this.depth = depth;
+        }
 
-            currentContext.BindTexture(Target, Handle);
-
-            int mipWidth = width;
-            int mipHeight = height;
-            int mipDepth = depth;
-
-            for (int i = 0; i < MipCount; i++)
-            {
-                var data = getCompressedInitialDataForMip(i);
-                GL.CompressedTexImage3D(Target, i, internalFormat, mipWidth, mipHeight, mipDepth, 0, getComressedImageSizeForMip(i), data.Pointer);
-                data.UnpinPointer();
-
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(height / 2, 1);
-                mipDepth = Math.Max(mipDepth / 2, 1);
-            }
+        public Texture3D(Context currentContext,
+                         int width, int height, int depth,
+                         PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
+                         Func<int, Data> getCompressedInitialDataForMip)
+            : this(currentContext, width, height, depth, internalFormat, getCompressedInitialDataForMip,
+                   (tt, l, f, w, h, d, p) =>
+                   GL.CompressedTexImage3D(tt, l, f, w, h, d, 0, getComressedImageSizeForMip(l), p))
+        {
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿#region License
+
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -21,6 +22,7 @@ freely, subject to the following restrictions:
    3. This notice may not be removed or altered from any source
    distribution.
 */
+
 #endregion
 
 using System;
@@ -34,30 +36,10 @@ namespace ObjectGL
 
         public int Width { get { return width; } }
 
-        public Texture1D(Context currentContext,
-            int width,
-            PixelInternalFormat internalFormat, PixelFormat format, PixelType type, Func<int, Data> initialDataForMip)
-            : base(TextureTarget.Texture1D, internalFormat, 1, CalculateMipCount(width))
-        {
-            this.width = width;
-
-            currentContext.BindTexture(Target, Handle);
-
-            int mipHeight = width;
-
-            for (int i = 0; i < MipCount; i++)
-            {
-                var data = initialDataForMip(i);
-                GL.TexImage1D(Target, i, internalFormat, mipHeight, 0, format, type, data.Pointer);
-                data.UnpinPointer();
-
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
-        }
-
-        public Texture1D(Context currentContext,
-            int width,
-            PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip, Func<int, Data> getCompressedInitialDataForMip)
+        Texture1D(Context currentContext,
+                         int width,
+                         PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
+                         Action<TextureTarget, int, PixelInternalFormat, int, IntPtr> glTexImage)
             : base(TextureTarget.Texture1D, internalFormat, 1, CalculateMipCount(width))
         {
             this.width = width;
@@ -68,12 +50,30 @@ namespace ObjectGL
 
             for (int i = 0; i < MipCount; i++)
             {
-                var data = getCompressedInitialDataForMip(i);
-                GL.CompressedTexImage1D(Target, i, internalFormat, mipWidth, 0, getComressedImageSizeForMip(i), data.Pointer);
+                Data data = getInitialDataForMip(i);
+                glTexImage(TextureTarget.Texture1D, i, internalFormat, mipWidth, data.Pointer);
                 data.UnpinPointer();
 
-                mipWidth = Math.Max(mipWidth / 2, 1);
+                mipWidth = Math.Max(mipWidth/2, 1);
             }
+        }
+
+        public Texture1D(Context currentContext,
+                         int width,
+                         PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
+                         Func<int, Data> getInitialDataForMip)
+            : this(currentContext, width, internalFormat, getInitialDataForMip,
+                   (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0, format, type, p))
+        {
+        }
+
+        public Texture1D(Context currentContext,
+                         int width,
+                         PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
+                         Func<int, Data> getCompressedInitialDataForMip)
+            : this(currentContext, width, internalFormat, getCompressedInitialDataForMip,
+                   (tt, l, f, w, p) => GL.CompressedTexImage1D(tt, l, f, w, 0, getComressedImageSizeForMip(l), p))
+        {
         }
     }
 }

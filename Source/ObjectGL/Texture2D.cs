@@ -36,9 +36,10 @@ namespace ObjectGL
         public int Width { get { return width; } }
         public int Height { get { return height; } }
 
-        public Texture2D(Context currentContext,
-            int width, int height,
-            PixelInternalFormat internalFormat, PixelFormat format, PixelType type, Func<int, Data> initialDataForMip)
+        Texture2D(Context currentContext,
+                  int width, int height,
+                  PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
+                  Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
             : base(TextureTarget.Texture2D, internalFormat, 1, CalculateMipCount(width, height))
         {
             this.width = width;
@@ -51,37 +52,31 @@ namespace ObjectGL
 
             for (int i = 0; i < MipCount; i++)
             {
-                var data = initialDataForMip(i);
-                GL.TexImage2D(Target, i, internalFormat, mipWidth, mipHeight, 0, format, type, data.Pointer);
+                Data data = getInitialDataForMip(i);
+                glTexImage(Target, i, internalFormat, mipWidth, mipHeight, data.Pointer);
                 data.UnpinPointer();
 
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
+                mipWidth = Math.Max(mipWidth/2, 1);
+                mipHeight = Math.Max(mipHeight/2, 1);
             }
         }
 
         public Texture2D(Context currentContext,
-            int width, int height,
-            PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip, Func<int, Data> getCompressedInitialDataForMip)
-            : base(TextureTarget.Texture2D, internalFormat, 1, CalculateMipCount(width, height))
+                         int width, int height,
+                         PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
+                         Func<int, Data> getInitialDataForMip)
+            : this(currentContext, width, height, internalFormat, getInitialDataForMip,
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, format, type, p))
         {
-            this.width = width;
-            this.height = height;
+        }
 
-            currentContext.BindTexture(Target, Handle);
-
-            int mipWidth = width;
-            int mipHeight = height;
-
-            for (int i = 0; i < MipCount; i++)
-            {
-                var data = getCompressedInitialDataForMip(i);
-                GL.CompressedTexImage2D(Target, i, internalFormat, mipWidth, mipHeight, 0, getComressedImageSizeForMip(i), data.Pointer);
-                data.UnpinPointer();
-
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
+        public Texture2D(Context currentContext,
+                         int width, int height,
+                         PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
+                         Func<int, Data> getCompressedInitialDataForMip)
+            : this(currentContext, width, height, internalFormat, getCompressedInitialDataForMip,
+                   (tt, l, f, w, h, p) => GL.CompressedTexImage2D(tt, l, f, w, h, 0, getComressedImageSizeForMip(l), p))
+        {
         }
     }
 }
