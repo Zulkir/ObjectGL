@@ -33,7 +33,7 @@ namespace ObjectGL
         readonly int handle;
 
         readonly VertexAttributeDescription[] vertexAttributes;
-        int enabledVertexAttributes;
+        int enabledVertexAttributesRange;
         Buffer elementArrayBuffer;
 
         public int Handle { get { return handle; } }
@@ -59,7 +59,7 @@ namespace ObjectGL
 
         public void DisableVertexAttribute(Context currentContext, int index)
         {
-            if (index >= enabledVertexAttributes) return;
+            if (index >= enabledVertexAttributesRange) return;
             if (!vertexAttributes[index].IsEnabled) return;
 
             currentContext.BindVertexArray(handle);
@@ -67,28 +67,28 @@ namespace ObjectGL
 
             vertexAttributes[index].IsEnabled = false;
 
-            if (enabledVertexAttributes == index)
+            if (enabledVertexAttributesRange == index)
             {
-                while (enabledVertexAttributes > 0 && !vertexAttributes[enabledVertexAttributes - 1].IsEnabled)
+                while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
                 {
-                    enabledVertexAttributes--;
+                    enabledVertexAttributesRange--;
                 }   
             }
         }
 
         public void DisableVertexAttributesStartingFrom(Context currentContext, int startIndex)
         {
-            if (startIndex >= enabledVertexAttributes) return;
+            if (startIndex >= enabledVertexAttributesRange) return;
 
             for (int i = startIndex; i < vertexAttributes.Length; i++)
             {
                 DisableVertexAttribute(currentContext, i);
             }
 
-            enabledVertexAttributes = startIndex;
-            while (enabledVertexAttributes > 0 && !vertexAttributes[enabledVertexAttributes - 1].IsEnabled)
+            enabledVertexAttributesRange = startIndex;
+            while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
             {
-                enabledVertexAttributes--;
+                enabledVertexAttributesRange--;
             }   
         }
 
@@ -119,8 +119,8 @@ namespace ObjectGL
 
             vertexAttributes[index] = newDesc;
 
-            if (index >= enabledVertexAttributes)
-                enabledVertexAttributes = index + 1;
+            if (index >= enabledVertexAttributesRange)
+                enabledVertexAttributesRange = index + 1;
         }
 
         public void SetVertexAttributeI(Context currentContext, int index, Buffer buffer,
@@ -149,8 +149,8 @@ namespace ObjectGL
 
             vertexAttributes[index] = newDesc;
 
-            if (index >= enabledVertexAttributes)
-                enabledVertexAttributes = index + 1;
+            if (index >= enabledVertexAttributesRange)
+                enabledVertexAttributesRange = index + 1;
         }
 
         public unsafe void Dispose()
