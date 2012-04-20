@@ -57,41 +57,6 @@ namespace ObjectGL
             elementArrayBuffer = buffer;
         }
 
-        public void DisableVertexAttribute(Context currentContext, int index)
-        {
-            if (index >= enabledVertexAttributesRange) return;
-            if (!vertexAttributes[index].IsEnabled) return;
-
-            currentContext.BindVertexArray(handle);
-            GL.DisableVertexAttribArray(index);
-
-            vertexAttributes[index].IsEnabled = false;
-
-            if (enabledVertexAttributesRange == index)
-            {
-                while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
-                {
-                    enabledVertexAttributesRange--;
-                }   
-            }
-        }
-
-        public void DisableVertexAttributesStartingFrom(Context currentContext, int startIndex)
-        {
-            if (startIndex >= enabledVertexAttributesRange) return;
-
-            for (int i = startIndex; i < vertexAttributes.Length; i++)
-            {
-                DisableVertexAttribute(currentContext, i);
-            }
-
-            enabledVertexAttributesRange = startIndex;
-            while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
-            {
-                enabledVertexAttributesRange--;
-            }   
-        }
-
         public void SetVertexAttributeF(Context currentContext, int index, Buffer buffer,
             byte dimension, VertexAttribPointerType type, bool normalized, int stride, int offset)
         {
@@ -151,6 +116,41 @@ namespace ObjectGL
 
             if (index >= enabledVertexAttributesRange)
                 enabledVertexAttributesRange = index + 1;
+        }
+
+        public void DisableVertexAttribute(Context currentContext, int index)
+        {
+            if (index >= enabledVertexAttributesRange) return;
+            if (!vertexAttributes[index].IsEnabled) return;
+
+            currentContext.BindVertexArray(handle);
+            GL.DisableVertexAttribArray(index);
+
+            vertexAttributes[index].IsEnabled = false;
+
+            if (enabledVertexAttributesRange == index)
+            {
+                while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
+                {
+                    enabledVertexAttributesRange--;
+                }
+            }
+        }
+
+        public void DisableVertexAttributesStartingFrom(Context currentContext, int startIndex)
+        {
+            if (startIndex >= enabledVertexAttributesRange) return;
+
+            for (int i = startIndex; i < vertexAttributes.Length; i++)
+            {
+                DisableVertexAttribute(currentContext, i);
+            }
+
+            enabledVertexAttributesRange = startIndex;
+            while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
+            {
+                enabledVertexAttributesRange--;
+            }
         }
 
         public unsafe void Dispose()

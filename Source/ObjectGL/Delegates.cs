@@ -25,6 +25,9 @@ freely, subject to the following restrictions:
 
 namespace ObjectGL
 {
+    public delegate void ActionRef<T>(ref T arg);
+    public delegate void ActionRef<T1, T2>(ref T1 arg1, ref T2 arg2);
+
     public delegate TResult FuncRef<T, out TResult>(ref T arg);
     public delegate TResult FuncRef<T1, T2, out TResult>(ref T1 arg1, ref T2 arg2);
 }

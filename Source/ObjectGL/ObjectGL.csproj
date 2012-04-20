@@ -58,7 +58,7 @@
     <Compile Include="Data.cs" />
     <Compile Include="FragmentShader.cs" />
     <Compile Include="FrameBuffer.cs" />
-    <Compile Include="FramebufferAttachment.cs" />
+    <Compile Include="FramebufferAttachmentDescription.cs" />
     <Compile Include="FramebufferAttachmentType.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="Pipeline.cs" />

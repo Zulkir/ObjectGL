@@ -28,7 +28,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    struct FramebufferAttachment
+    struct FramebufferAttachmentDescription
     {
         public FramebufferAttachmentType Type;
         public TextureTarget TextureTarget;
@@ -38,7 +38,7 @@ namespace ObjectGL
         public int Level;
         public int Layer;
 
-        public static bool Equals(ref FramebufferAttachment a1, ref FramebufferAttachment a2)
+        public static bool Equals(ref FramebufferAttachmentDescription a1, ref FramebufferAttachmentDescription a2)
         {
             switch (a1.Type)
             {

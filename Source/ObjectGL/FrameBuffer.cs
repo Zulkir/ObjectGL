@@ -30,11 +30,15 @@ namespace ObjectGL
 {
     public class Framebuffer : IDisposable
     {
+        delegate void GlFramebufferCall(FramebufferTarget framebufferTarget, FramebufferAttachment framebufferAttachment, ref FramebufferAttachmentDescription description);
+
         readonly int handle;
 
-        FramebufferAttachment[] colorAttachments;
-        FramebufferAttachment depthAttachment;
-        FramebufferAttachment stencilAttachment;
+        readonly FramebufferAttachmentDescription[] colorAttachments;
+        int enabledColorAttachmentsRange;
+
+        FramebufferAttachmentDescription depthAttachment;
+        FramebufferAttachmentDescription stencilAttachment;
 
         public int Handle { get { return handle; } }
 
@@ -44,13 +48,112 @@ namespace ObjectGL
             GL.GenFramebuffers(1, &handleProxy);
             handle = handleProxy;
 
-            colorAttachments = new FramebufferAttachment[currentContext.Capabilities.MaxColorAttachments];
+            colorAttachments = new FramebufferAttachmentDescription[currentContext.Capabilities.MaxColorAttachments];
         }
 
-        public void AttachColorTexture1D(int attachmentSlot, Texture1D texture, int layer)
+        #region Color
+        void AttachColor(Context currentContext, int index, ref FramebufferAttachmentDescription newDesc, GlFramebufferCall glCall)
         {
-            
+            if (FramebufferAttachmentDescription.Equals(ref newDesc, ref colorAttachments[index])) return;
+
+            var framebufferTarget = currentContext.BindAnyFramebuffer(handle);
+            glCall(framebufferTarget, (FramebufferAttachment)((int)FramebufferAttachment.ColorAttachment0 + index), ref newDesc);
+            colorAttachments[index] = newDesc;
+
+            if (index >= enabledColorAttachmentsRange)
+                enabledColorAttachmentsRange = index + 1;
         }
+
+        public void AttachColorRenderbuffer(Context currentContext, int index, Renderbuffer renderbuffer)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Renderbufer,
+                Renderbuffer = renderbuffer,
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferRenderbuffer(ft, fa, RenderbufferTarget.Renderbuffer, d.Renderbuffer.Handle));
+        }
+
+        public void AttachColorTexture1D(Context currentContext, int index, Texture1D texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture1D,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture1D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachColorTexture2D(Context currentContext, int index, Texture2D texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture2D,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture2D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachColorTexture3D(Context currentContext, int index, Texture3D texture, int level, int depthLayer)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture3D,
+                Texture = texture,
+                Level = level,
+                Layer = depthLayer
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTextureLayer(ft, fa, d.Texture.Handle, d.Level, d.Layer));
+        }
+
+        public void DetachColor(Context currentContext, int index)
+        {
+            if (colorAttachments[index].Type == FramebufferAttachmentType.Disabled) return;
+
+            var framebufferTarget = currentContext.BindAnyFramebuffer(handle);
+            GL.FramebufferTexture2D(framebufferTarget, (FramebufferAttachment)((int)FramebufferAttachment.ColorAttachment0 + index), TextureTarget.Texture2D, 0, 0);
+            colorAttachments[index].Type = FramebufferAttachmentType.Disabled;
+
+            if (enabledColorAttachmentsRange == index)
+            {
+                while (enabledColorAttachmentsRange > 0 && colorAttachments[enabledColorAttachmentsRange - 1].Type == FramebufferAttachmentType.Disabled)
+                {
+                    enabledColorAttachmentsRange--;
+                }
+            }
+        }
+
+        public void DetachColorStartingFrom(Context currentContext, int startIndex)
+        {
+            if (startIndex >= enabledColorAttachmentsRange) return;
+
+            for (int i = startIndex; i < colorAttachments.Length; i++)
+            {
+                DetachColor(currentContext, i);
+            }
+
+            enabledColorAttachmentsRange = startIndex;
+            while (enabledColorAttachmentsRange > 0 && colorAttachments[enabledColorAttachmentsRange - 1].Type == FramebufferAttachmentType.Disabled)
+            {
+                enabledColorAttachmentsRange--;
+            }
+        }
+        #endregion
+
+
 
         public unsafe void Dispose()
         {
