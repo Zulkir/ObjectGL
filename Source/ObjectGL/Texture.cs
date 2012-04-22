@@ -34,7 +34,7 @@ namespace ObjectGL
 
         readonly TextureTarget target;
         readonly PixelInternalFormat internalFormat;
-        readonly int arraySize;
+        readonly int sliceCount;
         readonly int mipCount;
 
         int baseLevel;
@@ -45,7 +45,7 @@ namespace ObjectGL
 
         public TextureTarget Target { get { return target; } }
         public PixelInternalFormat InternalFormat { get { return internalFormat; } }
-        public int ArraySize { get { return arraySize; } }
+        public int SliceCount { get { return sliceCount; } }
         public int MipCount { get { return mipCount; } }
 
         /*
@@ -65,11 +65,11 @@ namespace ObjectGL
         */
 
         protected unsafe Texture(TextureTarget target, 
-            PixelInternalFormat internalFormat, int arraySize, int mipCount)
+            PixelInternalFormat internalFormat, int sliceCount, int mipCount)
         {
             this.target = target;
             this.internalFormat = internalFormat;
-            this.arraySize = arraySize;
+            this.sliceCount = sliceCount;
             this.mipCount = mipCount;
 
             int handleProxy;

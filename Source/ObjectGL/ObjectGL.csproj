@@ -84,7 +84,9 @@
     <Compile Include="Texture.cs" />
     <Compile Include="Texture1D.cs" />
     <Compile Include="PipelineTexturesAspect.cs" />
+    <Compile Include="Texture1DArray.cs" />
     <Compile Include="Texture2D.cs" />
+    <Compile Include="Texture2DArray.cs" />
     <Compile Include="Texture3D.cs" />
     <Compile Include="TextureBuffer.cs" />
     <Compile Include="TextureCubemap.cs" />
