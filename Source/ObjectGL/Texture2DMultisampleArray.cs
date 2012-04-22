@@ -27,7 +27,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Texture2DMultisample : Texture
+    public class Texture2DMultisampleArray : Texture
     {
         readonly int width;
         readonly int height;
@@ -37,10 +37,11 @@ namespace ObjectGL
         public int Height { get { return height; } }
         public int Samples { get { return samples; } }
 
-        public Texture2DMultisample(Context currentContext,
+        public Texture2DMultisampleArray(Context currentContext,
                          int width, int height, int samples, bool fixedSampleLocations,
+                         int sliceCount,
                          PixelInternalFormat internalFormat)
-            : base(TextureTarget.Texture2DMultisample, internalFormat, 1, 1)
+            : base(TextureTarget.Texture2DMultisampleArray, internalFormat, sliceCount, 1)
         {
             this.width = width;
             this.height = height;
@@ -48,7 +49,7 @@ namespace ObjectGL
 
             currentContext.BindTexture(Target, Handle);
 
-            GL.TexImage2DMultisample((TextureTargetMultisample)Target, samples, internalFormat, width, height, fixedSampleLocations);
+            GL.TexImage3DMultisample((TextureTargetMultisample)Target, samples, internalFormat, width, height, sliceCount, fixedSampleLocations);
         }
     }
 }
