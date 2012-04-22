@@ -120,12 +120,14 @@ namespace ObjectGL
         {
             if (Helpers.ColorsEqual(ref borderColor, ref color)) return;
             GL.SamplerParameter(handle, SamplerParameter.TextureBorderColor, (float*)&color);
+            borderColor = color;
         }
 
         public unsafe void SetBorderColor(float* color)
         {
             if (Helpers.ColorsEqual(ref borderColor, ref *(Color4*)color)) return;
             GL.SamplerParameter(handle, SamplerParameter.TextureBorderColor, (float*)&color);
+            borderColor = *(Color4*)color;
         }
 
         public void SetMinLod(float value)
