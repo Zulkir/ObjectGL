@@ -55,6 +55,7 @@
     <Compile Include="ContextFramebufferAspect.cs" />
     <Compile Include="ContextSamplersAspect.cs" />
     <Compile Include="ContextTexturesAspect.cs" />
+    <Compile Include="CubemapFace.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DepthStencil.cs" />
     <Compile Include="FragmentShader.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Texture3D.cs" />
     <Compile Include="TextureBuffer.cs" />
     <Compile Include="TextureCubemap.cs" />
+    <Compile Include="TextureCubemapArray.cs" />
     <Compile Include="TextureRectangle.cs" />
     <Compile Include="VertexArray.cs" />
     <Compile Include="VertexArraySetFunction.cs" />
