@@ -86,6 +86,7 @@
     <Compile Include="PipelineTexturesAspect.cs" />
     <Compile Include="Texture2D.cs" />
     <Compile Include="Texture3D.cs" />
+    <Compile Include="TextureBuffer.cs" />
     <Compile Include="TextureRectangle.cs" />
     <Compile Include="VertexArray.cs" />
     <Compile Include="VertexArraySetFunction.cs" />

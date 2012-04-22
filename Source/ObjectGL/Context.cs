@@ -51,6 +51,8 @@ namespace ObjectGL
         {
             this.nativeContext = nativeContext;
 
+            GL.Enable(EnableCap.TextureCubeMapSeamless);
+
             capabilities = new Capabilities();
             pipeline = new Pipeline(this);
 
