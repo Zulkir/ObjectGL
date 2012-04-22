@@ -40,7 +40,7 @@ namespace ObjectGL
                   int width, int height, int sliceCount,
                   PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture2D, internalFormat, sliceCount, CalculateMipCount(width, height))
+            : base(TextureTarget.Texture2DArray, internalFormat, sliceCount, CalculateMipCount(width, height))
         {
             this.width = width;
             this.height = height;
