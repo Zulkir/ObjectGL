@@ -36,6 +36,10 @@ namespace ObjectGL
         public int MaxDrawBuffers { get; private set; }
         public int MaxColorAttachments { get; private set; }
 
+        public int MaxTransformFeedbackInterleavedComponents { get; private set; }
+        public int MaxTransformFeedbackSeparateComponents { get; private set; }
+        public int MaxTransformFeedbackSeparateAttribs { get; private set; }
+
         internal unsafe Capabilities()
         {
             int localInt;
@@ -57,6 +61,15 @@ namespace ObjectGL
 
             GL.GetInteger(GetPName.MaxColorAttachments, &localInt);
             MaxColorAttachments = localInt;
+
+            GL.GetInteger(GetPName.MaxTransformFeedbackInterleavedComponents, &localInt);
+            MaxTransformFeedbackInterleavedComponents = localInt;
+
+            GL.GetInteger(GetPName.MaxTransformFeedbackSeparateComponents, &localInt);
+            MaxTransformFeedbackSeparateComponents = localInt;
+
+            GL.GetInteger(GetPName.MaxTransformFeedbackSeparateAttribs, &localInt);
+            MaxTransformFeedbackSeparateAttribs = localInt;
         }
     }
 }

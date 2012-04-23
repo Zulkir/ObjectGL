@@ -41,37 +41,53 @@ namespace ObjectGL
             this.handle = handle;
         }
 
+        static readonly string[] EmptyStringArray = new string[0];
+        static readonly GeometryShader[] EmptyGeometryShaderArray = new GeometryShader[0];
+
         public static unsafe bool TryLink(
             IEnumerable<VertexShader> vertexShaders,
             IEnumerable<FragmentShader> fragmentShaders,
+            IEnumerable<GeometryShader> geometryShaders, 
             string[] attributeNames,
             string[] uniformBufferNames,
+            string[] transformFeedbackAttributeNames,
+            TransformFeedbackMode transformFeedbackMode,
             out ShaderProgram program,
             out string errors)
         {
             if (vertexShaders == null) throw new ArgumentNullException("vertexShaders");
             if (fragmentShaders == null) throw new ArgumentNullException("fragmentShaders");
 
-            attributeNames = attributeNames ?? new string[0];
-            if (attributeNames.Any(x => attributeNames.Count(y => y == x) != 1))
-                throw new ArgumentException("All attribute names must be unique.");
+            attributeNames = attributeNames ?? EmptyStringArray;
+            if (attributeNames.Any(x => x != null && attributeNames.Count(y => y == x) != 1))
+                throw new ArgumentException("All non-null attribute names must be unique.");
 
-            uniformBufferNames = uniformBufferNames ?? new string[0];
-            if (uniformBufferNames.Any(x => uniformBufferNames.Count(y => y == x) != 1))
-                throw new ArgumentException("All uniform buffer names must be unique.");
+            uniformBufferNames = uniformBufferNames ?? EmptyStringArray;
+            if (uniformBufferNames.Any(x => x != null && uniformBufferNames.Count(y => y == x) != 1))
+                throw new ArgumentException("All non-null uniform buffer names must be unique.");
+
+            transformFeedbackAttributeNames = transformFeedbackAttributeNames ?? EmptyStringArray;
+            if (transformFeedbackAttributeNames.Any(x => transformFeedbackAttributeNames.Count(y => y == x) != 1))
+                throw new ArgumentException("All transform feedback attribute names must be unique.");
 
             int handle = GL.CreateProgram();
+
+            geometryShaders = geometryShaders ?? EmptyGeometryShaderArray;
 
             foreach (var shader in vertexShaders)
                 GL.AttachShader(handle, shader.Handle);
             foreach (var shader in fragmentShaders)
                 GL.AttachShader(handle, shader.Handle);
-
+            foreach (var shader in geometryShaders)
+                GL.AttachShader(handle, shader.Handle);
+                
             for (int i = 0; i < attributeNames.Length; i++)
             {
                 if (attributeNames[i] != null)
                     GL.BindAttribLocation(handle, i, attributeNames[i]);
             }
+
+            GL.TransformFeedbackVaryings(handle, transformFeedbackAttributeNames.Length, transformFeedbackAttributeNames, transformFeedbackMode);
 
             GL.LinkProgram(handle);
 
