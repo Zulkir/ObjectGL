@@ -90,6 +90,35 @@ namespace ObjectGL
                 GL.FramebufferTexture1D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
         }
 
+        public void AttachColorTexture1DArray(Context currentContext, int index, Texture1DArray texture, int level, int layer)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture1DArray,
+                Texture = texture,
+                Level = level,
+                Layer = layer
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTextureLayer(ft, fa, d.Texture.Handle, d.Level, d.Layer));
+        }
+
+        public void AttachColorTexture1DArrayLayers(Context currentContext, int index, Texture1DArray texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.TextureLayers,
+                TextureTarget = TextureTarget.Texture1DArray,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level));
+        }
+
         public void AttachColorTexture2D(Context currentContext, int index, Texture2D texture, int level)
         {
             var newDesc = new FramebufferAttachmentDescription
@@ -102,6 +131,78 @@ namespace ObjectGL
 
             AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
                 GL.FramebufferTexture2D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachColorTexture2DArray(Context currentContext, int index, Texture2DArray texture, int level, int layer)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture2DArray,
+                Texture = texture,
+                Level = level,
+                Layer = layer
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTextureLayer(ft, fa, d.Texture.Handle, d.Level, d.Layer));
+        }
+
+        public void AttachColorTexture2DArrayLayers(Context currentContext, int index, Texture2DArray texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.TextureLayers,
+                TextureTarget = TextureTarget.Texture2DArray,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachColorTexture2DMultisample(Context currentContext, int index, Texture2DMultisample texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture2DMultisample,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture2D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachColorTexture2DMultisampleArray(Context currentContext, int index, Texture2DMultisampleArray texture, int level, int layer)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.Texture2DMultisampleArray,
+                Texture = texture,
+                Level = level,
+                Layer = layer
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTextureLayer(ft, fa, d.Texture.Handle, d.Level, d.Layer));
+        }
+
+        public void AttachColorTexture2DMultisampleArrayLayers(Context currentContext, int index, Texture2DMultisampleArray texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.TextureLayers,
+                TextureTarget = TextureTarget.Texture2DMultisampleArray,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level));
         }
 
         public void AttachColorTexture3D(Context currentContext, int index, Texture3D texture, int level, int depthLayer)
@@ -117,6 +218,35 @@ namespace ObjectGL
 
             AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
                 GL.FramebufferTextureLayer(ft, fa, d.Texture.Handle, d.Level, d.Layer));
+        }
+
+        public void AttachColorTexture3DLayers(Context currentContext, int index, Texture3D texture, int level)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.TextureLayers,
+                TextureTarget = TextureTarget.Texture3D,
+                Texture = texture,
+                Level = level
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level));
+        }
+
+        public void AttachColorTextureCubemap(Context currentContext, int index, TextureCubemap texture, int level, CubemapFace cubemapFace)
+        {
+            var newDesc = new FramebufferAttachmentDescription
+            {
+                Type = FramebufferAttachmentType.Texture,
+                TextureTarget = TextureTarget.TextureCubeMap,
+                Texture = texture,
+                Level = level,
+                Layer = cubemapFace - CubemapFace.PositiveX
+            };
+
+            AttachColor(currentContext, index, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
+                GL.FramebufferTexture2D(ft, fa, d.Layer + TextureTarget.TextureCubeMapPositiveX, d.Texture.Handle, d.Level));
         }
 
         public void DetachColor(Context currentContext, int index)
@@ -233,7 +363,7 @@ namespace ObjectGL
                 GL.FramebufferTextureLayer(ft, fa, d.Texture.Handle, d.Level, d.Layer));
         }
 
-        public void DetachColor(Context currentContext, DepthStencil target)
+        public void DetachDepthStencil(Context currentContext, DepthStencil target)
         {
             if (target == DepthStencil.None) throw new ArgumentException("'target' cannot be 'None'");
 

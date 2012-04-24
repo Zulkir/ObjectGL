@@ -38,7 +38,7 @@ namespace ObjectGL
                          int width, int sliceCount,
                          PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
                          Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture2DArray, internalFormat, sliceCount, CalculateMipCount(width))
+            : base(TextureTarget.Texture1DArray, internalFormat, sliceCount, CalculateMipCount(width))
         {
             this.width = width;
 
