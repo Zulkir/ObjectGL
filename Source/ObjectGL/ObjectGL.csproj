@@ -60,6 +60,7 @@
     <Compile Include="DepthStencil.cs" />
     <Compile Include="FragmentShader.cs" />
     <Compile Include="FrameBuffer.cs" />
+    <Compile Include="FramebufferAttachmentPoint.cs" />
     <Compile Include="FramebufferAttachmentDescription.cs" />
     <Compile Include="FramebufferAttachmentType.cs" />
     <Compile Include="GeometryShader.cs" />
