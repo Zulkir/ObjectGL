@@ -104,7 +104,8 @@ void main()
 
         public override void OnNewFrame(FrameEventArgs e)
         {
-            Context.Clear(Color4.CornflowerBlue, 1f, 0);
+            Context.ClearWindowColor(Color4.CornflowerBlue);
+            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Program = program;

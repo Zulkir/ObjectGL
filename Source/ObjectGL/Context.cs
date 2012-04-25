@@ -23,6 +23,7 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
@@ -118,10 +119,24 @@ namespace ObjectGL
             GL.Viewport(x, y, width, height);
         }
 
-        public unsafe void Clear(Color4 color, float depth, int stencil)
+        public unsafe void ClearWindowColor(Color4 color)
         {
+            framebuffers.BindDrawFramebuffer(0);
             GL.ClearBuffer(ClearBuffer.Color, 0, (float*)&color);
-            GL.ClearBuffer(ClearBuffer.DepthStencil, 0, depth, stencil);
+        }
+
+        public void ClearWindowDepthStencil(DepthStencil mask, float depth, int stencil)
+        {
+            var clearBuffer =
+                mask == DepthStencil.Both ? ClearBuffer.DepthStencil :
+                mask == DepthStencil.Depth ? ClearBuffer.Depth :
+                mask == DepthStencil.Stencil ? ClearBuffer.Stencil : 0;
+
+            if (clearBuffer == 0)
+                throw new ArgumentException("'mask' can not be 'None'");
+
+            framebuffers.BindDrawFramebuffer(0);
+            GL.ClearBuffer(clearBuffer, 0, depth, stencil);
         }
     }
 }
