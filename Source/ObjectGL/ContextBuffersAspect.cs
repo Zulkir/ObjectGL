@@ -133,6 +133,21 @@ namespace ObjectGL
 
                 boundUniformBufferRange = pipelineUniformBuffers.EnabledUniformBufferRange;
             }
+
+            public void ConsumePipelineTransformFeedbackBuffers(Pipeline.TransformFeedbackBufferAspect transformFeedbackBuffers)
+            {
+                for (int i = 0; i < transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i++)
+                {
+                    transormFeedbackBufferIndexedBindings[i].Set(transformFeedbackBuffers[i].Handle);
+                }
+
+                for (int i = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i < boundTransformFeedbackBufferRange; i++)
+                {
+                    transormFeedbackBufferIndexedBindings[i].Set(0);
+                }
+
+                boundTransformFeedbackBufferRange = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange;
+            }
         }
     }
 }

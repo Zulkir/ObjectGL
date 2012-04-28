@@ -70,6 +70,7 @@
     <Compile Include="PipelineDepthStencilAspect.cs" />
     <Compile Include="PipelineRasterizerAspect.cs" />
     <Compile Include="PipelineSamplersAspect.cs" />
+    <Compile Include="PipelineTransformFeedbackBufferAspect.cs" />
     <Compile Include="PipelineUniformBuffersAspect.cs" />
     <Compile Include="RedundantBool.cs" />
     <Compile Include="RedundantEnable.cs" />

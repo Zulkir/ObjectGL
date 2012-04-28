@@ -42,6 +42,7 @@ namespace ObjectGL
 
         ShaderProgram program;
         readonly UniformBuffersAspect uniformBuffers;
+        readonly TransformFeedbackBufferAspect transformFeedbackBuffers;
 
         readonly RasterizerAspect rasterizer;
         readonly DepthStencilAspect depthStencil;
@@ -55,6 +56,7 @@ namespace ObjectGL
             textures = new TexturesAspect(context);
             samplers = new SamplersAspect(context);
             uniformBuffers = new UniformBuffersAspect(context);
+            transformFeedbackBuffers= new TransformFeedbackBufferAspect(context);
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
             blend = new BlendAspect(context.Capabilities.MaxDrawBuffers);
@@ -92,6 +94,7 @@ namespace ObjectGL
         }
 
         public UniformBuffersAspect UniformBuffers { get { return uniformBuffers; } }
+        public TransformFeedbackBufferAspect TransformFeedbackBuffers { get { return transformFeedbackBuffers; } }
 
         public RasterizerAspect Rasterizer { get { return rasterizer; } }
         public DepthStencilAspect DepthStencil { get { return depthStencil; } }

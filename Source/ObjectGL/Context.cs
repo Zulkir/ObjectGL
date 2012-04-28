@@ -106,6 +106,7 @@ namespace ObjectGL
         {
             program.ConsumePipelineProgram(pipeline.Program);
             buffers.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
+            buffers.ConsumePipelineTransformFeedbackBuffers(pipeline.TransformFeedbackBuffers);
             buffers.ConsumePipelineVertexArray(pipeline.VertexArray);
             textures.ConsumePipelineTextures(pipeline.Textures);
             samplers.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
