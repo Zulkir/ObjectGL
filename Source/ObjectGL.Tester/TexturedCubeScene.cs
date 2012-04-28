@@ -178,7 +178,7 @@ void main()
             camera = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.StreamDraw);
             light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.StreamDraw);
 
-            using (var textureLoader = new TextureLoader("../Textures/Chess256.bmp"))
+            using (var textureLoader = new TextureLoader("../../Textures/Chess256.bmp"))
             {
                 // ReSharper disable AccessToDisposedClosure
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, PixelInternalFormat.Rgba8,
