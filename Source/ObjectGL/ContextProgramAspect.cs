@@ -33,9 +33,14 @@ namespace ObjectGL
         {
             readonly RedundantInt programBinding = new RedundantInt(GL.UseProgram);
 
-            internal void ConsumePipelineProgram(ShaderProgram program)
+            public void ConsumePipelineProgram(ShaderProgram program)
             {
                 programBinding.Set(program.Handle);
+            }
+
+            public void UseProgram(int programHandle)
+            {
+                programBinding.Set(programHandle);
             }
         }
     }

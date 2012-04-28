@@ -45,12 +45,14 @@ namespace ObjectGL
         static readonly GeometryShader[] EmptyGeometryShaderArray = new GeometryShader[0];
 
         public static unsafe bool TryLink(
+            Context currentContext,
             IEnumerable<VertexShader> vertexShaders,
             IEnumerable<FragmentShader> fragmentShaders,
             IEnumerable<GeometryShader> geometryShaders, 
             string[] attributeNames,
             string[] uniformBufferNames,
             string[] transformFeedbackAttributeNames,
+            string[] samplerNames,
             TransformFeedbackMode transformFeedbackMode,
             out ShaderProgram program,
             out string errors)
@@ -69,6 +71,10 @@ namespace ObjectGL
             transformFeedbackAttributeNames = transformFeedbackAttributeNames ?? EmptyStringArray;
             if (transformFeedbackAttributeNames.Any(x => transformFeedbackAttributeNames.Count(y => y == x) != 1))
                 throw new ArgumentException("All transform feedback attribute names must be unique.");
+
+            samplerNames = samplerNames ?? EmptyStringArray;
+            if (samplerNames.Any(x => x != null && samplerNames.Count(y => y == x) != 1))
+                throw new ArgumentException("All non-null sampler names must be unique.");
 
             int handle = GL.CreateProgram();
 
@@ -119,6 +125,16 @@ namespace ObjectGL
                 }
 
                 GL.UniformBlockBinding(handle, programSpecificIndex, i);
+            }
+
+            currentContext.UseProgram(handle);
+
+            for (int i = 0; i < samplerNames.Length; i++)
+            {
+                if (samplerNames[i] == null) continue;
+
+                int samplerUniformLocation = GL.GetUniformLocation(handle, samplerNames[i]);
+                GL.Uniform1(samplerUniformLocation, i);
             }
 
             program = new ShaderProgram(handle);

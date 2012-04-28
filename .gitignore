@@ -3,4 +3,5 @@ _ReSharper*
 *.user
 [Bb]in/
 [Oo]bj/
-[Bb]uild/
+Build/[Dd]ebug/
+Build/[Rr]elease/

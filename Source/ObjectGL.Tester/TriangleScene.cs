@@ -71,7 +71,7 @@ void main()
 
         VertexArray vertexArray;
 
-        public TriangleScene(Context context) : base(context)
+        public TriangleScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
         {
         }
 
@@ -93,7 +93,7 @@ void main()
 
             if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
                 !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(vsh, fsh, null, new[]{"in_position", "in_color"}, null, null, 0, out program, out shaderErrors))
+                !ShaderProgram.TryLink(Context, vsh, fsh, null, new[]{"in_position", "in_color"}, null, null, null, 0, out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
 
             vertexArray = new VertexArray(Context);

@@ -30,10 +30,12 @@ namespace ObjectGL.Tester
     abstract class Scene
     {
         protected Context Context { get; private set; }
+        protected GameWindow GameWindow { get; private set; }
 
-        protected Scene(Context context)
+        protected Scene(Context context, GameWindow gameWindow)
         {
             Context = context;
+            GameWindow = gameWindow;
         }
 
         public abstract void Initialize();

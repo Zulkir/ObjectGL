@@ -67,6 +67,11 @@ namespace ObjectGL
             blend = new BlendAspect(capabilities);
         }
 
+        internal void UseProgram(int programHandle)
+        {
+            program.UseProgram(programHandle);
+        }
+
         internal void BindVertexArray(int vertexArrayHandle)
         {
             buffers.BindVertexArray(vertexArrayHandle);
