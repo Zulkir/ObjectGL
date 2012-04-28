@@ -58,7 +58,10 @@ namespace ObjectGL
                 renderbufferBinding.Set(renderbufferHandle);
             }
 
-            
+            public void ConsumePipelineFramebuffer(Framebuffer framebuffer)
+            {
+                drawFramebufferBinding.Set(framebuffer != null ? framebuffer.Handle : 0);
+            }
         }
     }
 }

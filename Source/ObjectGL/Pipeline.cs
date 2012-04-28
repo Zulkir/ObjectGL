@@ -37,7 +37,9 @@ namespace ObjectGL
         VertexArray vertexArray;
         readonly TexturesAspect textures;
         readonly SamplersAspect samplers;
-        
+
+        Framebuffer framebuffer;
+
         ShaderProgram program;
         readonly UniformBuffersAspect uniformBuffers;
 
@@ -65,13 +67,18 @@ namespace ObjectGL
             set
             {
                 if (value == null) throw new ArgumentNullException("value");
-
                 vertexArray = value;
             }
         }
 
         public TexturesAspect Textures { get { return textures; } }
         public SamplersAspect Samplers { get { return samplers; } }
+
+        public Framebuffer Framebuffer
+        {
+            get { return framebuffer; }
+            set { framebuffer = value; }
+        }
 
         public ShaderProgram Program
         {

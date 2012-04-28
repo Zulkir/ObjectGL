@@ -36,11 +36,11 @@ namespace ObjectGL
         readonly Capabilities capabilities;
         readonly Pipeline pipeline;
 
+        readonly ProgramAspect program;
         readonly BuffersAspect buffers;
         readonly TexturesAspect textures;
-        readonly FramebufferAspect framebuffers;
         readonly SamplersAspect samplers;
-        readonly ProgramAspect program;
+        readonly FramebufferAspect framebuffers;
         readonly RasterizerAspect rasterizer;
         readonly DepthStencilAspect depthStencil;
         readonly BlendAspect blend;
@@ -57,11 +57,11 @@ namespace ObjectGL
             capabilities = new Capabilities();
             pipeline = new Pipeline(this);
 
+            program = new ProgramAspect();
             buffers = new BuffersAspect(capabilities);
             textures = new TexturesAspect(capabilities);
-            framebuffers = new FramebufferAspect();
             samplers = new SamplersAspect(capabilities);
-            program = new ProgramAspect();
+            framebuffers = new FramebufferAspect();
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
             blend = new BlendAspect(capabilities);
@@ -105,10 +105,11 @@ namespace ObjectGL
         internal void ConsumePipeline()
         {
             program.ConsumePipelineProgram(pipeline.Program);
-            buffers.ConsumePipelineVertexArray(pipeline.VertexArray);
             buffers.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
+            buffers.ConsumePipelineVertexArray(pipeline.VertexArray);
             textures.ConsumePipelineTextures(pipeline.Textures);
             samplers.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
+            framebuffers.ConsumePipelineFramebuffer(pipeline.Framebuffer);
             rasterizer.ConsumePipelineRasterizer(pipeline.Rasterizer);
             depthStencil.ConsumePipelineDepthStencil(pipeline.DepthStencil);
             blend.ConsumePipelineBlend(pipeline.Blend);
