@@ -110,7 +110,7 @@ void main()
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Program = program;
 
-            Context.Pipeline.DrawElements(BeginMode.Triangles, 3, DrawElementsType.UnsignedShort, 0);
+            Context.DrawElements(BeginMode.Triangles, 3, DrawElementsType.UnsignedShort, 0);
         }
     }
 }

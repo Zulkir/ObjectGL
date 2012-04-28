@@ -140,5 +140,82 @@ namespace ObjectGL
             framebuffers.BindDrawFramebuffer(0);
             GL.ClearBuffer(clearBuffer, 0, depth, stencil);
         }
+
+        #region Draw
+        public void DrawArrays(BeginMode mode, int first, int count)
+        {
+            ConsumePipeline();
+            GL.DrawArrays(mode, first, count);
+        }
+
+        public void DrawArraysIndirect(BeginMode mode, int offset)
+        {
+            ConsumePipeline();
+            GL.DrawArraysIndirect((ArbDrawIndirect)mode, (IntPtr)offset);
+        }
+
+        public void DrawArraysInstanced(BeginMode mode, int first, int count, int primcount)
+        {
+            ConsumePipeline();
+            GL.DrawArraysInstanced(mode, first, count, primcount);
+        }
+
+        // todo: DrawArraysInstancedBaseInstance
+
+        public void DrawElements(BeginMode mode, int count, DrawElementsType type, int offset)
+        {
+            ConsumePipeline();
+            GL.DrawElements(mode, count, type, offset);
+        }
+
+        public void DrawElementsBaseVertex(BeginMode mode, int count, DrawElementsType type, int offset, int basevertex)
+        {
+            ConsumePipeline();
+            GL.DrawElementsBaseVertex(mode, count, type, (IntPtr)offset, basevertex);
+        }
+
+        public void DrawElementsIndirect(BeginMode mode, DrawElementsType type, int offset)
+        {
+            ConsumePipeline();
+            GL.DrawElementsIndirect((ArbDrawIndirect)mode, (ArbDrawIndirect)type, (IntPtr)offset);
+        }
+
+        public void DrawElementsInstanced(BeginMode mode, int count, DrawElementsType type, int offset, int primcount)
+        {
+            ConsumePipeline();
+            GL.DrawElementsInstanced(mode, count, type, (IntPtr)offset, primcount);
+        }
+
+        // todo: DrawElementsInstancedBaseInstance
+
+        public void DrawElementsInstancedBaseVertex(BeginMode mode, int count, DrawElementsType type, int offset, int primcount, int basevertex)
+        {
+            ConsumePipeline();
+            GL.DrawElementsInstancedBaseVertex(mode, count, type, (IntPtr)offset, primcount, basevertex);
+        }
+
+        // todo: DrawElementsInstancedBaseVertexBaseInstance
+
+        public void DrawRangeElements(BeginMode mode, int start, int end, int count, DrawElementsType type, int offset)
+        {
+            ConsumePipeline();
+            GL.DrawRangeElements(mode, start, end, count, type, (IntPtr)offset);
+        }
+
+        public void DrawRangeElementsBaseVertex(BeginMode mode, int start, int end, int count, DrawElementsType type, int offset, int basevertex)
+        {
+            ConsumePipeline();
+            GL.DrawRangeElementsBaseVertex(mode, start, end, count, type, (IntPtr)offset, basevertex);
+        }
+
+        // todo: DrawTransformFeedback
+
+        // todo: DrawTransformFeedbackInstanced
+
+        // todo: DrawTransformFeedbackStream
+
+        // todo: DrawTransformFeedbackStreamInstanced
+
+        #endregion
     }
 }
