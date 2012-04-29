@@ -234,7 +234,7 @@ void main()
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            float angle = totalSeconds * 0.125f;
+            float angle = totalSeconds * 0.25f;
             Matrix4 world = Matrix4.CreateRotationX(angle) * Matrix4.CreateRotationY(2 * angle) * Matrix4.CreateRotationZ(3 * angle);
             world.Transpose();
 
