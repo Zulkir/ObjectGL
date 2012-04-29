@@ -38,13 +38,13 @@ namespace ObjectGL.Tester
             public Color4 Color;
         }
 
-        const string VertexShaderText = 
+        const string VertexShaderText =
 @"#version 150
 
-attribute vec4 in_position;
-attribute vec4 in_color;
+in vec4 in_position;
+in vec4 in_color;
 
-varying vec4 v_color;
+out vec4 v_color;
 
 void main()
 {
@@ -53,10 +53,10 @@ void main()
 }
 ";
 
-        const string FragmentShaderText = 
+        const string FragmentShaderText =
 @"#version 150
 
-varying vec4 v_color;
+in vec4 v_color;
 
 void main()
 {

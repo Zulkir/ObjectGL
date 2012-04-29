@@ -65,6 +65,7 @@ layout(std140) uniform Camera
     mat4 ViewProjection;
 };
 
+
 in vec3 in_position;
 in vec3 in_normal;
 in vec3 in_tex_coord;
@@ -214,7 +215,7 @@ void main()
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            float angle = totalSeconds * 0.5f;
+            float angle = totalSeconds * 0.25f;
             Matrix4 world = Matrix4.CreateRotationX(angle) * Matrix4.CreateRotationY(2 * angle) * Matrix4.CreateRotationZ(3 * angle);
             world.Transpose();
 
