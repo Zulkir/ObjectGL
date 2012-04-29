@@ -45,7 +45,7 @@ namespace ObjectGL
             handle = handleProxy;
 
             elementArrayBuffer = null;
-            vertexAttributes = new VertexAttributeDescription[currentContext.Capabilities.MaxVertexAttributes];
+            vertexAttributes = new VertexAttributeDescription[currentContext.Implementation.MaxVertexAttributes];
         }
 
         public void SetElementArrayBuffer(Context currentContext, Buffer buffer)

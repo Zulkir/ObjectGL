@@ -38,7 +38,7 @@ namespace ObjectGL
 
             internal TransformFeedbackBufferAspect(Context context)
             {
-                transformFeedbackBuffers = new Buffer[context.Capabilities.MaxTransformFeedbackBuffers];
+                transformFeedbackBuffers = new Buffer[context.Implementation.MaxTransformFeedbackBuffers];
             }
 
             public Buffer this[int binding]

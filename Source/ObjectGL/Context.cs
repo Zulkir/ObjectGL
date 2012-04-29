@@ -33,7 +33,7 @@ namespace ObjectGL
     {
         readonly IGraphicsContext nativeContext;
 
-        readonly Capabilities capabilities;
+        readonly Implementation _implementation;
         readonly Pipeline pipeline;
 
         readonly ProgramAspect program;
@@ -45,7 +45,7 @@ namespace ObjectGL
         readonly DepthStencilAspect depthStencil;
         readonly BlendAspect blend;
 
-        public Capabilities Capabilities { get { return capabilities; } }
+        public Implementation Implementation { get { return _implementation; } }
         public Pipeline Pipeline { get { return pipeline; } }
 
         public Context(IGraphicsContext nativeContext)
@@ -54,17 +54,17 @@ namespace ObjectGL
 
             GL.Enable(EnableCap.TextureCubeMapSeamless);
 
-            capabilities = new Capabilities();
+            _implementation = new Implementation();
             pipeline = new Pipeline(this);
 
             program = new ProgramAspect();
-            buffers = new BuffersAspect(capabilities);
-            textures = new TexturesAspect(capabilities);
-            samplers = new SamplersAspect(capabilities);
+            buffers = new BuffersAspect(_implementation);
+            textures = new TexturesAspect(_implementation);
+            samplers = new SamplersAspect(_implementation);
             framebuffers = new FramebufferAspect();
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
-            blend = new BlendAspect(capabilities);
+            blend = new BlendAspect(_implementation);
         }
 
         internal void UseProgram(int programHandle)

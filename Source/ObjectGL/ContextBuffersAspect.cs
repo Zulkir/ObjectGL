@@ -50,17 +50,17 @@ namespace ObjectGL
             int boundTransformFeedbackBufferRange = 0;
             int boundUniformBufferRange = 0;
 
-            public BuffersAspect(Capabilities capabilities)
+            public BuffersAspect(Implementation implementation)
             {
-                transormFeedbackBufferIndexedBindingsArray = new RedundantInt[capabilities.MaxTransformFeedbackBuffers];
-                for (int i = 0; i < capabilities.MaxTransformFeedbackBuffers; i++)
+                transormFeedbackBufferIndexedBindingsArray = new RedundantInt[implementation.MaxTransformFeedbackBuffers];
+                for (int i = 0; i < implementation.MaxTransformFeedbackBuffers; i++)
                 {
                     int iLoc = i;
                     transormFeedbackBufferIndexedBindingsArray[i] = new RedundantInt(h => GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, h));
                 }
 
-                uniformBufferIndexedBindingsArray = new RedundantInt[capabilities.MaxUniformBufferBindings];
-                for (int i = 0; i < capabilities.MaxUniformBufferBindings; i++)
+                uniformBufferIndexedBindingsArray = new RedundantInt[implementation.MaxUniformBufferBindings];
+                for (int i = 0; i < implementation.MaxUniformBufferBindings; i++)
                 {
                     int iLoc = i;
                     uniformBufferIndexedBindingsArray[i] = new RedundantInt(h => GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, h));

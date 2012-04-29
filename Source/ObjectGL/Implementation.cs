@@ -27,7 +27,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Capabilities
+    public class Implementation
     {
         public int MaxVertexAttributes { get; private set; }
         public int MaxCombinedTextureImageUnits { get; private set; }
@@ -40,7 +40,7 @@ namespace ObjectGL
         public int MaxTransformFeedbackSeparateComponents { get; private set; }
         public int MaxTransformFeedbackSeparateAttribs { get; private set; }
 
-        internal unsafe Capabilities()
+        internal unsafe Implementation()
         {
             int localInt;
 

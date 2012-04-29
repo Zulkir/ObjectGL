@@ -38,7 +38,7 @@ namespace ObjectGL
 
             internal UniformBuffersAspect(Context context)
             {
-                uniformBuffers = new Buffer[context.Capabilities.MaxUniformBufferBindings];
+                uniformBuffers = new Buffer[context.Implementation.MaxUniformBufferBindings];
             }
 
             public Buffer this[int binding]

@@ -48,7 +48,7 @@ namespace ObjectGL
             GL.GenFramebuffers(1, &handleProxy);
             handle = handleProxy;
 
-            colorAttachments = new FramebufferAttachmentDescription[currentContext.Capabilities.MaxColorAttachments];
+            colorAttachments = new FramebufferAttachmentDescription[currentContext.Implementation.MaxColorAttachments];
         }
 
         #region Color

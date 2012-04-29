@@ -38,7 +38,7 @@ namespace ObjectGL
 
             internal TexturesAspect(Context context)
             {
-                textures = new Texture[context.Capabilities.MaxCombinedTextureImageUnits];
+                textures = new Texture[context.Implementation.MaxCombinedTextureImageUnits];
             }
 
             public Texture this[int unit]

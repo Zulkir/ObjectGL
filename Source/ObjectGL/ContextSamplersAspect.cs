@@ -33,7 +33,7 @@ namespace ObjectGL
         {
             readonly RedundantInt[] samplerBindings;
 
-            public SamplersAspect(Capabilities capabilities)
+            public SamplersAspect(Implementation capabilities)
             {
                 samplerBindings = new RedundantInt[capabilities.MaxCombinedTextureImageUnits];
                 for (int i = 0; i < capabilities.MaxCombinedTextureImageUnits; i++)

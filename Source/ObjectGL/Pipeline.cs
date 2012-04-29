@@ -58,7 +58,7 @@ namespace ObjectGL
             transformFeedbackBuffers= new TransformFeedbackBufferAspect(context);
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
-            blend = new BlendAspect(context.Capabilities.MaxDrawBuffers);
+            blend = new BlendAspect(context.Implementation.MaxDrawBuffers);
         }
 
         #region Setters
