@@ -34,6 +34,7 @@ namespace ObjectGL.Tester
     {
         private Context context;
         private Scene scene;
+        private double totalSeconds;
 
         public MyGameWindow() 
             : base(600, 400, new GraphicsMode(new ColorFormat(32), 24, 8, 4), "Object.GL Tester", 
@@ -71,7 +72,9 @@ namespace ObjectGL.Tester
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            scene.OnNewFrame(e);
+            totalSeconds += e.Time;
+
+            scene.OnNewFrame((float)totalSeconds, (float)e.Time);
             SwapBuffers();
 
             Title = string.Format("FPS: {0}", RenderFrequency);

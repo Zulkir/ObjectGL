@@ -40,6 +40,6 @@ namespace ObjectGL.Tester
 
         public abstract void Initialize();
 
-        public abstract void OnNewFrame(FrameEventArgs e);
+        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
     }
 }

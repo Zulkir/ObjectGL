@@ -42,37 +42,28 @@ namespace ObjectGL
             readonly RedundantInt pixelUnpackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelUnpackBuffer, h));
             readonly RedundantInt textureBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.TextureBuffer, h));
             readonly RedundantInt drawIndirectBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.DrawIndirectBuffer, h));
-            readonly RedundantInt[] transormFeedbackBufferIndexedBindings;
-            readonly RedundantInt[] uniformBufferIndexedBindings;
-
-            int actualTransformFeedbackBuffer;
-            int actualUniformBuffer;
+            readonly RedundantInt transformFeedbackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.TransformFeedbackBuffer, h));
+            readonly RedundantInt uniformBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.UniformBuffer, h));
+            readonly RedundantInt[] transormFeedbackBufferIndexedBindingsArray;
+            readonly RedundantInt[] uniformBufferIndexedBindingsArray;
 
             int boundTransformFeedbackBufferRange = 0;
             int boundUniformBufferRange = 0;
 
             public BuffersAspect(Capabilities capabilities)
             {
-                transormFeedbackBufferIndexedBindings = new RedundantInt[capabilities.MaxTransformFeedbackBuffers];
+                transormFeedbackBufferIndexedBindingsArray = new RedundantInt[capabilities.MaxTransformFeedbackBuffers];
                 for (int i = 0; i < capabilities.MaxTransformFeedbackBuffers; i++)
                 {
                     int iLoc = i;
-                    transormFeedbackBufferIndexedBindings[i] = new RedundantInt(h =>
-                    {
-                        GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, h);
-                        actualTransformFeedbackBuffer = h;
-                    });
+                    transormFeedbackBufferIndexedBindingsArray[i] = new RedundantInt(h => GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, h));
                 }
 
-                uniformBufferIndexedBindings = new RedundantInt[capabilities.MaxUniformBufferBindings];
+                uniformBufferIndexedBindingsArray = new RedundantInt[capabilities.MaxUniformBufferBindings];
                 for (int i = 0; i < capabilities.MaxUniformBufferBindings; i++)
                 {
                     int iLoc = i;
-                    uniformBufferIndexedBindings[i] = new RedundantInt(h =>
-                    {
-                        GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, h);
-                        actualUniformBuffer = h;
-                    });
+                    uniformBufferIndexedBindingsArray[i] = new RedundantInt(h => GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, h));
                 }
             }
 
@@ -96,20 +87,8 @@ namespace ObjectGL
                     case BufferTarget.PixelUnpackBuffer: pixelUnpackBufferBinding.Set(bufferHandle); return;
                     case BufferTarget.TextureBuffer: textureBufferBinding.Set(bufferHandle); return;
                     case BufferTarget.DrawIndirectBuffer: drawIndirectBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.TransformFeedbackBuffer:
-                        {
-                            if (actualTransformFeedbackBuffer == bufferHandle) return;
-                            transormFeedbackBufferIndexedBindings[0].Force(bufferHandle);
-                            actualTransformFeedbackBuffer = bufferHandle;
-                            return;
-                        }
-                    case BufferTarget.UniformBuffer:
-                        {
-                            if (actualUniformBuffer == bufferHandle) return;
-                            uniformBufferIndexedBindings[0].Force(bufferHandle);
-                            actualUniformBuffer = bufferHandle;
-                            return;
-                        }
+                    case BufferTarget.TransformFeedbackBuffer: transformFeedbackBufferBinding.Set(bufferHandle); return;
+                    case BufferTarget.UniformBuffer: uniformBufferBinding.Set(bufferHandle); return;
                     default: throw new ArgumentOutOfRangeException("target");
                 }
             }
@@ -123,12 +102,12 @@ namespace ObjectGL
             {
                 for (int i = 0; i < pipelineUniformBuffers.EnabledUniformBufferRange; i++)
                 {
-                    uniformBufferIndexedBindings[i].Set(pipelineUniformBuffers[i].Handle);
+                    uniformBufferIndexedBindingsArray[i].Set(pipelineUniformBuffers[i].Handle);
                 }
 
                 for (int i = pipelineUniformBuffers.EnabledUniformBufferRange; i < boundUniformBufferRange; i++)
                 {
-                    uniformBufferIndexedBindings[i].Set(0);
+                    uniformBufferIndexedBindingsArray[i].Set(0);
                 }
 
                 boundUniformBufferRange = pipelineUniformBuffers.EnabledUniformBufferRange;
@@ -138,12 +117,12 @@ namespace ObjectGL
             {
                 for (int i = 0; i < transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i++)
                 {
-                    transormFeedbackBufferIndexedBindings[i].Set(transformFeedbackBuffers[i].Handle);
+                    transormFeedbackBufferIndexedBindingsArray[i].Set(transformFeedbackBuffers[i].Handle);
                 }
 
                 for (int i = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i < boundTransformFeedbackBufferRange; i++)
                 {
-                    transormFeedbackBufferIndexedBindings[i].Set(0);
+                    transormFeedbackBufferIndexedBindingsArray[i].Set(0);
                 }
 
                 boundTransformFeedbackBufferRange = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange;

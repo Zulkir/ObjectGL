@@ -102,7 +102,7 @@ void main()
             vertexArray.SetVertexAttributeF(Context, 1, vertices, 4, VertexAttribPointerType.Float, false, 32, 16);
         }
 
-        public override void OnNewFrame(FrameEventArgs e)
+        public override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
             Context.ClearWindowColor(Color4.CornflowerBlue);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);

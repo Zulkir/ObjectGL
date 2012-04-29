@@ -44,9 +44,9 @@ namespace ObjectGL.Tester
                 Position.X = px;
                 Position.Y = py;
                 Position.Z = pz;
-                Normal.X = px;
-                Normal.Y = py;
-                Normal.Z = pz;
+                Normal.X = nx;
+                Normal.Y = ny;
+                Normal.Z = nz;
                 TexCoord.X = tx;
                 TexCoord.Y = ty;
             }
@@ -65,23 +65,22 @@ layout(std140) uniform Camera
     mat4 ViewProjection;
 };
 
-attribute vec3 in_position;
-attribute vec3 in_normal;
-attribute vec3 in_tex_coord;
+in vec3 in_position;
+in vec3 in_normal;
+in vec3 in_tex_coord;
 
-varying vec3 v_world_position;
-varying vec3 v_world_normal;
-varying vec2 v_tex_coord;
+out vec3 v_world_position;
+out vec3 v_world_normal;
+out vec2 v_tex_coord;
 
 void main()
 {
-    vec4 worldPosition = vec4(in_position * 1.0f, 1.0f);
-    
-    //gl_Position = worldPosition * ViewProjection;
-    gl_Position = worldPosition;
+    vec4 worldPosition = vec4(in_position, 1.0f) * World;
 
-    v_world_position = worldPosition.xyz;
-    v_world_normal = (World * vec4(in_normal, 0.0f)).xyz;
+    gl_Position = worldPosition * ViewProjection;
+
+    v_world_position = worldPosition;
+    v_world_normal = (vec4(in_normal, 0.0f) * World).xyz;;
     v_tex_coord = in_tex_coord;
 }
 ";
@@ -96,17 +95,20 @@ layout(std140) uniform Light
 
 uniform sampler2D DiffuseMap;
 
-varying vec3 v_world_position;
-varying vec3 v_world_normal;
-varying vec2 v_tex_coord;
+in vec3 v_world_position;
+in vec3 v_world_normal;
+in vec2 v_tex_coord;
+
+out vec4 out_color;
 
 void main()
 {
     vec3 toLight = normalize(LightPosition - v_world_position);
-    float diffuseFactor = clamp(dot(toLight, normalize(v_world_normal)) + 0.1f, 0.0f, 1.0f);
-    //gl_FragColor = vec4(texture(DiffuseMap, v_tex_coord).xyz * diffuseFactor, 1.0f);
-    //gl_FragColor = vec4(v_world_normal * v_world_normal, 1.0f);
-    gl_FragColor = texture(DiffuseMap, v_tex_coord);
+    float diffuseFactor = clamp(dot(toLight, normalize(v_world_normal)), 0.0f, 1.0f);
+    out_color = vec4(texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0.0f, 1.0f), 1.0f);
+    //out_color = vec4(v_world_normal, 1.0f);
+    //out_color = vec4(toLight, 1.0f);
+    //out_color = texture(DiffuseMap, v_tex_coord);
 }
 ";
 
@@ -174,16 +176,14 @@ void main()
             }));
 
             Matrix4 world = Matrix4.Identity; 
-            transform = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.StreamDraw, (IntPtr)(&world));
-            camera = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.StreamDraw);
-            light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.StreamDraw);
+            transform = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw, (IntPtr)(&world));
+            camera = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
 
-            using (var textureLoader = new TextureLoader("../Textures/Chess256.bmp"))
+            using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
             {
-                // ReSharper disable AccessToDisposedClosure
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, PixelInternalFormat.Rgba8,
                                            PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
-                // ReSharper restore AccessToDisposedClosure
             }
 
             diffuseSampler = new Sampler();
@@ -199,7 +199,7 @@ void main()
                 !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
                 !ShaderProgram.TryLink(Context, vsh, fsh, null, 
                 new[] { "in_position", "in_normal", "in_tex_coord" },
-                new[] { "Transform", /*"Camera"*/null, /*"Light"*/null }, 
+                new[] { "Transform", "Camera", "Light" }, 
                 null, 
                 new[] { "DiffuseMap" },  
                 0, out program, out shaderErrors))
@@ -212,32 +212,36 @@ void main()
             vertexArray.SetVertexAttributeF(Context, 2, vertices, 2, VertexAttribPointerType.Float, false, 32, 24);
         }
 
-        public unsafe override void OnNewFrame(FrameEventArgs e)
+        public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            float angle = (float)e.Time * 0.25f;
-            Matrix4 world = Matrix4.Identity; //Matrix4.CreateRotationZ(3 * angle) * Matrix4.CreateRotationY(2 * angle) * Matrix4.CreateRotationX(angle);
-            //world.Transpose();
+            float angle = totalSeconds * 0.5f;
+            Matrix4 world = Matrix4.CreateRotationX(angle) * Matrix4.CreateRotationY(2 * angle) * Matrix4.CreateRotationZ(3 * angle);
+            world.Transpose();
 
-            Matrix4 viewProjection =
-                Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4f, (float)GameWindow.Width / GameWindow.Height, 0.1f, 1000f) *
-                Matrix4.LookAt(new Vector3(5, 3, 0), Vector3.Zero, Vector3.UnitZ);
+            Matrix4 view = Matrix4.LookAt(new Vector3(5, 3, 0), Vector3.Zero, Vector3.UnitZ);
+            Matrix4 proj = Matrix4.CreatePerspectiveFieldOfView((float) Math.PI/4f, (float) GameWindow.Width/GameWindow.Height, 0.1f, 1000f);
+            Matrix4 viewProjection = view * proj;
+            viewProjection.Transpose();
 
             Vector3 lightPosition = new Vector3(10, -7, 2);
 
             transform.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&world));
-            //camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
-            //light.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
+            camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            light.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
 
-            Context.ClearWindowColor(Color4.CornflowerBlue);
+            Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
             Context.Pipeline.Program = program;
             Context.Pipeline.UniformBuffers[0] = transform;
-            //Context.Pipeline.UniformBuffers[1] = camera;
-            //Context.Pipeline.UniformBuffers[2] = light;
+            Context.Pipeline.UniformBuffers[1] = camera;
+            Context.Pipeline.UniformBuffers[2] = light;
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Textures[0] = diffuseMap;
             Context.Pipeline.Samplers[0] = diffuseSampler;
+
+            Context.Pipeline.DepthStencil.DepthTestEnable = true;
+            Context.Pipeline.DepthStencil.DepthMask = true;
 
             Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
         }
