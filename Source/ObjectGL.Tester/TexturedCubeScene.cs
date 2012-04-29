@@ -24,7 +24,6 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -89,12 +88,18 @@ void main()
         const string FragmentShaderText =
 @"#version 150
 
+layout(std140) uniform CameraExtra
+{
+    vec3 CameraPosition;
+};
+
 layout(std140) uniform Light
 {
     vec3 LightPosition;
 };
 
 uniform sampler2D DiffuseMap;
+uniform sampler2D SpecularMap;
 
 in vec3 v_world_position;
 in vec3 v_world_normal;
@@ -104,12 +109,17 @@ out vec4 out_color;
 
 void main()
 {
+    vec3 toEye = normalize(CameraPosition - v_world_position);
     vec3 toLight = normalize(LightPosition - v_world_position);
-    float diffuseFactor = clamp(dot(toLight, normalize(v_world_normal)), 0.0f, 1.0f);
-    out_color = vec4(texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0.0f, 1.0f), 1.0f);
-    //out_color = vec4(v_world_normal, 1.0f);
-    //out_color = vec4(toLight, 1.0f);
-    //out_color = texture(DiffuseMap, v_tex_coord);
+    vec3 normal = normalize(v_world_normal);
+
+    float diffuseFactor = clamp(dot(toLight, normal), 0.0f, 1.0f);
+    float specularFactor = pow(clamp(dot(toEye, reflect(-toLight, normal)), 0.0f, 1.0f), 24.0f);
+
+    out_color = vec4(
+                texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0.0f, 1.0f) + 
+                texture(SpecularMap, v_tex_coord).xyz * specularFactor, 
+                1.0f);
 }
 ";
 
@@ -118,10 +128,12 @@ void main()
 
         Buffer transform;
         Buffer camera;
+        Buffer cameraExtra;
         Buffer light;
 
         Texture2D diffuseMap;
-        Sampler diffuseSampler;
+        Texture2D specularMap;
+        Sampler sampler;
 
         ShaderProgram program;
 
@@ -131,7 +143,7 @@ void main()
         {
         }
 
-        public unsafe override void Initialize()
+        public override void Initialize()
         {
             vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
@@ -163,7 +175,7 @@ void main()
                 new Vertex(-1f, 1f, -1f, -1f, 0.0f, 0.0f, 0f, 0f),
                 new Vertex(-1f, 1f, 1f, -1f, 0.0f, 0.0f, 1f, 0f),
                 new Vertex(-1f, -1f, 1f, -1f, 0.0f, 0.0f, 1f, 1f),
-                new Vertex(-1f, -1f, -1f, -1f, 0.0f, 0.0f, 0f, 1f),
+                new Vertex(-1f, -1f, -1f, -1f, 0.0f, 0.0f, 0f, 1f)
             }));
 
             indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
@@ -173,12 +185,12 @@ void main()
                 8, 9, 10, 8, 10, 11,
                 12, 13, 14, 12, 14, 15,
                 16, 17, 18, 16, 18, 19,
-                20, 21, 22, 20, 22, 23,
+                20, 21, 22, 20, 22, 23
             }));
 
-            Matrix4 world = Matrix4.Identity; 
-            transform = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw, (IntPtr)(&world));
+            transform = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
             camera = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            cameraExtra = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
             light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
@@ -187,9 +199,16 @@ void main()
                                            PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
             }
 
-            diffuseSampler = new Sampler();
-            diffuseSampler.SetMagFilter(TextureMagFilter.Nearest);
-            diffuseSampler.SetMinFilter(TextureMinFilter.NearestMipmapNearest);
+            using (var textureLoader = new TextureLoader("../Textures/SpecularTest.bmp"))
+            {
+                specularMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, PixelInternalFormat.Rgba8,
+                                           PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
+            }
+
+            sampler = new Sampler();
+            sampler.SetMagFilter(TextureMagFilter.Linear);
+            sampler.SetMinFilter(TextureMinFilter.LinearMipmapLinear);
+            sampler.SetMaxAnisotropy(16f);
 
             string shaderErrors;
 
@@ -200,9 +219,9 @@ void main()
                 !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
                 !ShaderProgram.TryLink(Context, vsh, fsh, null, 
                 new[] { "in_position", "in_normal", "in_tex_coord" },
-                new[] { "Transform", "Camera", "Light" }, 
+                new[] { "Transform", "Camera", "CameraExtra", "Light" }, 
                 null, 
-                new[] { "DiffuseMap" },  
+                new[] { "DiffuseMap", "SpecularMap" },  
                 0, out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
 
@@ -215,11 +234,13 @@ void main()
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            float angle = totalSeconds * 0.25f;
+            float angle = totalSeconds * 0.125f;
             Matrix4 world = Matrix4.CreateRotationX(angle) * Matrix4.CreateRotationY(2 * angle) * Matrix4.CreateRotationZ(3 * angle);
             world.Transpose();
 
-            Matrix4 view = Matrix4.LookAt(new Vector3(5, 3, 0), Vector3.Zero, Vector3.UnitZ);
+            Vector3 cameraPosition = new Vector3(5, 3, 0);
+
+            Matrix4 view = Matrix4.LookAt(cameraPosition, Vector3.Zero, Vector3.UnitZ);
             Matrix4 proj = Matrix4.CreatePerspectiveFieldOfView((float) Math.PI/4f, (float) GameWindow.Width/GameWindow.Height, 0.1f, 1000f);
             Matrix4 viewProjection = view * proj;
             viewProjection.Transpose();
@@ -228,6 +249,7 @@ void main()
 
             transform.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&world));
             camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraExtra.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
             light.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
 
             Context.ClearWindowColor(Color4.Black);
@@ -236,10 +258,13 @@ void main()
             Context.Pipeline.Program = program;
             Context.Pipeline.UniformBuffers[0] = transform;
             Context.Pipeline.UniformBuffers[1] = camera;
-            Context.Pipeline.UniformBuffers[2] = light;
+            Context.Pipeline.UniformBuffers[2] = cameraExtra;
+            Context.Pipeline.UniformBuffers[3] = light;
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Textures[0] = diffuseMap;
-            Context.Pipeline.Samplers[0] = diffuseSampler;
+            Context.Pipeline.Samplers[0] = sampler;
+            Context.Pipeline.Textures[1] = specularMap;
+            Context.Pipeline.Samplers[1] = sampler;
 
             Context.Pipeline.DepthStencil.DepthTestEnable = true;
             Context.Pipeline.DepthStencil.DepthMask = true;

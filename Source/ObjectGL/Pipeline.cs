@@ -24,7 +24,6 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
