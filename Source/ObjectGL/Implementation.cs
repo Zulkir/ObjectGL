@@ -29,6 +29,11 @@ namespace ObjectGL
 {
     public class Implementation
     {
+        public string Vendor { get; private set; }
+        public string Renderer { get; private set; }
+        public string Version { get; private set; }
+        public string ShadingLanguageVersion { get; private set; }
+
         public int MaxVertexAttributes { get; private set; }
         public int MaxCombinedTextureImageUnits { get; private set; }
         public int MaxUniformBufferBindings { get; private set; }
@@ -43,6 +48,11 @@ namespace ObjectGL
         internal unsafe Implementation()
         {
             int localInt;
+
+            Vendor = GL.GetString(StringName.Vendor);
+            Renderer = GL.GetString(StringName.Renderer);
+            Version = GL.GetString(StringName.Version);
+            ShadingLanguageVersion = GL.GetString(StringName.ShadingLanguageVersion);
 
             GL.GetInteger(GetPName.MaxVertexAttribs, &localInt);
             MaxVertexAttributes = localInt;

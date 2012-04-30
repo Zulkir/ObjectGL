@@ -38,10 +38,10 @@ namespace ObjectGL
 
             int enabledTextureUnitRange = 0;
 
-            public TexturesAspect(Implementation capabilities)
+            public TexturesAspect(Implementation implementation)
             {
-                actualTextures = new int[capabilities.MaxCombinedTextureImageUnits];
-                textureUnitForEditing = capabilities.MaxCombinedTextureImageUnits - 1;
+                actualTextures = new int[implementation.MaxCombinedTextureImageUnits];
+                textureUnitForEditing = implementation.MaxCombinedTextureImageUnits - 1;
             }
 
             public void BindTexture(TextureTarget target, int textureHandle)

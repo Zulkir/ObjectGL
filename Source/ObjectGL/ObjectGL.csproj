@@ -59,7 +59,7 @@
     <Compile Include="Data.cs" />
     <Compile Include="DepthStencil.cs" />
     <Compile Include="FragmentShader.cs" />
-    <Compile Include="FrameBuffer.cs" />
+    <Compile Include="Framebuffer.cs" />
     <Compile Include="FramebufferAttachmentPoint.cs" />
     <Compile Include="FramebufferAttachmentDescription.cs" />
     <Compile Include="FramebufferAttachmentType.cs" />
@@ -76,7 +76,7 @@
     <Compile Include="RedundantEnable.cs" />
     <Compile Include="RedundantInt.cs" />
     <Compile Include="Buffer.cs" />
-    <Compile Include="Capabilities.cs" />
+    <Compile Include="Implementation.cs" />
     <Compile Include="ComplexBinding.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Delegates.cs" />

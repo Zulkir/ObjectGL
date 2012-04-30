@@ -58,7 +58,7 @@ namespace ObjectGL
         }
 
         public void SetVertexAttributeF(Context currentContext, int index, Buffer buffer,
-            byte dimension, VertexAttribPointerType type, bool normalized, int stride, int offset)
+            byte dimension, VertexAttribPointerType type, bool normalized, int stride, int offset, int divisor = 0)
         {
             var newDesc = new VertexAttributeDescription
             {
@@ -69,6 +69,7 @@ namespace ObjectGL
                 IsNormalized = normalized,
                 Stride = stride,
                 Offset = offset,
+                Divisor = divisor,
                 Buffer = buffer
             };
 
@@ -82,6 +83,9 @@ namespace ObjectGL
             currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
             GL.VertexAttribPointer(index, dimension, type, normalized, stride, offset);
 
+            if (vertexAttributes[index].Divisor != divisor)
+                GL.VertexAttribDivisor(index, divisor);
+
             vertexAttributes[index] = newDesc;
 
             if (index >= enabledVertexAttributesRange)
@@ -89,7 +93,7 @@ namespace ObjectGL
         }
 
         public void SetVertexAttributeI(Context currentContext, int index, Buffer buffer,
-            byte dimension, VertexAttribIPointerType type, int stride, int offset)
+            byte dimension, VertexAttribIPointerType type, int stride, int offset, int divisor = 0)
         {
             var newDesc = new VertexAttributeDescription
             {
@@ -99,6 +103,7 @@ namespace ObjectGL
                 Type = (int)type,
                 Stride = stride,
                 Offset = offset,
+                Divisor = divisor,
                 Buffer = buffer
             };
 
@@ -111,6 +116,9 @@ namespace ObjectGL
 
             currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
             GL.VertexAttribIPointer(index, dimension, type, stride, (IntPtr)offset);
+
+            if (vertexAttributes[index].Divisor != divisor)
+                GL.VertexAttribDivisor(index, divisor);
 
             vertexAttributes[index] = newDesc;
 

@@ -51,7 +51,7 @@ namespace ObjectGL
             colorAttachments = new FramebufferAttachmentDescription[currentContext.Implementation.MaxColorAttachments];
         }
 
-        #region Color
+        #region Attach
         void Attach(Context currentContext, FramebufferAttachmentPoint attachmentPoint, ref FramebufferAttachmentDescription newDesc, GLFramebufferSomething glFramebufferSomething)
         {
             #region Check redundancy
@@ -394,6 +394,8 @@ namespace ObjectGL
             }
         }
         #endregion
+
+
 
         public unsafe void Dispose()
         {

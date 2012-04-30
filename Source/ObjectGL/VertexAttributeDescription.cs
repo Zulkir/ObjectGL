@@ -34,6 +34,7 @@ namespace ObjectGL
         public int Type;
         public int Stride;
         public int Offset;
+        public int Divisor;
         public Buffer Buffer;
 
         public static bool Equals(ref VertexAttributeDescription d1, ref VertexAttributeDescription d2)
@@ -48,6 +49,7 @@ namespace ObjectGL
                 d1.Type == d2.Type &&
                 d1.Offset == d2.Offset &&
                 d1.Stride == d2.Stride &&
+                d1.Divisor == d2.Divisor &&
                 d1.Buffer == d2.Buffer;
         }
     }
