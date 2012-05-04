@@ -67,7 +67,7 @@ layout(std140) uniform Camera
 
 in vec3 in_position;
 in vec3 in_normal;
-in vec3 in_tex_coord;
+in vec2 in_tex_coord;
 
 out vec3 v_world_position;
 out vec3 v_world_normal;
@@ -79,7 +79,7 @@ void main()
 
     gl_Position = worldPosition * ViewProjection;
 
-    v_world_position = worldPosition;
+    v_world_position = worldPosition.xyz;
     v_world_normal = (vec4(in_normal, 0.0f) * World).xyz;;
     v_tex_coord = in_tex_coord;
 }
