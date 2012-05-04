@@ -24,6 +24,7 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
+using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
@@ -395,7 +396,27 @@ namespace ObjectGL
         }
         #endregion
 
+        public unsafe void ClearColor(Context currentContext, int index, Color4 color)
+        {
+            currentContext.BindDrawFramebuffer(handle);
+            GL.ClearBuffer(ClearBuffer.Color, index, (float*)&color);
+        }
 
+        public void ClearDepthStencil(Context currentContext, DepthStencil target, float depth, int stencil)
+        {
+            currentContext.BindDrawFramebuffer(handle);
+
+            ClearBuffer clearBuffer;
+            switch (target)
+            {
+                case DepthStencil.Both: clearBuffer = ClearBuffer.DepthStencil; break;
+                case DepthStencil.Depth: clearBuffer = ClearBuffer.Depth; break;
+                case DepthStencil.Stencil: clearBuffer = ClearBuffer.Stencil; break;
+                default: throw new ArgumentException("'target' must be either 'Both', 'Depth', or 'Stencil'");
+            }
+
+            GL.ClearBuffer(clearBuffer, 0, depth, stencil);
+        }
 
         public unsafe void Dispose()
         {
