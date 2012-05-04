@@ -127,7 +127,8 @@ void main()
         Buffer indices;
 
         Buffer transform;
-        Buffer camera;
+        Buffer cameraInside;
+        Buffer cameraOutside;
         Buffer cameraExtra;
         Buffer light;
 
@@ -194,7 +195,8 @@ void main()
             }));
 
             transform = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
-            camera = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            cameraInside = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            cameraOutside = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
             cameraExtra = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
             light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
 
@@ -233,7 +235,7 @@ void main()
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            float angle = totalSeconds * 0.25f;
+            float angle = totalSeconds * 0.125f;
             Matrix4 world = Matrix4.CreateRotationX(angle) * Matrix4.CreateRotationY(2 * angle) * Matrix4.CreateRotationZ(3 * angle);
             world.Transpose();
 
@@ -247,7 +249,7 @@ void main()
             Vector3 lightPosition = new Vector3(10, -7, 2);
 
             transform.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&world));
-            camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraInside.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
             cameraExtra.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
             light.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
 
@@ -257,37 +259,40 @@ void main()
             Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
+            Context.SetViewport(0, 0, RenderTargetSize, RenderTargetSize);
+
+            Context.Pipeline.Framebuffer = framebuffer;
+
             Context.Pipeline.Program = program;
             Context.Pipeline.UniformBuffers[0] = transform;
-            Context.Pipeline.UniformBuffers[1] = camera;
+            Context.Pipeline.UniformBuffers[1] = cameraInside;
             Context.Pipeline.UniformBuffers[2] = light;
             Context.Pipeline.VertexArray = vertexArray;
+            Context.Pipeline.Textures[0] = diffuseMap;
+            Context.Pipeline.Samplers[0] = sampler;
 
             Context.Pipeline.DepthStencil.DepthTestEnable = true;
             Context.Pipeline.DepthStencil.DepthMask = true;
 
-            // Inside cube specific
-
-            Context.Pipeline.Framebuffer = framebuffer;
-            Context.SetViewport(0, 0, RenderTargetSize, RenderTargetSize);
-            Context.Pipeline.Textures[0] = diffuseMap;
-            Context.Pipeline.Samplers[0] = sampler;
+            // Inside cube
 
             Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
-
             renderTarget.GenerateMipmap(Context);
 
-            // Outside cube specific
+            // Outside cube
 
-            Context.Pipeline.Framebuffer = null;
-            Context.SetViewport(0, 0, GameWindow.Width, GameWindow.Height);
-            Context.Pipeline.Textures[0] = renderTarget;
-            Context.Pipeline.Samplers[0] = sampler;
+            Context.SetViewport(0, 0, GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 
-            proj = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4f, (float)GameWindow.Width / GameWindow.Height, 0.1f, 1000f);
+            proj = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4f, (float)GameWindow.ClientSize.Width / GameWindow.ClientSize.Height, 0.1f, 1000f);
             viewProjection = view * proj;
             viewProjection.Transpose();
-            camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+
+            cameraOutside.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+
+            Context.Pipeline.Framebuffer = null;
+            Context.Pipeline.UniformBuffers[1] = cameraOutside;
+            Context.Pipeline.Textures[0] = renderTarget;
+            Context.Pipeline.Samplers[0] = sampler;
 
             Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
         }
