@@ -48,6 +48,16 @@ namespace ObjectGL
             return currentValue;
         }
 
+        public bool HasValueSet()
+        {
+            return !invalid;
+        }
+
+        public bool HasValueSet(int value)
+        {
+            return !invalid && currentValue == value;
+        }
+
         public void Set(int value)
         {
             if (!invalid && value == currentValue) return;

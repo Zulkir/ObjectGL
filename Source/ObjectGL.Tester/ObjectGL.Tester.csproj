@@ -59,6 +59,7 @@
     <Compile Include="MyGameWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RenderToTextureScene.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="TexturedCubeScene.cs" />
     <Compile Include="TextureLoader.cs" />

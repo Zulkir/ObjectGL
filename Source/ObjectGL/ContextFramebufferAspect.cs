@@ -47,8 +47,8 @@ namespace ObjectGL
 
             public FramebufferTarget BindAnyFramebuffer(int framebufferHandle)
             {
-                if (drawFramebufferBinding.Get() == framebufferHandle) return FramebufferTarget.DrawFramebuffer;
-                if (readFramebufferBinding.Get() == framebufferHandle) return FramebufferTarget.ReadFramebuffer;
+                if (drawFramebufferBinding.HasValueSet(framebufferHandle)) return FramebufferTarget.DrawFramebuffer;
+                if (readFramebufferBinding.HasValueSet(framebufferHandle)) return FramebufferTarget.ReadFramebuffer;
                 readFramebufferBinding.Set(framebufferHandle);
                 return FramebufferTarget.ReadFramebuffer;
             }
