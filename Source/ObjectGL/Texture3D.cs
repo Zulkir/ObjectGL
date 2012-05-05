@@ -1,4 +1,5 @@
 ﻿#region License
+
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -21,6 +22,7 @@ freely, subject to the following restrictions:
    3. This notice may not be removed or altered from any source
    distribution.
 */
+
 #endregion
 
 using System;
@@ -39,10 +41,10 @@ namespace ObjectGL
         public int Depth { get { return depth; } }
 
         Texture3D(Context currentContext,
-                  int width, int height, int depth,
+                  int width, int height, int depth, int mipCount,
                   PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture3D, internalFormat, 1, CalculateMipCount(width, height, depth))
+            : base(TextureTarget.Texture3D, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height, depth) : mipCount)
         {
             this.width = width;
             this.height = height;
@@ -67,19 +69,27 @@ namespace ObjectGL
         }
 
         public Texture3D(Context currentContext,
-                         int width, int height, int depth,
+                         int width, int height, int depth, int mipCount,
+                         PixelInternalFormat internalFormat)
+            : this(currentContext, width, height, depth, mipCount, internalFormat, i => new Data(IntPtr.Zero), 
+                   (tt, l, f, w, h, d, p) => GL.TexImage3D(tt, l, f, w, h, d, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+        {
+        }
+
+        public Texture3D(Context currentContext,
+                         int width, int height, int depth, int mipCount,
                          PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
                          Func<int, Data> getInitialDataForMip)
-            : this(currentContext, width, height, depth, internalFormat, getInitialDataForMip,
+            : this(currentContext, width, height, depth, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, h, d, p) => GL.TexImage3D(tt, l, f, w, h, d, 0, format, type, p))
         {
         }
 
         public Texture3D(Context currentContext,
-                         int width, int height, int depth,
+                         int width, int height, int depth, int mipCount,
                          PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
                          Func<int, Data> getCompressedInitialDataForMip)
-            : this(currentContext, width, height, depth, internalFormat, getCompressedInitialDataForMip,
+            : this(currentContext, width, height, depth, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, d, p) =>
                    GL.CompressedTexImage3D(tt, l, f, w, h, d, 0, getComressedImageSizeForMip(l), p))
         {

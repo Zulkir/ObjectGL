@@ -37,10 +37,10 @@ namespace ObjectGL
         public int Height { get { return height; } }
 
         TextureCubemap(Context currentContext,
-                  int width, int height,
+                  int width, int height, int mipCount,
                   PixelInternalFormat internalFormat, Func<CubemapFace, int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.TextureCubeMap, internalFormat, 1, CalculateMipCount(width, height))
+            : base(TextureTarget.TextureCubeMap, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
         {
             this.width = width;
             this.height = height;
@@ -65,19 +65,27 @@ namespace ObjectGL
         }
 
         public TextureCubemap(Context currentContext,
-                         int width, int height,
+                         int width, int height, int mipCount,
+                         PixelInternalFormat internalFormat)
+            : this(currentContext, width, height, mipCount, internalFormat, (f, i) => new Data(IntPtr.Zero),
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+        {
+        }
+
+        public TextureCubemap(Context currentContext,
+                         int width, int height, int mipCount,
                          PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
                          Func<CubemapFace, int, Data> getInitialDataForMip)
-            : this(currentContext, width, height, internalFormat, getInitialDataForMip,
+            : this(currentContext, width, height, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, format, type, p))
         {
         }
 
         public TextureCubemap(Context currentContext,
-                         int width, int height,
+                         int width, int height, int mipCount,
                          PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
                          Func<CubemapFace, int, Data> getCompressedInitialDataForMip)
-            : this(currentContext, width, height, internalFormat, getCompressedInitialDataForMip,
+            : this(currentContext, width, height, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, p) => GL.CompressedTexImage2D(tt, l, f, w, h, 0, getComressedImageSizeForMip(l), p))
         {
         }

@@ -1,4 +1,5 @@
 ﻿#region License
+
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -21,6 +22,7 @@ freely, subject to the following restrictions:
    3. This notice may not be removed or altered from any source
    distribution.
 */
+
 #endregion
 
 using System;
@@ -35,10 +37,10 @@ namespace ObjectGL
         public int Width { get { return width; } }
 
         Texture1DArray(Context currentContext,
-                         int width, int sliceCount,
-                         PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
-                         Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture1DArray, internalFormat, sliceCount, CalculateMipCount(width))
+                       int width, int sliceCount, int mipCount,
+                       PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
+                       Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
+            : base(TextureTarget.Texture1DArray, internalFormat, sliceCount, mipCount == 0 ? CalculateMipCount(width) : mipCount)
         {
             this.width = width;
 
@@ -57,19 +59,27 @@ namespace ObjectGL
         }
 
         public Texture1DArray(Context currentContext,
-                         int width, int sliceCount,
-                         PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
-                         Func<int, Data> getInitialDataForMip)
-            : this(currentContext, width, sliceCount, internalFormat, getInitialDataForMip,
+                              int width, int sliceCount, int mipCount,
+                              PixelInternalFormat internalFormat)
+            : this(currentContext, width, sliceCount, mipCount, internalFormat, i => new Data(IntPtr.Zero), 
+                   (tt, l, f, w, s, p) => GL.TexImage2D(tt, l, f, w, s, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+        {
+        }
+
+        public Texture1DArray(Context currentContext,
+                              int width, int sliceCount, int mipCount,
+                              PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
+                              Func<int, Data> getInitialDataForMip)
+            : this(currentContext, width, sliceCount, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, s, p) => GL.TexImage2D(tt, l, f, w, s, 0, format, type, p))
         {
         }
 
         public Texture1DArray(Context currentContext,
-                         int width, int sliceCount,
-                         PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
-                         Func<int, Data> getCompressedInitialDataForMip)
-            : this(currentContext, width, sliceCount, internalFormat, getCompressedInitialDataForMip,
+                              int width, int sliceCount, int mipCount,
+                              PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
+                              Func<int, Data> getCompressedInitialDataForMip)
+            : this(currentContext, width, sliceCount, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, s, p) => GL.CompressedTexImage2D(tt, l, f, w, s, 0, getComressedImageSizeForMip(l), p))
         {
         }

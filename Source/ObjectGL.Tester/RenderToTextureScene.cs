@@ -146,8 +146,8 @@ void main()
         public override void Initialize()
         {
             framebuffer = new Framebuffer(Context);
-            renderTarget = new Texture2D(Context, RenderTargetSize, RenderTargetSize, PixelInternalFormat.Rgba8, PixelFormat.Rgba, PixelType.UnsignedByte, i => IntPtr.Zero);
-            depthStencil = new Texture2D(Context, RenderTargetSize, RenderTargetSize, PixelInternalFormat.Depth24Stencil8, PixelFormat.Rgba, PixelType.UnsignedByte, i => IntPtr.Zero);
+            renderTarget = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 0, PixelInternalFormat.Rgba8);
+            depthStencil = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 1, PixelInternalFormat.Depth24Stencil8);
             framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Color0, renderTarget, 0);
             framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.DepthStencil, depthStencil, 0);
 
@@ -202,7 +202,7 @@ void main()
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
             {
-                diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, PixelInternalFormat.Rgba8,
+                diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, PixelInternalFormat.Rgba8,
                                            PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
             }
 

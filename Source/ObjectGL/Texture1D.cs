@@ -37,10 +37,10 @@ namespace ObjectGL
         public int Width { get { return width; } }
 
         Texture1D(Context currentContext,
-                         int width,
-                         PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
-                         Action<TextureTarget, int, PixelInternalFormat, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture1D, internalFormat, 1, CalculateMipCount(width))
+                  int width, int mipCount,
+                  PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
+                  Action<TextureTarget, int, PixelInternalFormat, int, IntPtr> glTexImage)
+            : base(TextureTarget.Texture1D, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width) : mipCount)
         {
             this.width = width;
 
@@ -59,19 +59,27 @@ namespace ObjectGL
         }
 
         public Texture1D(Context currentContext,
-                         int width,
+                         int width, int mipCount,
+                         PixelInternalFormat internalFormat)
+            : this(currentContext, width, mipCount, internalFormat, i => new Data(IntPtr.Zero),
+                   (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+        {
+        }
+
+        public Texture1D(Context currentContext,
+                         int width, int mipCount,
                          PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
                          Func<int, Data> getInitialDataForMip)
-            : this(currentContext, width, internalFormat, getInitialDataForMip,
+            : this(currentContext, width, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0, format, type, p))
         {
         }
 
         public Texture1D(Context currentContext,
-                         int width,
+                         int width, int mipCount,
                          PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
                          Func<int, Data> getCompressedInitialDataForMip)
-            : this(currentContext, width, internalFormat, getCompressedInitialDataForMip,
+            : this(currentContext, width, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, p) => GL.CompressedTexImage1D(tt, l, f, w, 0, getComressedImageSizeForMip(l), p))
         {
         }

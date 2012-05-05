@@ -57,6 +57,14 @@ namespace ObjectGL
 
         public TextureRectangle(Context currentContext,
                          int width, int height,
+                         PixelInternalFormat internalFormat)
+            : this(currentContext, width, height, internalFormat, new Data(IntPtr.Zero), 
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+        {
+        }
+
+        public TextureRectangle(Context currentContext,
+                         int width, int height,
                          PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
                          Data initialData)
             : this(currentContext, width, height, internalFormat, initialData,

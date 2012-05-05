@@ -1,4 +1,5 @@
 ﻿#region License
+
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -21,6 +22,7 @@ freely, subject to the following restrictions:
    3. This notice may not be removed or altered from any source
    distribution.
 */
+
 #endregion
 
 using System;
@@ -37,10 +39,10 @@ namespace ObjectGL
         public int Height { get { return height; } }
 
         Texture2D(Context currentContext,
-                  int width, int height,
+                  int width, int height, int mipCount,
                   PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture2D, internalFormat, 1, CalculateMipCount(width, height))
+            : base(TextureTarget.Texture2D, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
         {
             this.width = width;
             this.height = height;
@@ -62,19 +64,27 @@ namespace ObjectGL
         }
 
         public Texture2D(Context currentContext,
-                         int width, int height,
+                         int width, int height, int mipCount,
+                         PixelInternalFormat internalFormat)
+            : this(currentContext, width, height, mipCount, internalFormat, i => new Data(IntPtr.Zero),
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+        {
+        }
+
+        public Texture2D(Context currentContext,
+                         int width, int height, int mipCount,
                          PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
                          Func<int, Data> getInitialDataForMip)
-            : this(currentContext, width, height, internalFormat, getInitialDataForMip,
+            : this(currentContext, width, height, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, format, type, p))
         {
         }
 
         public Texture2D(Context currentContext,
-                         int width, int height,
+                         int width, int height, int mipCount,
                          PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
                          Func<int, Data> getCompressedInitialDataForMip)
-            : this(currentContext, width, height, internalFormat, getCompressedInitialDataForMip,
+            : this(currentContext, width, height, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, p) => GL.CompressedTexImage2D(tt, l, f, w, h, 0, getComressedImageSizeForMip(l), p))
         {
         }

@@ -37,10 +37,10 @@ namespace ObjectGL
         public int Height { get { return height; } }
 
         TextureCubemapArray(Context currentContext,
-                  int width, int height, int sliceCount,
+                  int width, int height, int sliceCount, int mipCount,
                   PixelInternalFormat internalFormat, Func<CubemapFace, int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.TextureCubeMapArray, internalFormat, sliceCount, CalculateMipCount(width, height))
+            : base(TextureTarget.TextureCubeMapArray, internalFormat, sliceCount, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
         {
             this.width = width;
             this.height = height;
@@ -65,19 +65,27 @@ namespace ObjectGL
         }
 
         public TextureCubemapArray(Context currentContext,
-                         int width, int height, int sliceCount,
-                         PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
-                         Func<CubemapFace, int, Data> getInitialDataForMip)
-            : this(currentContext, width, height, sliceCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, format, type, p))
+                         int width, int height, int sliceCount, int mipCount,
+                         PixelInternalFormat internalFormat)
+            : this(currentContext, width, height, sliceCount, mipCount, internalFormat, (f, i) => new Data(IntPtr.Zero),
+                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
         {
         }
 
         public TextureCubemapArray(Context currentContext,
-                         int width, int height, int sliceCount,
+                         int width, int height, int sliceCount, int mipCount,
+                         PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
+                         Func<CubemapFace, int, Data> getInitialDataForMip)
+            : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getInitialDataForMip,
+                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, format, type, p))
+        {
+        }
+        
+        public TextureCubemapArray(Context currentContext,
+                         int width, int height, int sliceCount, int mipCount,
                          PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
                          Func<CubemapFace, int, Data> getCompressedInitialDataForMip)
-            : this(currentContext, width, height, sliceCount, internalFormat, getCompressedInitialDataForMip,
+            : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, s, p) => GL.CompressedTexImage3D(tt, l, f, w, h, s, 0, getComressedImageSizeForMip(l), p))
         {
         }
