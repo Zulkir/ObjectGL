@@ -33,7 +33,7 @@ namespace ObjectGL
         readonly int handle;
 
         readonly RenderbufferTarget target;
-        readonly PixelInternalFormat internalFormat;
+        readonly Format internalFormat;
 
         readonly int width;
         readonly int height;
@@ -42,13 +42,13 @@ namespace ObjectGL
         public int Handle { get { return handle; } }
 
         public RenderbufferTarget Target { get { return target; } }
-        public PixelInternalFormat InternalFormat { get { return internalFormat; } }
+        public Format InternalFormat { get { return internalFormat; } }
 
         public int Width { get { return width; } }
         public int Height { get { return height; } }
         public int Samples { get { return samples; } }
 
-        public unsafe Renderbuffer(Context currentContext, PixelInternalFormat internalFormat, int width, int height, int samples = 0)
+        public unsafe Renderbuffer(Context currentContext, Format internalFormat, int width, int height, int samples = 0)
         {
             this.target = RenderbufferTarget.Renderbuffer;
             this.internalFormat = internalFormat;

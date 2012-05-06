@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -146,10 +147,10 @@ void main()
         public override void Initialize()
         {
             framebuffer = new Framebuffer(Context);
-            renderTarget = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 0, PixelInternalFormat.Rgba8);
-            depthStencil = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 1, PixelInternalFormat.Depth24Stencil8);
+            renderTarget = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 0, Format.Rgba8);
+            depthStencil = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 1, Format.DepthComponent32f, PixelFormat.DepthComponent, PixelType.Float, i => IntPtr.Zero);
             framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Color0, renderTarget, 0);
-            framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.DepthStencil, depthStencil, 0);
+            framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Depth, depthStencil, 0);
 
             vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
@@ -202,7 +203,7 @@ void main()
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
             {
-                diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, PixelInternalFormat.Rgba8,
+                diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
                                            PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
             }
 

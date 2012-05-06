@@ -38,7 +38,7 @@ namespace ObjectGL
 
         TextureRectangle(Context currentContext,
                   int width, int height,
-                  PixelInternalFormat internalFormat, Data initialData,
+                  Format internalFormat, Data initialData,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
             : base(TextureTarget.TextureRectangle, internalFormat, 1, 1)
         {
@@ -51,13 +51,13 @@ namespace ObjectGL
             currentContext.BindTexture(Target, Handle);
 
             Data data = initialData;
-            glTexImage(Target, 0, internalFormat, width, height, data.Pointer);
+            glTexImage(Target, 0, (PixelInternalFormat)internalFormat, width, height, data.Pointer);
             data.UnpinPointer();
         }
 
         public TextureRectangle(Context currentContext,
                          int width, int height,
-                         PixelInternalFormat internalFormat)
+                         Format internalFormat)
             : this(currentContext, width, height, internalFormat, new Data(IntPtr.Zero), 
                    (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
         {
@@ -65,7 +65,7 @@ namespace ObjectGL
 
         public TextureRectangle(Context currentContext,
                          int width, int height,
-                         PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
+                         Format internalFormat, PixelFormat format, PixelType type,
                          Data initialData)
             : this(currentContext, width, height, internalFormat, initialData,
                    (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, format, type, p))
@@ -74,7 +74,7 @@ namespace ObjectGL
 
         public TextureRectangle(Context currentContext,
                          int width, int height,
-                         PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
+                         Format internalFormat, Func<int, int> getComressedImageSizeForMip,
                          Data compressedInitialData)
             : this(currentContext, width, height, internalFormat, compressedInitialData,
                    (tt, l, f, w, h, p) => GL.CompressedTexImage2D(tt, l, f, w, h, 0, getComressedImageSizeForMip(l), p))

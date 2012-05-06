@@ -40,7 +40,7 @@ namespace ObjectGL
 
         Texture2DArray(Context currentContext,
                        int width, int height, int sliceCount, int mipCount,
-                       PixelInternalFormat internalFormat, Func<int, Data> getInitialDataForMip,
+                       Format internalFormat, Func<int, Data> getInitialDataForMip,
                        Action<TextureTarget, int, PixelInternalFormat, int, int, int, IntPtr> glTexImage)
             : base(TextureTarget.Texture2DArray, internalFormat, sliceCount, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
         {
@@ -55,7 +55,7 @@ namespace ObjectGL
             for (int i = 0; i < MipCount; i++)
             {
                 Data data = getInitialDataForMip(i);
-                glTexImage(Target, i, internalFormat, mipWidth, mipHeight, sliceCount, data.Pointer);
+                glTexImage(Target, i, (PixelInternalFormat)internalFormat, mipWidth, mipHeight, sliceCount, data.Pointer);
                 data.UnpinPointer();
 
                 mipWidth = Math.Max(mipWidth/2, 1);
@@ -65,7 +65,7 @@ namespace ObjectGL
 
         public Texture2DArray(Context currentContext,
                               int width, int height, int sliceCount, int mipCount,
-                              PixelInternalFormat internalFormat)
+                              Format internalFormat)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, i => new Data(IntPtr.Zero),
                    (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
         {
@@ -73,7 +73,7 @@ namespace ObjectGL
 
         public Texture2DArray(Context currentContext,
                               int width, int height, int sliceCount, int mipCount,
-                              PixelInternalFormat internalFormat, PixelFormat format, PixelType type,
+                              Format internalFormat, PixelFormat format, PixelType type,
                               Func<int, Data> getInitialDataForMip)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, format, type, p))
@@ -82,7 +82,7 @@ namespace ObjectGL
 
         public Texture2DArray(Context currentContext,
                               int width, int height, int sliceCount, int mipCount,
-                              PixelInternalFormat internalFormat, Func<int, int> getComressedImageSizeForMip,
+                              Format internalFormat, Func<int, int> getComressedImageSizeForMip,
                               Func<int, Data> getCompressedInitialDataForMip)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, s, p) =>

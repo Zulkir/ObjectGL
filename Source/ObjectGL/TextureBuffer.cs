@@ -34,7 +34,7 @@ namespace ObjectGL
         public Buffer Buffer { get { return buffer; } }
 
         public TextureBuffer(Context currentContext, Buffer buffer, SizedInternalFormat internalFormat)
-            : base(TextureTarget.TextureBuffer, (PixelInternalFormat)internalFormat, 1, 1)
+            : base(TextureTarget.TextureBuffer, (Format)internalFormat, 1, 1)
         {
             this.buffer = buffer;
 

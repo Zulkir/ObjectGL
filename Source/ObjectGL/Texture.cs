@@ -33,7 +33,7 @@ namespace ObjectGL
         readonly int handle;
 
         readonly TextureTarget target;
-        readonly PixelInternalFormat internalFormat;
+        readonly Format internalFormat;
         readonly int sliceCount;
         readonly int mipCount;
 
@@ -44,7 +44,7 @@ namespace ObjectGL
         public int Handle { get { return handle; } }
 
         public TextureTarget Target { get { return target; } }
-        public PixelInternalFormat InternalFormat { get { return internalFormat; } }
+        public Format InternalFormat { get { return internalFormat; } }
         public int SliceCount { get { return sliceCount; } }
         public int MipCount { get { return mipCount; } }
 
@@ -64,8 +64,8 @@ namespace ObjectGL
         float maxAnisotropy = 16f;
         */
 
-        protected unsafe Texture(TextureTarget target, 
-            PixelInternalFormat internalFormat, int sliceCount, int mipCount)
+        protected unsafe Texture(TextureTarget target,
+            Format internalFormat, int sliceCount, int mipCount)
         {
             this.target = target;
             this.internalFormat = internalFormat;
@@ -127,5 +127,22 @@ namespace ObjectGL
 
             return result;
         }
+        /*
+        public static PixelFormat GetAppropriatePixelFormat(PixelInternalFormat pixelInternalFormat)
+        {
+            switch (pixelInternalFormat)
+            {
+                case PixelInternalFormat.Rgba32f:
+                case PixelInternalFormat.Rgba32ui:
+                case PixelInternalFormat.Rgba32i:
+                case PixelInternalFormat.Rgba16f:
+                case PixelInternalFormat.Rgba16:
+                case PixelInternalFormat.Rgba16ui:
+                case PixelInternalFormat.Rgba16i:
+                case PixelInternalFormat.Rgb10A2:
+                case PixelInternalFormat.Rgba8:
+                
+            }
+        }*/
     }
 }

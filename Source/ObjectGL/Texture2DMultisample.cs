@@ -39,7 +39,7 @@ namespace ObjectGL
 
         public Texture2DMultisample(Context currentContext,
                          int width, int height, int samples, bool fixedSampleLocations,
-                         PixelInternalFormat internalFormat)
+                         Format internalFormat)
             : base(TextureTarget.Texture2DMultisample, internalFormat, 1, 1)
         {
             this.width = width;
@@ -48,7 +48,7 @@ namespace ObjectGL
 
             currentContext.BindTexture(Target, Handle);
 
-            GL.TexImage2DMultisample((TextureTargetMultisample)Target, samples, internalFormat, width, height, fixedSampleLocations);
+            GL.TexImage2DMultisample((TextureTargetMultisample)Target, samples, (PixelInternalFormat)internalFormat, width, height, fixedSampleLocations);
         }
     }
 }
