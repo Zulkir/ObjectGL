@@ -147,35 +147,35 @@ void main()
         {
             vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
-                new Vertex(-1f, 1f, 1f, 0.0f, 0.0f, 1f, 0f, 0f),
-                new Vertex(1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 0f),
-                new Vertex(1f, -1f, 1f, 0.0f, 0.0f, 1f, 1f, 1f),
-                new Vertex(-1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 1f),
+                new Vertex(1f, -1f, 1f, 1f, 0.0f, 0.0f, 0f, 0f),
+                new Vertex(1f, 1f, 1f, 1f, 0.0f, 0.0f, 1f, 0f),
+                new Vertex(1f, 1f, -1f, 1f, 0.0f, 0.0f, 1f, 1f),
+                new Vertex(1f, -1f, -1f, 1f, 0.0f, 0.0f, 0f, 1f),
 
-                new Vertex(-1f, 1f, -1f, 0.0f, 1f, 0.0f, 0f, 0f),
-                new Vertex(1f, 1f, -1f, 0.0f, 1f, 0.0f, 1f, 0f),
-                new Vertex(1f, 1f, 1f, 0.0f, 1f, 0.0f, 1f, 1f),
-                new Vertex(-1f, 1f, 1f, 0.0f, 1f, 0.0f, 0f, 1f),
+                new Vertex(1f, 1f, 1f, 0.0f, 1f, 0.0f, 0f, 0f),
+                new Vertex(-1f, 1f, 1f, 0.0f, 1f, 0.0f, 1f, 0f),
+                new Vertex(-1f, 1f, -1f, 0.0f, 1f, 0.0f, 1f, 1f),
+                new Vertex(1f, 1f, -1f, 0.0f, 1f, 0.0f, 0f, 1f),
 
-                new Vertex(1f, -1f, -1f, 0.0f, -1f, 0.0f, 0f, 0f),
-                new Vertex(-1f, -1f, -1f, 0.0f, -1f, 0.0f, 1f, 0f),
-                new Vertex(-1f, -1f, 1f, 0.0f, -1f, 0.0f, 1f, 1f),
-                new Vertex(1f, -1f, 1f, 0.0f, -1f, 0.0f, 0f, 1f),
+                new Vertex(-1f, 1f, 1f, -1f, 0.0f, 0.0f, 0f, 0f),
+                new Vertex(-1f, -1f, 1f, -1f, 0.0f, 0.0f, 1f, 0f),
+                new Vertex(-1f, -1f, -1f, -1f, 0.0f, 0.0f, 1f, 1f),
+                new Vertex(-1f, 1f, -1f, -1f, 0.0f, 0.0f, 0f, 1f),
 
-                new Vertex(1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 0f),
-                new Vertex(-1f, 1f, -1f, 0.0f, 0.0f, -1f, 1f, 0f),
-                new Vertex(-1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 1f),
-                new Vertex(1f, -1f, -1f, 0.0f, 0.0f, -1f, 0f, 1f),
+                new Vertex(-1f, -1f, 1f, 0.0f, -1f, 0.0f, 0f, 0f),
+                new Vertex(1f, -1f, 1f, 0.0f, -1f, 0.0f, 1f, 0f),
+                new Vertex(1f, -1f, -1f, 0.0f, -1f, 0.0f, 1f, 1f),
+                new Vertex(-1f, -1f, -1f, 0.0f, -1f, 0.0f, 0f, 1f),
 
-                new Vertex(1f, 1f, 1f, 1f, 0.0f, 0.0f, 0f, 0f),
-                new Vertex(1f, 1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f),
-                new Vertex(1f, -1f, -1f, 1f, 0.0f, 0.0f, 1f, 1f),
-                new Vertex(1f, -1f, 1f, 1f, 0.0f, 0.0f, 0f, 1f),
+                new Vertex(-1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 0f),
+                new Vertex(-1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 0f),
+                new Vertex(1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 1f),
+                new Vertex(1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 1f),
 
-                new Vertex(-1f, 1f, -1f, -1f, 0.0f, 0.0f, 0f, 0f),
-                new Vertex(-1f, 1f, 1f, -1f, 0.0f, 0.0f, 1f, 0f),
-                new Vertex(-1f, -1f, 1f, -1f, 0.0f, 0.0f, 1f, 1f),
-                new Vertex(-1f, -1f, -1f, -1f, 0.0f, 0.0f, 0f, 1f)
+                new Vertex(-1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 0f),
+                new Vertex(-1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 0f),
+                new Vertex(1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 1f),
+                new Vertex(1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 1f)
             }));
 
             indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 

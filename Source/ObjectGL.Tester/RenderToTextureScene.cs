@@ -107,8 +107,7 @@ void main()
 
     float diffuseFactor = clamp(dot(toLight, normal), 0.0f, 1.0f);
 
-    out_color = vec4(
-                texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0.0f, 1.0f),
+    out_color = vec4(texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0.0f, 1.0f),
                 1.0f);
 }
 ";
@@ -150,35 +149,35 @@ void main()
 
             vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
-                new Vertex(-1f, 1f, 1f, 0.0f, 0.0f, 1f, 0f, 0f),
-                new Vertex(1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 0f),
-                new Vertex(1f, -1f, 1f, 0.0f, 0.0f, 1f, 1f, 1f),
-                new Vertex(-1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 1f),
+                new Vertex(1f, -1f, 1f, 1f, 0.0f, 0.0f, 0f, 0f),
+                new Vertex(1f, 1f, 1f, 1f, 0.0f, 0.0f, 1f, 0f),
+                new Vertex(1f, 1f, -1f, 1f, 0.0f, 0.0f, 1f, 1f),
+                new Vertex(1f, -1f, -1f, 1f, 0.0f, 0.0f, 0f, 1f),
 
-                new Vertex(-1f, 1f, -1f, 0.0f, 1f, 0.0f, 0f, 0f),
-                new Vertex(1f, 1f, -1f, 0.0f, 1f, 0.0f, 1f, 0f),
-                new Vertex(1f, 1f, 1f, 0.0f, 1f, 0.0f, 1f, 1f),
-                new Vertex(-1f, 1f, 1f, 0.0f, 1f, 0.0f, 0f, 1f),
+                new Vertex(1f, 1f, 1f, 0.0f, 1f, 0.0f, 0f, 0f),
+                new Vertex(-1f, 1f, 1f, 0.0f, 1f, 0.0f, 1f, 0f),
+                new Vertex(-1f, 1f, -1f, 0.0f, 1f, 0.0f, 1f, 1f),
+                new Vertex(1f, 1f, -1f, 0.0f, 1f, 0.0f, 0f, 1f),
 
-                new Vertex(1f, -1f, -1f, 0.0f, -1f, 0.0f, 0f, 0f),
-                new Vertex(-1f, -1f, -1f, 0.0f, -1f, 0.0f, 1f, 0f),
-                new Vertex(-1f, -1f, 1f, 0.0f, -1f, 0.0f, 1f, 1f),
-                new Vertex(1f, -1f, 1f, 0.0f, -1f, 0.0f, 0f, 1f),
+                new Vertex(-1f, 1f, 1f, -1f, 0.0f, 0.0f, 0f, 0f),
+                new Vertex(-1f, -1f, 1f, -1f, 0.0f, 0.0f, 1f, 0f),
+                new Vertex(-1f, -1f, -1f, -1f, 0.0f, 0.0f, 1f, 1f),
+                new Vertex(-1f, 1f, -1f, -1f, 0.0f, 0.0f, 0f, 1f),
 
-                new Vertex(1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 0f),
-                new Vertex(-1f, 1f, -1f, 0.0f, 0.0f, -1f, 1f, 0f),
-                new Vertex(-1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 1f),
-                new Vertex(1f, -1f, -1f, 0.0f, 0.0f, -1f, 0f, 1f),
+                new Vertex(-1f, -1f, 1f, 0.0f, -1f, 0.0f, 0f, 0f),
+                new Vertex(1f, -1f, 1f, 0.0f, -1f, 0.0f, 1f, 0f),
+                new Vertex(1f, -1f, -1f, 0.0f, -1f, 0.0f, 1f, 1f),
+                new Vertex(-1f, -1f, -1f, 0.0f, -1f, 0.0f, 0f, 1f),
 
-                new Vertex(1f, 1f, 1f, 1f, 0.0f, 0.0f, 0f, 0f),
-                new Vertex(1f, 1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f),
-                new Vertex(1f, -1f, -1f, 1f, 0.0f, 0.0f, 1f, 1f),
-                new Vertex(1f, -1f, 1f, 1f, 0.0f, 0.0f, 0f, 1f),
+                new Vertex(-1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 0f),
+                new Vertex(-1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 0f),
+                new Vertex(1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 1f),
+                new Vertex(1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 1f),
 
-                new Vertex(-1f, 1f, -1f, -1f, 0.0f, 0.0f, 0f, 0f),
-                new Vertex(-1f, 1f, 1f, -1f, 0.0f, 0.0f, 1f, 0f),
-                new Vertex(-1f, -1f, 1f, -1f, 0.0f, 0.0f, 1f, 1f),
-                new Vertex(-1f, -1f, -1f, -1f, 0.0f, 0.0f, 0f, 1f)
+                new Vertex(-1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 0f),
+                new Vertex(-1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 0f),
+                new Vertex(1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 1f),
+                new Vertex(1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 1f)
             }));
 
             indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
@@ -240,7 +239,9 @@ void main()
 
             Matrix4 view = Matrix4.LookAt(cameraPosition, Vector3.Zero, Vector3.UnitZ);
             Matrix4 proj = Matrix4.CreatePerspectiveFieldOfView((float) Math.PI/4f, 1f, 0.1f, 1000f);
-            Matrix4 viewProjection = view * proj;
+            Matrix4 invertY = Matrix4.Identity;
+            invertY.M22 = -1f;
+            Matrix4 viewProjection = view * proj * invertY;
             viewProjection.Transpose();
 
             Vector3 lightPosition = new Vector3(10, -7, 2);
@@ -281,6 +282,7 @@ void main()
             Context.SetViewport(0, 0, GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 
             proj = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4f, (float)GameWindow.ClientSize.Width / GameWindow.ClientSize.Height, 0.1f, 1000f);
+            
             viewProjection = view * proj;
             viewProjection.Transpose();
 
