@@ -60,6 +60,8 @@
     <Compile Include="Data.cs" />
     <Compile Include="DepthStencil.cs" />
     <Compile Include="Format.cs" />
+    <Compile Include="FormatColor.cs" />
+    <Compile Include="FormatType.cs" />
     <Compile Include="FragmentShader.cs" />
     <Compile Include="Framebuffer.cs" />
     <Compile Include="FramebufferAttachmentPoint.cs" />
