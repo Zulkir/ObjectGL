@@ -118,7 +118,7 @@ void main()
         const int RenderTargetSize = 512;
 
         Texture2D renderTarget;
-        Texture2D depthStencil;
+        Renderbuffer depthStencil;
 
         Buffer vertices;
         Buffer indices;
@@ -144,9 +144,9 @@ void main()
         {
             framebuffer = new Framebuffer(Context);
             renderTarget = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 0, Format.Rgba8);
-            depthStencil = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 1, Format.Depth24Stencil8);
+            depthStencil = new Renderbuffer(Context, RenderTargetSize, RenderTargetSize, Format.Depth24Stencil8);
             framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Color0, renderTarget, 0);
-            framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Depth, depthStencil, 0);
+            framebuffer.AttachRenderbuffer(Context, FramebufferAttachmentPoint.Depth, depthStencil);
 
             vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {

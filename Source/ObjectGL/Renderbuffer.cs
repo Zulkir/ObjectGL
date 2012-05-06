@@ -48,7 +48,7 @@ namespace ObjectGL
         public int Height { get { return height; } }
         public int Samples { get { return samples; } }
 
-        public unsafe Renderbuffer(Context currentContext, Format internalFormat, int width, int height, int samples = 0)
+        public unsafe Renderbuffer(Context currentContext, int width, int height, Format internalFormat, int samples = 0)
         {
             this.target = RenderbufferTarget.Renderbuffer;
             this.internalFormat = internalFormat;
