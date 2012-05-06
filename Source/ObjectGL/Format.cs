@@ -47,6 +47,7 @@ namespace ObjectGL
         R11fG11fB10f = 35898,
         Rgba8 = 32856,
         Srgb8Alpha8 = 35907,
+        Rgba8ui = 36220,
         Rgba8sn = 0x8F97,
         Rgba8i = 36238,
         Rg16f = 33327,
@@ -84,9 +85,13 @@ namespace ObjectGL
         CompressedSrgbAlphaS3tcDxt3Ext = 35918,
         CompressedRgbaS3tcDxt5Ext = 33779,
         CompressedSrgbAlphaS3tcDxt5Ext = 35919,
+        CompressedRedRgtc1 = 36283,
+        CompressedSignedRedRgtc1 = 36284,
+        CompressedRgRgtc2 = 36285,
+        CompressedSignedRgRgtc2 = 36286,
         CompressedRgbaBptcUf = 0x8E8F,
         CompressedRgbaBptcSf = 0x8E8E,
         CompressedRgbaBptc = 0x8E8C,
-        CompressedSrgbAlphaBptc = 0x8E8E
+        CompressedSrgbAlphaBptc = 0x8E8D
     }
 }
