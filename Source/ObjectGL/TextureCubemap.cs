@@ -68,16 +68,17 @@ namespace ObjectGL
                          int width, int height, int mipCount,
                          Format internalFormat)
             : this(currentContext, width, height, mipCount, internalFormat, (f, i) => new Data(IntPtr.Zero),
-                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0,
+                       (PixelFormat)GetAppropriateFormatColor(internalFormat), (PixelType)GetAppropriateFormatType(internalFormat), p))
         {
         }
 
         public TextureCubemap(Context currentContext,
                          int width, int height, int mipCount,
-                         Format internalFormat, PixelFormat format, PixelType type,
+                         Format internalFormat, FormatColor format, FormatType type,
                          Func<CubemapFace, int, Data> getInitialDataForMip)
             : this(currentContext, width, height, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, format, type, p))
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, (PixelFormat)format, (PixelType)type, p))
         {
         }
 

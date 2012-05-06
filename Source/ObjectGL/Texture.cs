@@ -127,22 +127,154 @@ namespace ObjectGL
 
             return result;
         }
-        /*
-        public static PixelFormat GetAppropriatePixelFormat(PixelInternalFormat pixelInternalFormat)
+        
+        public static FormatColor GetAppropriateFormatColor(Format pixelInternalFormat)
         {
             switch (pixelInternalFormat)
             {
-                case PixelInternalFormat.Rgba32f:
-                case PixelInternalFormat.Rgba32ui:
-                case PixelInternalFormat.Rgba32i:
-                case PixelInternalFormat.Rgba16f:
-                case PixelInternalFormat.Rgba16:
-                case PixelInternalFormat.Rgba16ui:
-                case PixelInternalFormat.Rgba16i:
-                case PixelInternalFormat.Rgb10A2:
-                case PixelInternalFormat.Rgba8:
-                
+                case Format.Rgba32f:
+                case Format.Rgba32ui:
+                case Format.Rgba32i:
+                case Format.Rgba16f:
+                case Format.Rgba16:
+                case Format.Rgba16ui:
+                case Format.Rgba16sn:
+                case Format.Rgba16i:
+                case Format.Rgb10A2:
+                case Format.Rgb10A2ui:
+                case Format.Rgba8:
+                case Format.Srgb8Alpha8:
+                case Format.Rgba8sn:
+                case Format.Rgba8i:
+                    return FormatColor.Rgba;
+                case Format.Rgb32f:
+                case Format.Rgb32ui:
+                case Format.Rgb32i:
+                case Format.R11fG11fB10f:
+                case Format.Rgb9E5:
+                    return FormatColor.Rgb;
+                case Format.Rg32f:
+                case Format.Rg32ui:
+                case Format.Rg32i:
+                case Format.Rg16f:
+                case Format.Rg16:
+                case Format.Rg16ui:
+                case Format.Rg16sn:
+                case Format.Rg16i:
+                case Format.Rg8:
+                case Format.Rg8ui:
+                case Format.Rg8sn:
+                case Format.Rg8i:
+                    return FormatColor.Rg;
+                case Format.Depth32fStencil8:
+                case Format.Depth24Stencil8:
+                    return FormatColor.DepthStencil;
+                case Format.DepthComponent32f:
+                case Format.DepthComponent16:
+                    return FormatColor.DepthComponent;
+                case Format.R32f:
+                case Format.R32ui:
+                case Format.R32i:
+                case Format.R16f:
+                case Format.R16:
+                case Format.R16ui:
+                case Format.R16sn:
+                case Format.R16i:
+                case Format.R8:
+                case Format.R8ui:
+                case Format.R8sn:
+                case Format.R8i:
+                    return FormatColor.Red;
+                case Format.CompressedRgbaS3tcDxt1Ext:
+                case Format.CompressedSrgbAlphaS3tcDxt1Ext:
+                case Format.CompressedRgbaS3tcDxt3Ext:
+                case Format.CompressedSrgbAlphaS3tcDxt3Ext:
+                case Format.CompressedRgbaS3tcDxt5Ext:
+                case Format.CompressedSrgbAlphaS3tcDxt5Ext:
+                case Format.CompressedRgbaBptcUf:
+                case Format.CompressedRgbaBptcSf:
+                case Format.CompressedRgbaBptc:
+                    return FormatColor.Rgba;
+                default:
+                    throw new ArgumentOutOfRangeException("pixelInternalFormat");
             }
-        }*/
+        }
+
+        public static FormatType GetAppropriateFormatType(Format pixelInternalFormat)
+        {
+            switch (pixelInternalFormat)
+            {
+                case Format.Rgba32f:
+                case Format.Rgb32f:
+                case Format.Rg32f:
+                case Format.Rgba16f:
+                case Format.R11fG11fB10f:
+                case Format.Rg16f:
+                case Format.DepthComponent32f:
+                case Format.R32f:
+                case Format.R16f:
+                    return FormatType.Float;
+                case Format.Rgba32ui:
+                case Format.Rgb32ui:
+                case Format.Rg32ui:
+                case Format.R32ui:
+                    return FormatType.UnsignedInt;
+                case Format.Rgba32i:
+                case Format.Rgb32i:
+                case Format.Rg32i:
+                case Format.R32i:
+                    return FormatType.Int;
+                case Format.DepthComponent16:
+                case Format.Rgba16:
+                case Format.Rgba16ui:
+                case Format.Rg16:
+                case Format.Rg16ui:
+                case Format.R16:
+                case Format.R16ui:
+                    return FormatType.UnsignedShort;
+                case Format.Rgba16sn:
+                case Format.Rgba16i:
+                case Format.Rg16sn:
+                case Format.Rg16i:
+                case Format.R16sn:
+                case Format.R16i:
+                    return FormatType.Short;
+                case Format.Depth32fStencil8:
+                    return FormatType.Float32UnsignedInt248Rev;
+                case Format.Rgb10A2:
+                case Format.Rgb10A2ui:
+                    return FormatType.UnsignedInt1010102;
+                case Format.Rgba8:
+                case Format.Srgb8Alpha8:
+                case Format.Rg8:
+                case Format.Rg8ui:
+                case Format.R8:
+                case Format.R8ui:
+                    return FormatType.UnsignedByte;
+                case Format.Rgba8sn:
+                case Format.Rgba8i:
+                case Format.Rg8sn:
+                case Format.Rg8i:
+                case Format.R8sn:
+                case Format.R8i:
+                    return FormatType.Byte;
+                case Format.Depth24Stencil8:
+                    return FormatType.UnsignedInt248;
+                case Format.Rgb9E5:
+                    return FormatType.UnsignedInt5999Rev;
+                case Format.CompressedRgbaS3tcDxt1Ext:
+                case Format.CompressedSrgbAlphaS3tcDxt1Ext:
+                case Format.CompressedRgbaS3tcDxt3Ext:
+                case Format.CompressedSrgbAlphaS3tcDxt3Ext:
+                case Format.CompressedRgbaS3tcDxt5Ext:
+                case Format.CompressedSrgbAlphaS3tcDxt5Ext:
+                case Format.CompressedRgbaBptcUf:
+                case Format.CompressedRgbaBptcSf:
+                case Format.CompressedRgbaBptc:
+                    return FormatType.Byte;
+                default:
+                    throw new ArgumentOutOfRangeException("pixelInternalFormat");
+            }
+        }
     }
 }

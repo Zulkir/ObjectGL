@@ -59,16 +59,17 @@ namespace ObjectGL
                          int width, int height,
                          Format internalFormat)
             : this(currentContext, width, height, internalFormat, new Data(IntPtr.Zero), 
-                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0,
+                       (PixelFormat)GetAppropriateFormatColor(internalFormat), (PixelType)GetAppropriateFormatType(internalFormat), p))
         {
         }
 
         public TextureRectangle(Context currentContext,
                          int width, int height,
-                         Format internalFormat, PixelFormat format, PixelType type,
+                         Format internalFormat, FormatColor format, FormatType type,
                          Data initialData)
             : this(currentContext, width, height, internalFormat, initialData,
-                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, format, type, p))
+                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, (PixelFormat)format, (PixelType)type, p))
         {
         }
 

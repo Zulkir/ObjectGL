@@ -68,16 +68,17 @@ namespace ObjectGL
                          int width, int height, int sliceCount, int mipCount,
                          Format internalFormat)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, (f, i) => new Data(IntPtr.Zero),
-                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0,
+                       (PixelFormat)GetAppropriateFormatColor(internalFormat), (PixelType)GetAppropriateFormatType(internalFormat), p))
         {
         }
 
         public TextureCubemapArray(Context currentContext,
                          int width, int height, int sliceCount, int mipCount,
-                         Format internalFormat, PixelFormat format, PixelType type,
+                         Format internalFormat, FormatColor format, FormatType type,
                          Func<CubemapFace, int, Data> getInitialDataForMip)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, format, type, p))
+                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, (PixelFormat)format, (PixelType)type, p))
         {
         }
         

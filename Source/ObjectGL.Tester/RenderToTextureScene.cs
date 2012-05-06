@@ -24,10 +24,6 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -148,7 +144,7 @@ void main()
         {
             framebuffer = new Framebuffer(Context);
             renderTarget = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 0, Format.Rgba8);
-            depthStencil = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 1, Format.DepthComponent32f, PixelFormat.DepthComponent, PixelType.Float, i => IntPtr.Zero);
+            depthStencil = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 1, Format.Depth24Stencil8);
             framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Color0, renderTarget, 0);
             framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Depth, depthStencil, 0);
 
@@ -204,7 +200,7 @@ void main()
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
             {
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
-                                           PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
+                                           FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
             }
 
             sampler = new Sampler();

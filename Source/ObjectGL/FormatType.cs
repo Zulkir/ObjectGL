@@ -46,5 +46,14 @@ namespace ObjectGL
         UnsignedInt8888Reversed = 33639,
         UnsignedInt1010102 = 32822,
         UnsignedInt2101010Reversed = 33640,
+
+        // todo: remove when glTexStorage is available
+
+        HalfFloat = 5131,
+        Bitmap = 6656,
+        UnsignedInt248 = 34042,
+        UnsignedInt10F11F11FRev = 35899,
+        UnsignedInt5999Rev = 35902,
+        Float32UnsignedInt248Rev = 36269,
     }
 }

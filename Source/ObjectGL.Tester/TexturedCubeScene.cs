@@ -196,13 +196,13 @@ void main()
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
             {
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
-                                           PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
+                                           FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
             }
 
             using (var textureLoader = new TextureLoader("../Textures/SpecularTest.bmp"))
             {
                 specularMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
-                                           PixelFormat.Rgba, PixelType.UnsignedByte, i => textureLoader.GetMipData(i));
+                                           FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
             }
 
             sampler = new Sampler();

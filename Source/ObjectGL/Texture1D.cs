@@ -62,16 +62,17 @@ namespace ObjectGL
                          int width, int mipCount,
                          Format internalFormat)
             : this(currentContext, width, mipCount, internalFormat, i => new Data(IntPtr.Zero),
-                   (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+                   (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0,
+                       (PixelFormat)GetAppropriateFormatColor(internalFormat), (PixelType)GetAppropriateFormatType(internalFormat), p))
         {
         }
 
         public Texture1D(Context currentContext,
                          int width, int mipCount,
-                         Format internalFormat, PixelFormat format, PixelType type,
+                         Format internalFormat, FormatColor format, FormatType type,
                          Func<int, Data> getInitialDataForMip)
             : this(currentContext, width, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0, format, type, p))
+                   (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0, (PixelFormat)format, (PixelType)type, p))
         {
         }
 

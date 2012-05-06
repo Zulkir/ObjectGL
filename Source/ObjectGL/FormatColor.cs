@@ -33,5 +33,9 @@ namespace ObjectGL
         Bgr = 32992,
         Rgba = 6408,
         Bgra = 32993,
+
+        // todo: remove when glTexStorage is available
+        DepthComponent = 6402,
+        DepthStencil = 34041,
     }
 }

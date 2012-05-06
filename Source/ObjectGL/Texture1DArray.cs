@@ -62,16 +62,17 @@ namespace ObjectGL
                               int width, int sliceCount, int mipCount,
                               Format internalFormat)
             : this(currentContext, width, sliceCount, mipCount, internalFormat, i => new Data(IntPtr.Zero), 
-                   (tt, l, f, w, s, p) => GL.TexImage2D(tt, l, f, w, s, 0, PixelFormat.Rgba, PixelType.UnsignedByte, p))
+                   (tt, l, f, w, s, p) => GL.TexImage2D(tt, l, f, w, s, 0,
+                       (PixelFormat)GetAppropriateFormatColor(internalFormat), (PixelType)GetAppropriateFormatType(internalFormat), p))
         {
         }
 
         public Texture1DArray(Context currentContext,
                               int width, int sliceCount, int mipCount,
-                              Format internalFormat, PixelFormat format, PixelType type,
+                              Format internalFormat, FormatColor format, FormatType type,
                               Func<int, Data> getInitialDataForMip)
             : this(currentContext, width, sliceCount, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, s, p) => GL.TexImage2D(tt, l, f, w, s, 0, format, type, p))
+                   (tt, l, f, w, s, p) => GL.TexImage2D(tt, l, f, w, s, 0, (PixelFormat)format, (PixelType)type, p))
         {
         }
 
