@@ -23,16 +23,14 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Renderbuffer : IDisposable
+    public class Renderbuffer : IContextObject
     {
         readonly int handle;
 
-        readonly RenderbufferTarget target;
         readonly Format internalFormat;
 
         readonly int width;
@@ -41,7 +39,7 @@ namespace ObjectGL
 
         public int Handle { get { return handle; } }
 
-        public RenderbufferTarget Target { get { return target; } }
+        public RenderbufferTarget Target { get { return RenderbufferTarget.Renderbuffer; } }
         public Format InternalFormat { get { return internalFormat; } }
 
         public int Width { get { return width; } }
@@ -50,7 +48,6 @@ namespace ObjectGL
 
         public unsafe Renderbuffer(Context currentContext, int width, int height, Format internalFormat, int samples = 0)
         {
-            this.target = RenderbufferTarget.Renderbuffer;
             this.internalFormat = internalFormat;
             this.width = width;
             this.height = height;

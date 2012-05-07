@@ -23,13 +23,12 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Sampler : IDisposable
+    public class Sampler : IContextObject
     {
         readonly int handle;
 

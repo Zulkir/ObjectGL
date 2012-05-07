@@ -28,7 +28,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public abstract class Texture : IDisposable
+    public abstract class Texture : IContextObject
     {
         readonly int handle;
 

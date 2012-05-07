@@ -30,7 +30,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class ShaderProgram
+    public class ShaderProgram : IContextObject
     {
         readonly int handle;
 
@@ -39,6 +39,11 @@ namespace ObjectGL
         private ShaderProgram(int handle)
         {
             this.handle = handle;
+        }
+
+        public void Dispose()
+        {
+            GL.DeleteProgram(handle);
         }
 
         static readonly string[] EmptyStringArray = new string[0];

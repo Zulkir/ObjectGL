@@ -28,7 +28,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Buffer : IDisposable
+    public class Buffer : IContextObject
     {
         readonly int handle;
         readonly BufferTarget creationTarget;

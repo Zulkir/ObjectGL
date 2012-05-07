@@ -69,6 +69,7 @@
     <Compile Include="FramebufferAttachmentType.cs" />
     <Compile Include="GeometryShader.cs" />
     <Compile Include="Helpers.cs" />
+    <Compile Include="IContextObject.cs" />
     <Compile Include="Pipeline.cs" />
     <Compile Include="PipelineBlendAspect.cs" />
     <Compile Include="PipelineDepthStencilAspect.cs" />

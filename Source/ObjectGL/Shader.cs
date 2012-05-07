@@ -28,7 +28,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public abstract class Shader : IDisposable
+    public abstract class Shader : IContextObject
     {
         readonly int handle;
         readonly ShaderType type;

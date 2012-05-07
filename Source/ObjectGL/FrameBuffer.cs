@@ -29,7 +29,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Framebuffer : IDisposable
+    public class Framebuffer : IContextObject
     {
         delegate void GLFramebufferSomething(FramebufferTarget framebufferTarget, FramebufferAttachment framebufferAttachment, ref FramebufferAttachmentDescription description);
 

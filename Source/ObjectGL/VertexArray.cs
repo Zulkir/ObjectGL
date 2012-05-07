@@ -28,7 +28,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class VertexArray : IDisposable
+    public class VertexArray : IContextObject
     {
         readonly int handle;
 
