@@ -37,6 +37,7 @@ namespace ObjectGL
         Buffer elementArrayBuffer;
 
         public int Handle { get { return handle; } }
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.VertexArray; } }
 
         public unsafe VertexArray(Context currentContext)
         {

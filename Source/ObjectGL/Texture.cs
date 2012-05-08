@@ -28,9 +28,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public abstract class Texture : IContextObject
+    public abstract class Texture : IResource
     {
         readonly int handle;
+        readonly ResourceType resourceType;
 
         readonly TextureTarget target;
         readonly Format internalFormat;
@@ -42,6 +43,8 @@ namespace ObjectGL
         float lodBias;
 
         public int Handle { get { return handle; } }
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
+        public ResourceType ResourceType { get { return resourceType; } }
 
         public TextureTarget Target { get { return target; } }
         public Format InternalFormat { get { return internalFormat; } }
@@ -67,6 +70,7 @@ namespace ObjectGL
         protected unsafe Texture(TextureTarget target,
             Format internalFormat, int sliceCount, int mipCount)
         {
+            resourceType = TextureTargetToResourceType(target);
             this.target = target;
             this.internalFormat = internalFormat;
             this.sliceCount = sliceCount;
@@ -75,6 +79,25 @@ namespace ObjectGL
             int handleProxy;
             GL.GenTextures(1, &handleProxy);
             handle = handleProxy;
+        }
+
+        static ResourceType TextureTargetToResourceType(TextureTarget target)
+        {
+            switch (target)
+            {
+                case TextureTarget.Texture1D: return ResourceType.Texture1D;
+                case TextureTarget.Texture1DArray: return ResourceType.Texture1DArray;
+                case TextureTarget.Texture2D: return ResourceType.Texture2D;
+                case TextureTarget.Texture2DArray: return ResourceType.Texture2DArray;
+                case TextureTarget.Texture2DMultisample: return ResourceType.Texture2DMultisample;
+                case TextureTarget.Texture2DMultisampleArray: return ResourceType.Texture2DMultisampleArray;
+                case TextureTarget.Texture3D: return ResourceType.Texture3D;
+                case TextureTarget.TextureBuffer: return ResourceType.TextureBuffer;
+                case TextureTarget.TextureCubeMap: return ResourceType.TextureCubemap;
+                case TextureTarget.TextureCubeMapArray: return ResourceType.TextureCubemapArray;
+                case TextureTarget.TextureRectangle: return ResourceType.TextureRectangle;
+                default: throw new ArgumentOutOfRangeException("target");
+            }
         }
 
         public void SetBaseLevel(Context currentContext, int value)

@@ -42,6 +42,7 @@ namespace ObjectGL
         FramebufferAttachmentDescription stencilAttachment;
 
         public int Handle { get { return handle; } }
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.Framebuffer; } }
 
         public unsafe Framebuffer(Context currentContext)
         {

@@ -51,6 +51,7 @@
     <Compile Include="ContextBlendAspect.cs" />
     <Compile Include="ContextBuffersAspect.cs" />
     <Compile Include="ContextDepthStencilAspect.cs" />
+    <Compile Include="ContextObjectType.cs" />
     <Compile Include="ContextProgramAspect.cs" />
     <Compile Include="ContextRasterizerAspect.cs" />
     <Compile Include="ContextFramebufferAspect.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="GeometryShader.cs" />
     <Compile Include="Helpers.cs" />
     <Compile Include="IContextObject.cs" />
+    <Compile Include="IResource.cs" />
     <Compile Include="Pipeline.cs" />
     <Compile Include="PipelineBlendAspect.cs" />
     <Compile Include="PipelineDepthStencilAspect.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Delegates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderbuffer.cs" />
+    <Compile Include="ResourceType.cs" />
     <Compile Include="Sampler.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="ShaderProgram.cs" />

@@ -33,6 +33,7 @@ namespace ObjectGL
         readonly int handle;
 
         public int Handle { get { return handle; } }
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.Sampler; } }
 
         TextureMinFilter minFilter = TextureMinFilter.Linear;
         TextureMagFilter magFilter = TextureMagFilter.Linear;

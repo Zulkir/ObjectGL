@@ -27,7 +27,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Renderbuffer : IContextObject
+    public class Renderbuffer : IResource
     {
         readonly int handle;
 
@@ -38,7 +38,8 @@ namespace ObjectGL
         readonly int samples;
 
         public int Handle { get { return handle; } }
-
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
+        public ResourceType ResourceType { get { return ResourceType.Renderbuffer; } }
         public RenderbufferTarget Target { get { return RenderbufferTarget.Renderbuffer; } }
         public Format InternalFormat { get { return internalFormat; } }
 

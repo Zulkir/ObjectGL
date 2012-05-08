@@ -35,6 +35,7 @@ namespace ObjectGL
         readonly int handle;
 
         public int Handle { get { return handle; } }
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.ShaderProgram; } }
 
         private ShaderProgram(int handle)
         {

@@ -34,6 +34,7 @@ namespace ObjectGL
         readonly ShaderType type;
 
         public int Handle { get { return handle; } }
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.Shader; } }
         public ShaderType Type { get { return type; } }
 
         protected Shader(int handle, ShaderType type)

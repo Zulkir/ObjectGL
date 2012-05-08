@@ -28,7 +28,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL
 {
-    public class Buffer : IContextObject
+    public class Buffer : IResource
     {
         readonly int handle;
         readonly BufferTarget creationTarget;
@@ -36,6 +36,8 @@ namespace ObjectGL
         readonly BufferUsageHint usage;
 
         public int Handle { get { return handle; } }
+        public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
+        public ResourceType ResourceType { get { return ResourceType.Buffer; } }
         public BufferTarget CreationTarget { get { return creationTarget; } }
         public int SizeInBytes { get { return sizeInBytes; } }
         public BufferUsageHint Usage { get { return usage; } }

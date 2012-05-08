@@ -1,4 +1,5 @@
 ﻿#region License
+
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -23,13 +24,15 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-
 namespace ObjectGL
 {
-    public interface IContextObject : IDisposable
+    public enum ContextObjectType
     {
-        int Handle { get; }
-        ContextObjectType ContextObjectType { get; }
+        Framebuffer,
+        Resource,
+        Sampler,
+        Shader,
+        ShaderProgram,
+        VertexArray
     }
 }

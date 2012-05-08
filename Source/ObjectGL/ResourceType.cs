@@ -23,13 +23,22 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-
 namespace ObjectGL
 {
-    public interface IContextObject : IDisposable
+    public enum ResourceType
     {
-        int Handle { get; }
-        ContextObjectType ContextObjectType { get; }
+        Buffer,
+        Renderbuffer,
+        Texture1D,
+        Texture1DArray,
+        Texture2D,
+        Texture2DArray,
+        Texture2DMultisample,
+        Texture2DMultisampleArray,
+        Texture3D,
+        TextureBuffer,
+        TextureCubemap,
+        TextureCubemapArray,
+        TextureRectangle
     }
 }
