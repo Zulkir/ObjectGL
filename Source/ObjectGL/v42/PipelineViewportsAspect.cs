@@ -43,12 +43,37 @@ namespace ObjectGL.v42
 
                 internal Viewport(float initialWidth, float initialHeight)
                 {
+                    Set(initialWidth, initialHeight);
+                }
+
+                public void Set(float width, float height)
+                {
                     X = 0f;
                     Y = 0f;
-                    Width = initialWidth;
-                    Height = initialHeight;
+                    Width = width;
+                    Height = height;
                     Near = 0f;
                     Far = 1f;
+                }
+
+                public void Set(float x, float y, float width, float height)
+                {
+                    X = x;
+                    Y = y;
+                    Width = width;
+                    Height = height;
+                    Near = 0f;
+                    Far = 1f;
+                }
+
+                public void Set(float x, float y, float width, float height, float near, float far)
+                {
+                    X = x;
+                    Y = y;
+                    Width = width;
+                    Height = height;
+                    Near = near;
+                    Far = far;
                 }
             }
             #endregion

@@ -44,6 +44,11 @@ namespace ObjectGL.v42
 
                 internal Side()
                 {
+                    SetDefault();
+                }
+
+                public void SetDefault()
+                {
                     StencilWriteMask = 1;
                     StencilFunc = StencilFunction.Always;
                     StencilRef = 0;
@@ -70,6 +75,16 @@ namespace ObjectGL.v42
                 StencilTestEnable = false;
                 Front = new Side();
                 Back = new Side();
+            }
+
+            public void SetDefault()
+            {
+                DepthTestEnable = false;
+                DepthMask = true;
+                DepthFunc = DepthFunction.Less;
+                StencilTestEnable = false;
+                Front.SetDefault();
+                Back.SetDefault();
             }
         }
     }

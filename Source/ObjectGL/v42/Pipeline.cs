@@ -33,16 +33,16 @@ namespace ObjectGL.v42
 
         public Context Context { get { return context; } }
 
+        ShaderProgram program;
+        readonly UniformBuffersAspect uniformBuffers;
+        readonly TransformFeedbackBufferAspect transformFeedbackBuffers;
+
         VertexArray vertexArray;
         readonly TexturesAspect textures;
         readonly SamplersAspect samplers;
 
         Framebuffer framebuffer;
         readonly ViewportsAspect viewports;
-
-        ShaderProgram program;
-        readonly UniformBuffersAspect uniformBuffers;
-        readonly TransformFeedbackBufferAspect transformFeedbackBuffers;
 
         readonly RasterizerAspect rasterizer;
         readonly DepthStencilAspect depthStencil;
@@ -53,17 +53,31 @@ namespace ObjectGL.v42
         {
             this.context = context;
 
+            uniformBuffers = new UniformBuffersAspect(context);
+            transformFeedbackBuffers = new TransformFeedbackBufferAspect(context);
             textures = new TexturesAspect(context);
             samplers = new SamplersAspect(context);
             viewports = new ViewportsAspect(context);
-            uniformBuffers = new UniformBuffersAspect(context);
-            transformFeedbackBuffers= new TransformFeedbackBufferAspect(context);
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
             blend = new BlendAspect(context);
         }
 
         #region Setters
+        public ShaderProgram Program
+        {
+            get { return program; }
+            set
+            {
+                if (value == null) throw new ArgumentNullException("value");
+
+                program = value;
+            }
+        }
+
+        public UniformBuffersAspect UniformBuffers { get { return uniformBuffers; } }
+        public TransformFeedbackBufferAspect TransformFeedbackBuffers { get { return transformFeedbackBuffers; } }
+
         public VertexArray VertexArray
         {
             get { return vertexArray; }
@@ -84,20 +98,6 @@ namespace ObjectGL.v42
         }
 
         public ViewportsAspect Viewports { get { return viewports; } }
-
-        public ShaderProgram Program
-        {
-            get { return program; }
-            set
-            {
-                if (value == null) throw new ArgumentNullException("value");
-
-                program = value;
-            }
-        }
-
-        public UniformBuffersAspect UniformBuffers { get { return uniformBuffers; } }
-        public TransformFeedbackBufferAspect TransformFeedbackBuffers { get { return transformFeedbackBuffers; } }
 
         public RasterizerAspect Rasterizer { get { return rasterizer; } }
         public DepthStencilAspect DepthStencil { get { return depthStencil; } }

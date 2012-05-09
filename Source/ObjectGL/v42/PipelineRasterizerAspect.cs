@@ -41,6 +41,11 @@ namespace ObjectGL.v42
 
             public RasterizerAspect()
             {
+                SetDefault();
+            }
+
+            public void SetDefault()
+            {
                 PolygonModeFront = PolygonMode.Fill;
                 PolygonModeBack = PolygonMode.Fill;
                 CullFace = CullFaceMode.Back;

@@ -44,6 +44,11 @@ namespace ObjectGL.v42
 
                     internal Part()
                     {
+                        SetDefault();
+                    }
+
+                    public void SetDefault()
+                    {
                         EquationMode = BlendEquationMode.FuncAdd;
                         SrcFactor = BlendingFactorSrc.One;
                         DestFactor = BlendingFactorDest.Zero;
@@ -61,11 +66,20 @@ namespace ObjectGL.v42
                     Alpha = new Part();
                     SeparateAlphaBlendEnable = false;
                 }
+
+                public void SetDefault()
+                {
+                    Color.SetDefault();
+                    Alpha.SetDefault();
+                    SeparateAlphaBlendEnable = false;
+                }
             }
 
             public class TargetCollection
             {
                 readonly Target[] targets;
+
+                internal int Count { get { return targets.Length; } }
 
                 public Target this[int targetIndex]
                 {
@@ -96,6 +110,26 @@ namespace ObjectGL.v42
                 BlendColor = new Color4(0f, 0f, 0f, 0f);
                 Targets = new TargetCollection(context.Implementation.MaxDrawBuffers);
                 IndependentBlendEnable = false;
+            }
+
+            public void SetDefault(bool forceDefaultOnEachTarget)
+            {
+                BlendEnable = false;
+                AlphaToCoverageEnable = false;
+                BlendColor = new Color4(0f, 0f, 0f, 0f);
+                IndependentBlendEnable = false;
+
+                if (forceDefaultOnEachTarget)
+                {
+                    for (int i = 0; i < Targets.Count; i++)
+                    {
+                        Targets[i].SetDefault();
+                    }
+                }
+                else
+                {
+                    Targets[0].SetDefault();
+                }
             }
         }
     }
