@@ -273,6 +273,9 @@ void main()
 
             Context.Pipeline.DepthStencil.DepthTestEnable = true;
             Context.Pipeline.DepthStencil.DepthMask = true;
+            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Cw;
+            Context.Pipeline.Rasterizer.CullFaceEnable = true;
+            Context.Pipeline.Rasterizer.CullFace = CullFaceMode.Front;
 
             // Inside cube
 
@@ -293,6 +296,7 @@ void main()
             Context.Pipeline.UniformBuffers[1] = cameraOutside;
             Context.Pipeline.Textures[0] = renderTarget;
             Context.Pipeline.Samplers[0] = sampler;
+            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Ccw;
 
             Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
         }

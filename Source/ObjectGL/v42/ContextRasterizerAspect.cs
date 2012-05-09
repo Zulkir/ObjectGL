@@ -36,6 +36,7 @@ namespace ObjectGL.v42
 
             readonly RedundantInt cullFace = new RedundantInt(x => GL.CullFace((CullFaceMode)x));
             readonly RedundantInt frontFace = new RedundantInt(x => GL.FrontFace((FrontFaceDirection)x));
+            readonly RedundantEnable cullFaceEnable = new RedundantEnable(EnableCap.CullFace);
             readonly RedundantEnable scissorEnable = new RedundantEnable(EnableCap.ScissorTest);
             readonly RedundantEnable multisampleEnble = new RedundantEnable(EnableCap.Multisample);
             readonly RedundantEnable lineSmoothEnable = new RedundantEnable(EnableCap.LineSmooth);
@@ -62,6 +63,7 @@ namespace ObjectGL.v42
 
                 cullFace.Set((int)pipelineRasterizer.CullFace);
                 frontFace.Set((int)pipelineRasterizer.FrontFace);
+                cullFaceEnable.Set(pipelineRasterizer.CullFaceEnable);
                 scissorEnable.Set(pipelineRasterizer.ScissorEnable);
                 multisampleEnble.Set(pipelineRasterizer.MultisampleEnable);
                 lineSmoothEnable.Set(pipelineRasterizer.LineSmoothEnable);

@@ -35,6 +35,7 @@ namespace ObjectGL.v42
             public PolygonMode PolygonModeBack { get; set; }
             public CullFaceMode CullFace { get; set; }
             public FrontFaceDirection FrontFace { get; set; }
+            public bool CullFaceEnable { get; set; }
             public bool ScissorEnable { get; set; }
             public bool MultisampleEnable { get; set; }
             public bool LineSmoothEnable { get; set; }
@@ -50,6 +51,7 @@ namespace ObjectGL.v42
                 PolygonModeBack = PolygonMode.Fill;
                 CullFace = CullFaceMode.Back;
                 FrontFace = FrontFaceDirection.Ccw;
+                CullFaceEnable = false;
                 ScissorEnable = false;
                 MultisampleEnable = true;
                 LineSmoothEnable = false;
