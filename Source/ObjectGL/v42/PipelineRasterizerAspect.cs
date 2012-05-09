@@ -23,24 +23,32 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.v42;
-using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.v42
 {
-    abstract class Scene
+    public partial class Pipeline
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        public class RasterizerAspect
         {
-            Context = context;
-            GameWindow = gameWindow;
+            public PolygonMode PolygonModeFront { get; set; }
+            public PolygonMode PolygonModeBack { get; set; }
+            public CullFaceMode CullFace { get; set; }
+            public FrontFaceDirection FrontFace { get; set; }
+            public bool ScissorEnable { get; set; }
+            public bool MultisampleEnable { get; set; }
+            public bool LineSmoothEnable { get; set; }
+
+            public RasterizerAspect()
+            {
+                PolygonModeFront = PolygonMode.Fill;
+                PolygonModeBack = PolygonMode.Fill;
+                CullFace = CullFaceMode.Back;
+                FrontFace = FrontFaceDirection.Ccw;
+                ScissorEnable = false;
+                MultisampleEnable = true;
+                LineSmoothEnable = false;
+            }
         }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
     }
 }

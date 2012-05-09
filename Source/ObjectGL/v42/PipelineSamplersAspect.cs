@@ -23,24 +23,35 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.v42;
-using OpenTK;
+using System;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.v42
 {
-    abstract class Scene
+    public partial class Pipeline
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        public class SamplersAspect
         {
-            Context = context;
-            GameWindow = gameWindow;
+            readonly Sampler[] samplers;
+
+            internal SamplersAspect(Context context)
+            {
+                samplers = new Sampler[context.Implementation.MaxCombinedTextureImageUnits];
+            }
+
+            public Sampler this[int unit]
+            {
+                get
+                {
+                    return samplers[unit];
+                }
+                set
+                {
+                    if (unit < 0 || unit >= samplers.Length) throw new ArgumentOutOfRangeException("unit");
+                    if (value == null) throw new ArgumentNullException("value");
+
+                    samplers[unit] = value;
+                }
+            }
         }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
     }
 }

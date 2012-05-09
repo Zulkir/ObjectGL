@@ -23,24 +23,33 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.v42;
-using OpenTK;
+using System.Collections;
+using System.Collections.Generic;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.v42
 {
-    abstract class Scene
+    public class VertexShader : Shader, IEnumerable<VertexShader>
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        private VertexShader(int handle)
+            : base(handle, ShaderType.VertexShader)
         {
-            Context = context;
-            GameWindow = gameWindow;
+            
         }
 
-        public abstract void Initialize();
+        public IEnumerator<VertexShader> GetEnumerator()
+        {
+            yield return this;
+        }
 
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            yield return this;
+        }
+
+        public static bool TryCompile(string source, out VertexShader shader, out string errors)
+        {
+            return TryCompile(source, ShaderType.VertexShader, h => new VertexShader(h), out shader, out errors);
+        }
     }
 }

@@ -23,24 +23,34 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.v42;
-using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.v42
 {
-    abstract class Scene
+    public partial class Context
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        private class SamplersAspect
         {
-            Context = context;
-            GameWindow = gameWindow;
+            readonly RedundantInt[] samplerBindings;
+
+            public SamplersAspect(Implementation implementation)
+            {
+                samplerBindings = new RedundantInt[implementation.MaxCombinedTextureImageUnits];
+                for (int i = 0; i < implementation.MaxCombinedTextureImageUnits; i++)
+                {
+                    int iLoc = i;
+                    samplerBindings[i] = new RedundantInt(h => GL.BindSampler(iLoc, h));
+                }
+            }
+
+            internal void ConsumePipelineSamplers(Pipeline.SamplersAspect pipelineSamplers, int enabledTextureRange)
+            {
+                for (int i = 0; i < enabledTextureRange; i++)
+                {
+                    samplerBindings[i].Set(pipelineSamplers[i].Handle);
+                }
+            }
         }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
     }
+    
 }

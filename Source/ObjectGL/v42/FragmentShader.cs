@@ -23,24 +23,33 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.v42;
-using OpenTK;
+using System.Collections;
+using System.Collections.Generic;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.v42
 {
-    abstract class Scene
+    public class FragmentShader : Shader, IEnumerable<FragmentShader>
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        private FragmentShader(int handle)
+            : base(handle, ShaderType.FragmentShader)
         {
-            Context = context;
-            GameWindow = gameWindow;
+            
         }
 
-        public abstract void Initialize();
+        public IEnumerator<FragmentShader> GetEnumerator()
+        {
+            yield return this;
+        }
 
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            yield return this;
+        }
+
+        public static bool TryCompile(string source, out FragmentShader shader, out string errors)
+        {
+            return TryCompile(source, ShaderType.FragmentShader, h => new FragmentShader(h), out shader, out errors);
+        }
     }
 }

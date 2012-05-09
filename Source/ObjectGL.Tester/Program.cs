@@ -24,6 +24,7 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ObjectGL.Tester
@@ -39,6 +40,25 @@ namespace ObjectGL.Tester
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+            {
+                var builder = new StringBuilder();
+                var ex = (Exception)args.ExceptionObject;
+                while (ex != null)
+                {
+                    builder.AppendLine(ex.Message);
+                    builder.AppendLine();
+                    ex = ex.InnerException;
+                }
+                builder.AppendLine(((Exception) args.ExceptionObject).StackTrace);
+                MessageBox.Show(builder.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            };
+
+            Run();
+        }
+
+        static void Run()
+        {
             using (var gameWindow = new MyGameWindow())
             {
                 gameWindow.Run();

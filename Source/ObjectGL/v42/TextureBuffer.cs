@@ -23,24 +23,24 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.v42;
-using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.v42
 {
-    abstract class Scene
+    public class TextureBuffer : Texture
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
+        readonly Buffer buffer;
 
-        protected Scene(Context context, GameWindow gameWindow)
+        public Buffer Buffer { get { return buffer; } }
+
+        public TextureBuffer(Context currentContext, Buffer buffer, SizedInternalFormat internalFormat)
+            : base(TextureTarget.TextureBuffer, (Format)internalFormat, 1, 1)
         {
-            Context = context;
-            GameWindow = gameWindow;
+            this.buffer = buffer;
+
+            currentContext.BindTexture(Target, Handle);
+
+            GL.TexBuffer(TextureBufferTarget.TextureBuffer, internalFormat, buffer.Handle);
         }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
     }
 }
