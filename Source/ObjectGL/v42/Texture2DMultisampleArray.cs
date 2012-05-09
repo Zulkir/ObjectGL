@@ -38,8 +38,9 @@ namespace ObjectGL.v42
         public int Samples { get { return samples; } }
 
         public Texture2DMultisampleArray(Context currentContext,
-                         int width, int height, int sliceCount, int samples, bool fixedSampleLocations,
-                         Format internalFormat)
+                         int width, int height, int sliceCount, int samples,
+                         Format internalFormat,
+                         bool fixedSampleLocations = false)
             : base(TextureTarget.Texture2DMultisampleArray, internalFormat, sliceCount, 1)
         {
             this.width = width;
