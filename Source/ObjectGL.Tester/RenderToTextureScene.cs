@@ -259,9 +259,9 @@ void main()
             Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.SetViewport(0, 0, RenderTargetSize, RenderTargetSize);
-
             Context.Pipeline.Framebuffer = framebuffer;
+            Context.Pipeline.Viewports[0].Width = RenderTargetSize;
+            Context.Pipeline.Viewports[0].Height = RenderTargetSize;
 
             Context.Pipeline.Program = program;
             Context.Pipeline.UniformBuffers[0] = transform;
@@ -280,9 +280,6 @@ void main()
             renderTarget.GenerateMipmap(Context);
 
             // Outside cube
-
-            Context.SetViewport(0, 0, GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
-
             proj = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4f, (float)GameWindow.ClientSize.Width / GameWindow.ClientSize.Height, 0.1f, 1000f);
             
             viewProjection = view * proj;
@@ -291,6 +288,8 @@ void main()
             cameraOutside.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 
             Context.Pipeline.Framebuffer = null;
+            Context.Pipeline.Viewports[0].Width = GameWindow.ClientSize.Width;
+            Context.Pipeline.Viewports[0].Height = GameWindow.ClientSize.Height;
             Context.Pipeline.UniformBuffers[1] = cameraOutside;
             Context.Pipeline.Textures[0] = renderTarget;
             Context.Pipeline.Samplers[0] = sampler;

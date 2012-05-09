@@ -38,6 +38,7 @@ namespace ObjectGL.v42
         readonly SamplersAspect samplers;
 
         Framebuffer framebuffer;
+        readonly ViewportsAspect viewports;
 
         ShaderProgram program;
         readonly UniformBuffersAspect uniformBuffers;
@@ -54,11 +55,12 @@ namespace ObjectGL.v42
 
             textures = new TexturesAspect(context);
             samplers = new SamplersAspect(context);
+            viewports = new ViewportsAspect(context);
             uniformBuffers = new UniformBuffersAspect(context);
             transformFeedbackBuffers= new TransformFeedbackBufferAspect(context);
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
-            blend = new BlendAspect(context.Implementation.MaxDrawBuffers);
+            blend = new BlendAspect(context);
         }
 
         #region Setters
@@ -80,6 +82,8 @@ namespace ObjectGL.v42
             get { return framebuffer; }
             set { framebuffer = value; }
         }
+
+        public ViewportsAspect Viewports { get { return viewports; } }
 
         public ShaderProgram Program
         {

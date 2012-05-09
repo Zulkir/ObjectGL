@@ -57,6 +57,7 @@
     <Compile Include="v42\ContextFramebufferAspect.cs" />
     <Compile Include="v42\ContextSamplersAspect.cs" />
     <Compile Include="v42\ContextTexturesAspect.cs" />
+    <Compile Include="v42\ContextViewportsAspect.cs" />
     <Compile Include="v42\CubemapFace.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="v42\DepthStencil.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="v42\Context.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="v42\PipelineViewportsAspect.cs" />
     <Compile Include="v42\Renderbuffer.cs" />
     <Compile Include="v42\ResourceType.cs" />
     <Compile Include="v42\Sampler.cs" />

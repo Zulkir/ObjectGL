@@ -45,12 +45,14 @@ namespace ObjectGL.v42
         public int MaxTransformFeedbackSeparateComponents { get; private set; }
         public int MaxTransformFeedbackSeparateAttribs { get; private set; }
 
-        public int ViewportBoundsRange { get; private set; }
-        public int MaxViewportDims { get; private set; }
+        public int MaxViewports { get; private set; }
+        public float ViewportBoundsRange { get; private set; }
+        public float MaxViewportDims { get; private set; }
 
         internal unsafe Implementation()
         {
             int localInt;
+            float localFloat;
             
             Vendor = GL.GetString(StringName.Vendor);
             Renderer = GL.GetString(StringName.Renderer);
@@ -83,12 +85,15 @@ namespace ObjectGL.v42
 
             GL.GetInteger(GetPName.MaxTransformFeedbackSeparateAttribs, &localInt);
             MaxTransformFeedbackSeparateAttribs = localInt;
-            
-            GL.GetInteger(GetPName.ViewportBoundsRange, &localInt);
-            ViewportBoundsRange = localInt;
 
-            GL.GetInteger(GetPName.MaxViewportDims, &localInt);
-            MaxViewportDims = localInt;
+            GL.GetInteger(GetPName.MaxViewports, &localInt);
+            MaxViewports = localInt;
+
+            GL.GetFloat(GetPName.ViewportBoundsRange, &localFloat);
+            ViewportBoundsRange = localFloat;
+
+            GL.GetFloat(GetPName.MaxViewportDims, &localFloat);
+            MaxViewportDims = localFloat;
         }
     }
 }

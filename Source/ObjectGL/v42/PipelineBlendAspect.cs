@@ -89,12 +89,12 @@ namespace ObjectGL.v42
             public TargetCollection Targets { get; private set; }
             public bool IndependentBlendEnable { get; private set; }
 
-            internal BlendAspect(int maxDrawBuffers)
+            internal BlendAspect(Context context)
             {
                 BlendEnable = false;
                 AlphaToCoverageEnable = false;
                 BlendColor = new Color4(0f, 0f, 0f, 0f);
-                Targets = new TargetCollection(maxDrawBuffers);
+                Targets = new TargetCollection(context.Implementation.MaxDrawBuffers);
                 IndependentBlendEnable = false;
             }
         }

@@ -41,6 +41,7 @@ namespace ObjectGL.v42
         readonly TexturesAspect textures;
         readonly SamplersAspect samplers;
         readonly FramebufferAspect framebuffers;
+        readonly ViewportsAspect viewports;
         readonly RasterizerAspect rasterizer;
         readonly DepthStencilAspect depthStencil;
         readonly BlendAspect blend;
@@ -74,6 +75,7 @@ namespace ObjectGL.v42
             textures = new TexturesAspect(implementation);
             samplers = new SamplersAspect(implementation);
             framebuffers = new FramebufferAspect();
+            viewports = new ViewportsAspect(implementation);
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
             blend = new BlendAspect(implementation);
@@ -128,15 +130,16 @@ namespace ObjectGL.v42
             textures.ConsumePipelineTextures(pipeline.Textures);
             samplers.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
             framebuffers.ConsumePipelineFramebuffer(pipeline.Framebuffer);
+            viewports.ConsumePipelineViewports(pipeline.Viewports);
             rasterizer.ConsumePipelineRasterizer(pipeline.Rasterizer);
             depthStencil.ConsumePipelineDepthStencil(pipeline.DepthStencil);
             blend.ConsumePipelineBlend(pipeline.Blend);
         }
-
+        /*
         public void SetViewport(int x, int y, int width, int height)
         {
             GL.Viewport(x, y, width, height);
-        }
+        }*/
 
         public unsafe void ClearWindowColor(Color4 color)
         {
