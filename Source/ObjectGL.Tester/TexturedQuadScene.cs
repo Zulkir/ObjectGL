@@ -99,7 +99,7 @@ void main()
 
         public override void Initialize()
         {
-            vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
+            vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
                 new Vertex(-1f, -1f, 0f, 1f),
                 new Vertex(-1f, 1f, 0f, 0f),
@@ -107,7 +107,7 @@ void main()
                 new Vertex(1f, -1f, 1f, 1f),
             }));
 
-            indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
+            indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
             { 
                 0, 1, 2, 0, 2, 3
             }));
