@@ -81,6 +81,7 @@ namespace ObjectGL.v42
             blend = new BlendAspect(implementation);
         }
 
+        #region Bind
         internal void UseProgram(int programHandle)
         {
             program.UseProgram(programHandle);
@@ -120,6 +121,7 @@ namespace ObjectGL.v42
         {
             return framebuffers.BindAnyFramebuffer(framebufferHandle);
         }
+        #endregion
 
         internal void ConsumePipeline()
         {
@@ -135,11 +137,6 @@ namespace ObjectGL.v42
             depthStencil.ConsumePipelineDepthStencil(pipeline.DepthStencil);
             blend.ConsumePipelineBlend(pipeline.Blend);
         }
-        /*
-        public void SetViewport(int x, int y, int width, int height)
-        {
-            GL.Viewport(x, y, width, height);
-        }*/
 
         public unsafe void ClearWindowColor(Color4 color)
         {
@@ -237,5 +234,10 @@ namespace ObjectGL.v42
         // todo: DrawTransformFeedbackStreamInstanced
 
         #endregion
+
+        public void SwapBuffers()
+        {
+            nativeContext.SwapBuffers();
+        }
     }
 }
