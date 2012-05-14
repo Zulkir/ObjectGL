@@ -38,6 +38,9 @@ Global
 		{E3BF8C7F-02A8-4D01-9A10-15636215AB1B}.Release|x86.ActiveCfg = Release|x86
 		{E3BF8C7F-02A8-4D01-9A10-15636215AB1B}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = ObjectGL.Tester\ObjectGL.Tester.csproj
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
