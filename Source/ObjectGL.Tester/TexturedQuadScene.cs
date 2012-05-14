@@ -112,7 +112,7 @@ void main()
                 0, 1, 2, 0, 2, 3
             }));
 
-            using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
+            using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
                                            FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));

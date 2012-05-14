@@ -198,7 +198,7 @@ void main()
             cameraExtra = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
             light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
 
-            using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.bmp"))
+            using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
                                            FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
