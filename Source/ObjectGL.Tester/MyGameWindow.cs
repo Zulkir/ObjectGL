@@ -39,7 +39,7 @@ namespace ObjectGL.Tester
 
         public MyGameWindow() 
             : base(600, 400, new GraphicsMode(new ColorFormat(32), 24, 8, 4), "Object.GL Tester", 
-            GameWindowFlags.Default, DisplayDevice.Default, 3, 3, GraphicsContextFlags.ForwardCompatible)
+            GameWindowFlags.Default, DisplayDevice.Default)
         {
             VSync = VSyncMode.On;
             Context.SwapInterval = 1;
