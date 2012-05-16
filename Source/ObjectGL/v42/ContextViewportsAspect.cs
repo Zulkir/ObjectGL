@@ -89,6 +89,10 @@ namespace ObjectGL.v42
             public ViewportsAspect(Implementation implementation)
             {
                 viewports = new Viewport[implementation.MaxViewports];
+                for (int i = 0; i < viewports.Length; i++)
+                {
+                    viewports[0].Initialize();
+                }
             }
 
             public void ConsumePipelineViewports(Pipeline.ViewportsAspect pipelineViewports)
