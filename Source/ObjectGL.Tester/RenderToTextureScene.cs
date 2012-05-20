@@ -143,11 +143,19 @@ void main()
 
         public override void Initialize()
         {
-            framebuffer = new Framebuffer(Context);
             renderTarget = new Texture2D(Context, RenderTargetSize, RenderTargetSize, 0, Format.Rgba8);
             depthStencil = new Renderbuffer(Context, RenderTargetSize, RenderTargetSize, Format.Depth24Stencil8);
+
+            framebuffer = new Framebuffer(Context);
             framebuffer.AttachTextureImage(Context, FramebufferAttachmentPoint.Color0, renderTarget, 0);
             framebuffer.AttachRenderbuffer(Context, FramebufferAttachmentPoint.Depth, depthStencil);
+
+            GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, framebuffer.Handle);
+            var status = GL.CheckFramebufferStatus(FramebufferTarget.DrawFramebuffer);
+            if (status != FramebufferErrorCode.FramebufferComplete)
+            {
+                throw new InvalidOperationException();
+            }
 
             vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
