@@ -38,7 +38,7 @@ namespace ObjectGL.v42
         {
             this.buffer = buffer;
 
-            currentContext.BindTexture(Target, Handle);
+            currentContext.BindTexture(Target, this);
 
             GL.TexBuffer(TextureBufferTarget.TextureBuffer, internalFormat, buffer.Handle);
         }

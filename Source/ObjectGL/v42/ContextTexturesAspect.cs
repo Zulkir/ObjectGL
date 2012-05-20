@@ -34,21 +34,21 @@ namespace ObjectGL.v42
             readonly int textureUnitForEditing;
             readonly RedundantInt activeTextureUnitBinding = new RedundantInt(i => GL.ActiveTexture(TextureUnit.Texture0 + i));
 
-            readonly int[] actualTextures;
+            readonly Texture[] actualTextures;
 
             int enabledTextureUnitRange = 0;
 
             public TexturesAspect(Implementation implementation)
             {
-                actualTextures = new int[implementation.MaxCombinedTextureImageUnits];
+                actualTextures = new Texture[implementation.MaxCombinedTextureImageUnits];
                 textureUnitForEditing = implementation.MaxCombinedTextureImageUnits - 1;
             }
 
-            public void BindTexture(TextureTarget target, int textureHandle)
+            public void BindTexture(TextureTarget target, Texture texture)
             {
                 for (int i = 0; i < actualTextures.Length; i++)
                 {
-                    if (actualTextures[i] == textureHandle)
+                    if (actualTextures[i] == texture)
                     {
                         activeTextureUnitBinding.Set(i);
                         return;
@@ -56,8 +56,8 @@ namespace ObjectGL.v42
                 }
 
                 activeTextureUnitBinding.Set(textureUnitForEditing);
-                GL.BindTexture(target, textureHandle);
-                actualTextures[textureUnitForEditing] = textureHandle;
+                GL.BindTexture(target, Helpers.ObjectHandle(texture));
+                actualTextures[textureUnitForEditing] = texture;
             }
 
             public void ConsumePipelineTextures(Pipeline.TexturesAspect pipelineTextures)
@@ -67,16 +67,16 @@ namespace ObjectGL.v42
                     activeTextureUnitBinding.Set(i);
                     var texture = pipelineTextures[i];
                     GL.BindTexture(texture.Target, texture.Handle);
-                    actualTextures[i] = texture.Handle;
+                    actualTextures[i] = texture;
                 }
 
                 for (int i = pipelineTextures.EnabledTextureRange; i < enabledTextureUnitRange; i++)
                 {
-                    if (actualTextures[i] != 0)
+                    if (actualTextures[i] != null)
                     {
                         activeTextureUnitBinding.Set(i);
                         GL.BindTexture(TextureTarget.Texture2D, 0);
-                        actualTextures[i] = 0;
+                        actualTextures[i] = null;
                     }
                 }
 

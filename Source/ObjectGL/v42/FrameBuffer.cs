@@ -81,7 +81,7 @@ namespace ObjectGL.v42
             }
             #endregion
 
-            var framebufferTarget = currentContext.BindAnyFramebuffer(handle);
+            var framebufferTarget = currentContext.BindAnyFramebuffer(this);
             glFramebufferSomething(framebufferTarget, (FramebufferAttachment)attachmentPoint, ref newDesc);
 
             #region Update stored description
@@ -356,7 +356,7 @@ namespace ObjectGL.v42
             }
             #endregion
 
-            var framebufferTarget = currentContext.BindAnyFramebuffer(handle);
+            var framebufferTarget = currentContext.BindAnyFramebuffer(this);
             GL.FramebufferTexture2D(framebufferTarget, (FramebufferAttachment)attachmentPoint, TextureTarget.Texture2D, 0, 0);
 
             #region Update stored description
@@ -399,13 +399,13 @@ namespace ObjectGL.v42
 
         public unsafe void ClearColor(Context currentContext, int index, Color4 color)
         {
-            currentContext.BindDrawFramebuffer(handle);
+            currentContext.BindDrawFramebuffer(this);
             GL.ClearBuffer(ClearBuffer.Color, index, (float*)&color);
         }
 
         public void ClearDepthStencil(Context currentContext, DepthStencil target, float depth, int stencil)
         {
-            currentContext.BindDrawFramebuffer(handle);
+            currentContext.BindDrawFramebuffer(this);
 
             ClearBuffer clearBuffer;
             switch (target)

@@ -23,24 +23,22 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using OpenTK.Graphics.OpenGL;
-
 namespace ObjectGL.v42
 {
     public partial class Context
     {
         private class ProgramAspect
         {
-            readonly RedundantInt programBinding = new RedundantInt(GL.UseProgram);
+            readonly RedundantObject<ShaderProgram> programBinding = new RedundantObject<ShaderProgram>(o => Helpers.ObjectHandle(o));
 
             public void ConsumePipelineProgram(ShaderProgram program)
             {
-                programBinding.Set(program.Handle);
+                programBinding.Set(program);
             }
 
-            public void UseProgram(int programHandle)
+            public void UseProgram(ShaderProgram program)
             {
-                programBinding.Set(programHandle);
+                programBinding.Set(program);
             }
         }
     }

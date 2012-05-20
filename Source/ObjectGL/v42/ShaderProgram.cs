@@ -83,6 +83,7 @@ namespace ObjectGL.v42
                 throw new ArgumentException("All non-null sampler names must be unique.");
 
             int handle = GL.CreateProgram();
+            program = new ShaderProgram(handle);
 
             geometryShaders = geometryShaders ?? EmptyGeometryShaderArray;
 
@@ -133,7 +134,7 @@ namespace ObjectGL.v42
                 GL.UniformBlockBinding(handle, programSpecificIndex, i);
             }
 
-            currentContext.UseProgram(handle);
+            currentContext.UseProgram(program);
 
             for (int i = 0; i < samplerNames.Length; i++)
             {
@@ -143,7 +144,6 @@ namespace ObjectGL.v42
                 GL.Uniform1(samplerUniformLocation, i);
             }
 
-            program = new ShaderProgram(handle);
             errors = null;
             return true;
         }

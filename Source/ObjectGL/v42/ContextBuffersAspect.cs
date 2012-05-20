@@ -32,82 +32,82 @@ namespace ObjectGL.v42
     {
         private class BuffersAspect
         {
-            readonly RedundantInt vertexArrayBinding = new RedundantInt(GL.BindVertexArray);
+            readonly RedundantObject<VertexArray> vertexArrayBinding = new RedundantObject<VertexArray>(o => GL.BindVertexArray(Helpers.ObjectHandle(o)));
 
-            readonly RedundantInt arrayBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.ArrayBuffer, h));
-            readonly RedundantInt copyReadBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.CopyReadBuffer, h));
-            readonly RedundantInt copyWriteBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.CopyWriteBuffer, h));
-            readonly RedundantInt elementArrayBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.ElementArrayBuffer, h));
-            readonly RedundantInt pixelPackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelPackBuffer, h));
-            readonly RedundantInt pixelUnpackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.PixelUnpackBuffer, h));
-            readonly RedundantInt textureBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.TextureBuffer, h));
-            readonly RedundantInt drawIndirectBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.DrawIndirectBuffer, h));
-            readonly RedundantInt transformFeedbackBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.TransformFeedbackBuffer, h));
-            readonly RedundantInt uniformBufferBinding = new RedundantInt(h => GL.BindBuffer(BufferTarget.UniformBuffer, h));
-            readonly RedundantInt[] transormFeedbackBufferIndexedBindingsArray;
-            readonly RedundantInt[] uniformBufferIndexedBindingsArray;
+            readonly RedundantObject<Buffer> arrayBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.ArrayBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> copyReadBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.CopyReadBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> copyWriteBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.CopyWriteBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> elementArrayBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.ElementArrayBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> pixelPackBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.PixelPackBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> pixelUnpackBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.PixelUnpackBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> textureBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.TextureBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> drawIndirectBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.DrawIndirectBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> transformFeedbackBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.TransformFeedbackBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer> uniformBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.UniformBuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Buffer>[] transormFeedbackBufferIndexedBindingsArray;
+            readonly RedundantObject<Buffer>[] uniformBufferIndexedBindingsArray;
 
             int boundTransformFeedbackBufferRange = 0;
             int boundUniformBufferRange = 0;
 
             public BuffersAspect(Implementation implementation)
             {
-                transormFeedbackBufferIndexedBindingsArray = new RedundantInt[implementation.MaxTransformFeedbackBuffers];
+                transormFeedbackBufferIndexedBindingsArray = new RedundantObject<Buffer>[implementation.MaxTransformFeedbackBuffers];
                 for (int i = 0; i < implementation.MaxTransformFeedbackBuffers; i++)
                 {
                     int iLoc = i;
-                    transormFeedbackBufferIndexedBindingsArray[i] = new RedundantInt(h => GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, h));
+                    transormFeedbackBufferIndexedBindingsArray[i] = new RedundantObject<Buffer>(o => GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, Helpers.ObjectHandle(o)));
                 }
 
-                uniformBufferIndexedBindingsArray = new RedundantInt[implementation.MaxUniformBufferBindings];
+                uniformBufferIndexedBindingsArray = new RedundantObject<Buffer>[implementation.MaxUniformBufferBindings];
                 for (int i = 0; i < implementation.MaxUniformBufferBindings; i++)
                 {
                     int iLoc = i;
-                    uniformBufferIndexedBindingsArray[i] = new RedundantInt(h => GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, h));
+                    uniformBufferIndexedBindingsArray[i] = new RedundantObject<Buffer>(o => GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, Helpers.ObjectHandle(o)));
                 }
             }
 
-            public void BindVertexArray(int vertexArrayHandle)
+            public void BindVertexArray(VertexArray vertexArray)
             {
-                vertexArrayBinding.Set(vertexArrayHandle);
+                vertexArrayBinding.Set(vertexArray);
             }
 
-            public void BindBuffer(BufferTarget target, int bufferHandle)
+            public void BindBuffer(BufferTarget target, Buffer buffer)
             {
                 if (target == BufferTarget.ElementArrayBuffer)
-                    vertexArrayBinding.Set(0);
+                    vertexArrayBinding.Set(null);
 
                 switch (target)
                 {
-                    case BufferTarget.ArrayBuffer: arrayBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.CopyReadBuffer: copyReadBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.CopyWriteBuffer: copyWriteBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.ElementArrayBuffer: elementArrayBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.PixelPackBuffer: pixelPackBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.PixelUnpackBuffer: pixelUnpackBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.TextureBuffer: textureBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.DrawIndirectBuffer: drawIndirectBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.TransformFeedbackBuffer: transformFeedbackBufferBinding.Set(bufferHandle); return;
-                    case BufferTarget.UniformBuffer: uniformBufferBinding.Set(bufferHandle); return;
+                    case BufferTarget.ArrayBuffer: arrayBufferBinding.Set(buffer); return;
+                    case BufferTarget.CopyReadBuffer: copyReadBufferBinding.Set(buffer); return;
+                    case BufferTarget.CopyWriteBuffer: copyWriteBufferBinding.Set(buffer); return;
+                    case BufferTarget.ElementArrayBuffer: elementArrayBufferBinding.Set(buffer); return;
+                    case BufferTarget.PixelPackBuffer: pixelPackBufferBinding.Set(buffer); return;
+                    case BufferTarget.PixelUnpackBuffer: pixelUnpackBufferBinding.Set(buffer); return;
+                    case BufferTarget.TextureBuffer: textureBufferBinding.Set(buffer); return;
+                    case BufferTarget.DrawIndirectBuffer: drawIndirectBufferBinding.Set(buffer); return;
+                    case BufferTarget.TransformFeedbackBuffer: transformFeedbackBufferBinding.Set(buffer); return;
+                    case BufferTarget.UniformBuffer: uniformBufferBinding.Set(buffer); return;
                     default: throw new ArgumentOutOfRangeException("target");
                 }
             }
 
             public void ConsumePipelineVertexArray(VertexArray vertexArray)
             {
-                BindVertexArray(vertexArray.Handle);
+                BindVertexArray(vertexArray);
             }
 
             public void ConsumePipelineUniformBuffers(Pipeline.UniformBuffersAspect pipelineUniformBuffers)
             {
                 for (int i = 0; i < pipelineUniformBuffers.EnabledUniformBufferRange; i++)
                 {
-                    uniformBufferIndexedBindingsArray[i].Set(pipelineUniformBuffers[i].Handle);
+                    uniformBufferIndexedBindingsArray[i].Set(pipelineUniformBuffers[i]);
                 }
 
                 for (int i = pipelineUniformBuffers.EnabledUniformBufferRange; i < boundUniformBufferRange; i++)
                 {
-                    uniformBufferIndexedBindingsArray[i].Set(0);
+                    uniformBufferIndexedBindingsArray[i].Set(null);
                 }
 
                 boundUniformBufferRange = pipelineUniformBuffers.EnabledUniformBufferRange;
@@ -117,12 +117,12 @@ namespace ObjectGL.v42
             {
                 for (int i = 0; i < transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i++)
                 {
-                    transormFeedbackBufferIndexedBindingsArray[i].Set(transformFeedbackBuffers[i].Handle);
+                    transormFeedbackBufferIndexedBindingsArray[i].Set(transformFeedbackBuffers[i]);
                 }
 
                 for (int i = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i < boundTransformFeedbackBufferRange; i++)
                 {
-                    transormFeedbackBufferIndexedBindingsArray[i].Set(0);
+                    transormFeedbackBufferIndexedBindingsArray[i].Set(null);
                 }
 
                 boundTransformFeedbackBufferRange = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange;

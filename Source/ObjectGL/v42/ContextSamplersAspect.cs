@@ -31,15 +31,15 @@ namespace ObjectGL.v42
     {
         private class SamplersAspect
         {
-            readonly RedundantInt[] samplerBindings;
+            readonly RedundantObject<Sampler>[] samplerBindings;
 
             public SamplersAspect(Implementation implementation)
             {
-                samplerBindings = new RedundantInt[implementation.MaxCombinedTextureImageUnits];
+                samplerBindings = new RedundantObject<Sampler>[implementation.MaxCombinedTextureImageUnits];
                 for (int i = 0; i < implementation.MaxCombinedTextureImageUnits; i++)
                 {
                     int iLoc = i;
-                    samplerBindings[i] = new RedundantInt(h => GL.BindSampler(iLoc, h));
+                    samplerBindings[i] = new RedundantObject<Sampler>(o => GL.BindSampler(iLoc, Helpers.ObjectHandle(o)));
                 }
             }
 
@@ -47,7 +47,7 @@ namespace ObjectGL.v42
             {
                 for (int i = 0; i < enabledTextureRange; i++)
                 {
-                    samplerBindings[i].Set(pipelineSamplers[i].Handle);
+                    samplerBindings[i].Set(pipelineSamplers[i]);
                 }
             }
         }

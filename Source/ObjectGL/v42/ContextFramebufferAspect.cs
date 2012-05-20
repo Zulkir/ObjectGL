@@ -31,36 +31,36 @@ namespace ObjectGL.v42
     {
         private class FramebufferAspect
         {
-            readonly RedundantInt drawFramebufferBinding = new RedundantInt(h => GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, h));
-            readonly RedundantInt readFramebufferBinding = new RedundantInt(h => GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, h));
-            readonly RedundantInt renderbufferBinding = new RedundantInt(h => GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, h));
+            readonly RedundantObject<Framebuffer> drawFramebufferBinding = new RedundantObject<Framebuffer>(o => GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Framebuffer> readFramebufferBinding = new RedundantObject<Framebuffer>(o => GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, Helpers.ObjectHandle(o)));
+            readonly RedundantObject<Renderbuffer> renderbufferBinding = new RedundantObject<Renderbuffer>(o => GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, Helpers.ObjectHandle(o)));
 
-            public void BindDrawFramebuffer(int framebufferHandle)
+            public void BindDrawFramebuffer(Framebuffer framebuffer)
             {
-                drawFramebufferBinding.Set(framebufferHandle);
+                drawFramebufferBinding.Set(framebuffer);
             }
 
-            public void BindReadFramebuffer(int framebufferHandle)
+            public void BindReadFramebuffer(Framebuffer framebuffer)
             {
-                readFramebufferBinding.Set(framebufferHandle);
+                readFramebufferBinding.Set(framebuffer);
             }
 
-            public FramebufferTarget BindAnyFramebuffer(int framebufferHandle)
+            public FramebufferTarget BindAnyFramebuffer(Framebuffer framebuffer)
             {
-                if (drawFramebufferBinding.HasValueSet(framebufferHandle)) return FramebufferTarget.DrawFramebuffer;
-                if (readFramebufferBinding.HasValueSet(framebufferHandle)) return FramebufferTarget.ReadFramebuffer;
-                readFramebufferBinding.Set(framebufferHandle);
+                if (drawFramebufferBinding.HasValueSet(framebuffer)) return FramebufferTarget.DrawFramebuffer;
+                if (readFramebufferBinding.HasValueSet(framebuffer)) return FramebufferTarget.ReadFramebuffer;
+                readFramebufferBinding.Set(framebuffer);
                 return FramebufferTarget.ReadFramebuffer;
             }
 
-            public void BindRenderbuffer(int renderbufferHandle)
+            public void BindRenderbuffer(Renderbuffer renderbuffer)
             {
-                renderbufferBinding.Set(renderbufferHandle);
+                renderbufferBinding.Set(renderbuffer);
             }
 
             public void ConsumePipelineFramebuffer(Framebuffer framebuffer)
             {
-                drawFramebufferBinding.Set(framebuffer != null ? framebuffer.Handle : 0);
+                drawFramebufferBinding.Set(framebuffer);
             }
         }
     }

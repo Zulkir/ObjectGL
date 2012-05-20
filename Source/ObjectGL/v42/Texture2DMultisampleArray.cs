@@ -47,7 +47,7 @@ namespace ObjectGL.v42
             this.height = height;
             this.samples = samples;
 
-            currentContext.BindTexture(Target, Handle);
+            currentContext.BindTexture(Target, this);
 
             GL.TexImage3DMultisample((TextureTargetMultisample)Target, samples, (PixelInternalFormat)internalFormat, width, height, sliceCount, fixedSampleLocations);
         }

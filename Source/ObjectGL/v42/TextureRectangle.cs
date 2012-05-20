@@ -48,7 +48,7 @@ namespace ObjectGL.v42
             this.width = width;
             this.height = height;
 
-            currentContext.BindTexture(Target, Handle);
+            currentContext.BindTexture(Target, this);
 
             Data data = initialData;
             glTexImage(Target, 0, (PixelInternalFormat)internalFormat, width, height, data.Pointer);

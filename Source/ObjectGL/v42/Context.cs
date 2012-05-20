@@ -36,15 +36,15 @@ namespace ObjectGL.v42
         readonly Implementation implementation;
         readonly Pipeline pipeline;
 
-        readonly ProgramAspect program;
-        readonly BuffersAspect buffers;
-        readonly TexturesAspect textures;
-        readonly SamplersAspect samplers;
-        readonly FramebufferAspect framebuffers;
-        readonly ViewportsAspect viewports;
-        readonly RasterizerAspect rasterizer;
-        readonly DepthStencilAspect depthStencil;
-        readonly BlendAspect blend;
+        readonly ProgramAspect programAspect;
+        readonly BuffersAspect buffersAspect;
+        readonly TexturesAspect texturesAspect;
+        readonly SamplersAspect samplersAspect;
+        readonly FramebufferAspect framebuffersAspect;
+        readonly ViewportsAspect viewportsAspect;
+        readonly RasterizerAspect rasterizerAspect;
+        readonly DepthStencilAspect depthStencilAspect;
+        readonly BlendAspect blendAspect;
 
         public Implementation Implementation { get { return implementation; } }
         public Pipeline Pipeline { get { return pipeline; } }
@@ -70,77 +70,77 @@ namespace ObjectGL.v42
             implementation = new Implementation();
             pipeline = new Pipeline(this);
 
-            program = new ProgramAspect();
-            buffers = new BuffersAspect(implementation);
-            textures = new TexturesAspect(implementation);
-            samplers = new SamplersAspect(implementation);
-            framebuffers = new FramebufferAspect();
-            viewports = new ViewportsAspect(implementation);
-            rasterizer = new RasterizerAspect();
-            depthStencil = new DepthStencilAspect();
-            blend = new BlendAspect(implementation);
+            programAspect = new ProgramAspect();
+            buffersAspect = new BuffersAspect(implementation);
+            texturesAspect = new TexturesAspect(implementation);
+            samplersAspect = new SamplersAspect(implementation);
+            framebuffersAspect = new FramebufferAspect();
+            viewportsAspect = new ViewportsAspect(implementation);
+            rasterizerAspect = new RasterizerAspect();
+            depthStencilAspect = new DepthStencilAspect();
+            blendAspect = new BlendAspect(implementation);
         }
 
         #region Bind
-        internal void UseProgram(int programHandle)
+        internal void UseProgram(ShaderProgram program)
         {
-            program.UseProgram(programHandle);
+            programAspect.UseProgram(program);
         }
 
-        internal void BindVertexArray(int vertexArrayHandle)
+        internal void BindVertexArray(VertexArray vertexArray)
         {
-            buffers.BindVertexArray(vertexArrayHandle);
+            buffersAspect.BindVertexArray(vertexArray);
         }
 
-        internal void BindBuffer(BufferTarget target, int bufferHandle)
+        internal void BindBuffer(BufferTarget target, Buffer buffer)
         {
-            buffers.BindBuffer(target, bufferHandle);
+            buffersAspect.BindBuffer(target, buffer);
         }
 
-        internal void BindTexture(TextureTarget target, int textureHandle)
+        internal void BindTexture(TextureTarget target, Texture texture)
         {
-            textures.BindTexture(target, textureHandle);
+            texturesAspect.BindTexture(target, texture);
         }
 
-        internal void BindRenderbuffer(int renderbufferHandle)
+        internal void BindRenderbuffer(Renderbuffer renderbuffer)
         {
-            framebuffers.BindRenderbuffer(renderbufferHandle);
+            framebuffersAspect.BindRenderbuffer(renderbuffer);
         }
 
-        internal void BindDrawFramebuffer(int framebufferHandle)
+        internal void BindDrawFramebuffer(Framebuffer framebuffer)
         {
-            framebuffers.BindDrawFramebuffer(framebufferHandle);
+            framebuffersAspect.BindDrawFramebuffer(framebuffer);
         }
 
-        internal void BindReadFramebuffer(int framebufferHandle)
+        internal void BindReadFramebuffer(Framebuffer framebuffer)
         {
-            framebuffers.BindReadFramebuffer(framebufferHandle);
+            framebuffersAspect.BindReadFramebuffer(framebuffer);
         }
 
-        internal FramebufferTarget BindAnyFramebuffer(int framebufferHandle)
+        internal FramebufferTarget BindAnyFramebuffer(Framebuffer framebuffer)
         {
-            return framebuffers.BindAnyFramebuffer(framebufferHandle);
+            return framebuffersAspect.BindAnyFramebuffer(framebuffer);
         }
         #endregion
 
         internal void ConsumePipeline()
         {
-            program.ConsumePipelineProgram(pipeline.Program);
-            buffers.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
-            buffers.ConsumePipelineTransformFeedbackBuffers(pipeline.TransformFeedbackBuffers);
-            buffers.ConsumePipelineVertexArray(pipeline.VertexArray);
-            textures.ConsumePipelineTextures(pipeline.Textures);
-            samplers.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
-            framebuffers.ConsumePipelineFramebuffer(pipeline.Framebuffer);
-            viewports.ConsumePipelineViewports(pipeline.Viewports);
-            rasterizer.ConsumePipelineRasterizer(pipeline.Rasterizer);
-            depthStencil.ConsumePipelineDepthStencil(pipeline.DepthStencil);
-            blend.ConsumePipelineBlend(pipeline.Blend);
+            programAspect.ConsumePipelineProgram(pipeline.Program);
+            buffersAspect.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
+            buffersAspect.ConsumePipelineTransformFeedbackBuffers(pipeline.TransformFeedbackBuffers);
+            buffersAspect.ConsumePipelineVertexArray(pipeline.VertexArray);
+            texturesAspect.ConsumePipelineTextures(pipeline.Textures);
+            samplersAspect.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
+            framebuffersAspect.ConsumePipelineFramebuffer(pipeline.Framebuffer);
+            viewportsAspect.ConsumePipelineViewports(pipeline.Viewports);
+            rasterizerAspect.ConsumePipelineRasterizer(pipeline.Rasterizer);
+            depthStencilAspect.ConsumePipelineDepthStencil(pipeline.DepthStencil);
+            blendAspect.ConsumePipelineBlend(pipeline.Blend);
         }
 
         public unsafe void ClearWindowColor(Color4 color)
         {
-            framebuffers.BindDrawFramebuffer(0);
+            framebuffersAspect.BindDrawFramebuffer(null);
             GL.ClearBuffer(ClearBuffer.Color, 0, (float*)&color);
         }
 
@@ -154,7 +154,7 @@ namespace ObjectGL.v42
             if (clearBuffer == 0)
                 throw new ArgumentException("'mask' can not be 'None'");
 
-            framebuffers.BindDrawFramebuffer(0);
+            framebuffersAspect.BindDrawFramebuffer(null);
             GL.ClearBuffer(clearBuffer, 0, depth, stencil);
         }
 

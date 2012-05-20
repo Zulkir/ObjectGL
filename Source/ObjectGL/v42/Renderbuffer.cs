@@ -58,7 +58,7 @@ namespace ObjectGL.v42
             GL.GenRenderbuffers(1, &handleProxy);
             handle = handleProxy;
 
-            currentContext.BindRenderbuffer(handle);
+            currentContext.BindRenderbuffer(this);
 
             if (samples == 0)
             {

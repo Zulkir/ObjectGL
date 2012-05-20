@@ -103,7 +103,7 @@ namespace ObjectGL.v42
         public void SetBaseLevel(Context currentContext, int value)
         {
             if (baseLevel == value) return;
-            currentContext.BindTexture(target, handle);
+            currentContext.BindTexture(target, this);
             GL.TexParameter(target, TextureParameterName.TextureBaseLevel, value);
             baseLevel = value;
         }
@@ -111,7 +111,7 @@ namespace ObjectGL.v42
         public void SetMaxLevel(Context currentContext, int value)
         {
             if (maxLevel == value) return;
-            currentContext.BindTexture(target, handle);
+            currentContext.BindTexture(target, this);
             GL.TexParameter(target, TextureParameterName.TextureMaxLevel, value);
             maxLevel = value;
         }
@@ -119,14 +119,14 @@ namespace ObjectGL.v42
         public void SetLodBias(Context currentContext, float value)
         {
             if (lodBias == value) return;
-            currentContext.BindTexture(target, handle);
+            currentContext.BindTexture(target, this);
             GL.TexParameter(target, TextureParameterName.TextureLodBias, value);
             lodBias = value;
         }
 
         public void GenerateMipmap(Context currentContext)
         {
-            currentContext.BindTexture(target, handle);
+            currentContext.BindTexture(target, this);
             GL.GenerateMipmap((GenerateMipmapTarget)target);
         }
 

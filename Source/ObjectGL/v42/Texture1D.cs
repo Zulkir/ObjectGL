@@ -43,7 +43,7 @@ namespace ObjectGL.v42
         {
             this.width = width;
 
-            currentContext.BindTexture(Target, Handle);
+            currentContext.BindTexture(Target, this);
 
             int mipWidth = width;
 

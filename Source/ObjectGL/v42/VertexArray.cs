@@ -53,7 +53,7 @@ namespace ObjectGL.v42
         {
             if (elementArrayBuffer == buffer) return;
 
-            currentContext.BindVertexArray(handle);
+            currentContext.BindVertexArray(this);
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, buffer != null ? buffer.Handle : 0);
             elementArrayBuffer = buffer;
         }
@@ -76,12 +76,12 @@ namespace ObjectGL.v42
 
             if (VertexAttributeDescription.Equals(ref vertexAttributes[index], ref newDesc)) return;
 
-            currentContext.BindVertexArray(handle);
+            currentContext.BindVertexArray(this);
 
             if (!vertexAttributes[index].IsEnabled)
                 GL.EnableVertexAttribArray(index);
 
-            currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
+            currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer);
             GL.VertexAttribPointer(index, dimension, type, normalized, stride, offset);
 
             if (vertexAttributes[index].Divisor != divisor)
@@ -110,12 +110,12 @@ namespace ObjectGL.v42
 
             if (VertexAttributeDescription.Equals(ref vertexAttributes[index], ref newDesc)) return;
 
-            currentContext.BindVertexArray(handle);
+            currentContext.BindVertexArray(this);
 
             if (!vertexAttributes[index].IsEnabled)
                 GL.EnableVertexAttribArray(index);
 
-            currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer.Handle);
+            currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer);
             GL.VertexAttribIPointer(index, dimension, type, stride, (IntPtr)offset);
 
             if (vertexAttributes[index].Divisor != divisor)
@@ -132,7 +132,7 @@ namespace ObjectGL.v42
             if (index >= enabledVertexAttributesRange) return;
             if (!vertexAttributes[index].IsEnabled) return;
 
-            currentContext.BindVertexArray(handle);
+            currentContext.BindVertexArray(this);
             GL.DisableVertexAttribArray(index);
 
             vertexAttributes[index].IsEnabled = false;

@@ -25,7 +25,7 @@ freely, subject to the following restrictions:
 
 using OpenTK.Graphics;
 
-namespace ObjectGL
+namespace ObjectGL.v42
 {
     static class Helpers
     {
@@ -36,6 +36,11 @@ namespace ObjectGL
                 c1.G == c2.G &&
                 c1.B == c2.B &&
                 c1.A == c2.A;
+        }
+
+        public static int ObjectHandle(IContextObject contextObject)
+        {
+            return contextObject != null ? contextObject.Handle : 0;
         }
     }
 }

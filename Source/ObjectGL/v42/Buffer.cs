@@ -55,14 +55,14 @@ namespace ObjectGL.v42
             GL.GenBuffers(1, &handleProxy);
             handle = handleProxy;
 
-            currentContext.BindBuffer(creationTarget, handle);
+            currentContext.BindBuffer(creationTarget, this);
             GL.BufferData(creationTarget, (IntPtr)sizeInBytes, initialData.Pointer, usage);
             initialData.UnpinPointer();
         }
 
         public void SetData(Context currentContext, BufferTarget editingTarget, IntPtr data)
         {
-            currentContext.BindBuffer(editingTarget, handle);
+            currentContext.BindBuffer(editingTarget, this);
             GL.BufferData(editingTarget, (IntPtr)sizeInBytes, data, usage);
         }
 
