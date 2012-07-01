@@ -24,11 +24,11 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using ObjectGL.v42;
+using ObjectGL.GL42;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using Buffer = ObjectGL.v42.Buffer;
+using Buffer = ObjectGL.GL42.Buffer;
 
 namespace ObjectGL.Tester
 {

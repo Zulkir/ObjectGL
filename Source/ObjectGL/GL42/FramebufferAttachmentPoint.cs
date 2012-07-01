@@ -23,24 +23,28 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
-
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    public enum FramebufferAttachmentPoint
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
-        {
-            Context = context;
-            GameWindow = gameWindow;
-        }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        DepthStencil = 33306,
+        Color0 = 36064,
+        Color1 = 36065,
+        Color2 = 36066,
+        Color3 = 36067,
+        Color4 = 36068,
+        Color5 = 36069,
+        Color6 = 36070,
+        Color7 = 36071,
+        Color8 = 36072,
+        Color9 = 36073,
+        Color10 = 36074,
+        Color11 = 36075,
+        Color12 = 36076,
+        Color13 = 36077,
+        Color14 = 36078,
+        Color15 = 36079,
+        Depth = 36096,
+        Stencil = 36128,
     }
 }

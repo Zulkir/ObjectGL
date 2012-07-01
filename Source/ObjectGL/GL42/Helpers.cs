@@ -23,24 +23,24 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
+using OpenTK.Graphics;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    static class Helpers
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        public static bool ColorsEqual(ref Color4 c1, ref Color4 c2)
         {
-            Context = context;
-            GameWindow = gameWindow;
+            return
+                c1.R == c2.R &&
+                c1.G == c2.G &&
+                c1.B == c2.B &&
+                c1.A == c2.A;
         }
 
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        public static int ObjectHandle(IContextObject contextObject)
+        {
+            return contextObject != null ? contextObject.Handle : 0;
+        }
     }
 }

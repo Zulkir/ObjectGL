@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -23,24 +23,13 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
-
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    enum FramebufferAttachmentType
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
-        {
-            Context = context;
-            GameWindow = gameWindow;
-        }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        Disabled,
+        Renderbufer,
+        Texture,
+        TextureLayers
     }
 }

@@ -23,24 +23,19 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
-
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    public enum FormatColor
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
+        Red = 6403,
+        Rg = 33319,
+        Rgb = 6407,
+        Bgr = 32992,
+        Rgba = 6408,
+        Bgra = 32993,
 
-        protected Scene(Context context, GameWindow gameWindow)
-        {
-            Context = context;
-            GameWindow = gameWindow;
-        }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        // todo: remove when glTexStorage is available
+        DepthComponent = 6402,
+        DepthStencil = 34041,
     }
 }

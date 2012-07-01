@@ -23,24 +23,22 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
-
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    public enum ResourceType
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
-        {
-            Context = context;
-            GameWindow = gameWindow;
-        }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        Buffer,
+        Renderbuffer,
+        Texture1D,
+        Texture1DArray,
+        Texture2D,
+        Texture2DArray,
+        Texture2DMultisample,
+        Texture2DMultisampleArray,
+        Texture3D,
+        TextureBuffer,
+        TextureCubemap,
+        TextureCubemapArray,
+        TextureRectangle
     }
 }

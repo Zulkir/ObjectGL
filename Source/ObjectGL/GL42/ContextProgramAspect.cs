@@ -23,24 +23,26 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    public partial class Context
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        private class ProgramAspect
         {
-            Context = context;
-            GameWindow = gameWindow;
+            readonly RedundantObject<ShaderProgram> programBinding = new RedundantObject<ShaderProgram>(o => GL.UseProgram(Helpers.ObjectHandle(o)));
+
+            public void ConsumePipelineProgram(ShaderProgram program)
+            {
+                programBinding.Set(program);
+            }
+
+            public void UseProgram(ShaderProgram program)
+            {
+                programBinding.Set(program);
+            }
         }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
     }
+    
 }

@@ -1,5 +1,3 @@
-﻿#region License
-/*
 Copyright (c) 2012 Daniil Rodin
 
 This software is provided 'as-is', without any express or implied
@@ -20,27 +18,3 @@ freely, subject to the following restrictions:
 
    3. This notice may not be removed or altered from any source
    distribution.
-*/
-#endregion
-
-using ObjectGL.GL42;
-using OpenTK;
-
-namespace ObjectGL.Tester
-{
-    abstract class Scene
-    {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
-        {
-            Context = context;
-            GameWindow = gameWindow;
-        }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
-    }
-}

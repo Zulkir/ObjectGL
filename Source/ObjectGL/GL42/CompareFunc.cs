@@ -23,24 +23,19 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    public enum CompareFunc
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
-        {
-            Context = context;
-            GameWindow = gameWindow;
-        }
-
-        public abstract void Initialize();
-
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        Lequal = All.Lequal,
+        Gequal = All.Gequal,
+        Less = All.Less,
+        Greater = All.Greater,
+        Equal = All.Equal,
+        Notequal = All.Notequal,
+        Always = All.Always,
+        Never = All.Never
     }
 }

@@ -23,24 +23,32 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using ObjectGL.GL42;
-using OpenTK;
+using System.Collections;
+using System.Collections.Generic;
+using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.GL42
 {
-    abstract class Scene
+    public class GeometryShader : Shader, IEnumerable<GeometryShader>
     {
-        protected Context Context { get; private set; }
-        protected GameWindow GameWindow { get; private set; }
-
-        protected Scene(Context context, GameWindow gameWindow)
+        private GeometryShader(int handle)
+            : base(handle, ShaderType.GeometryShader)
         {
-            Context = context;
-            GameWindow = gameWindow;
         }
 
-        public abstract void Initialize();
+        public IEnumerator<GeometryShader> GetEnumerator()
+        {
+            yield return this;
+        }
 
-        public abstract void OnNewFrame(float totalSeconds, float elapsedSeconds);
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            yield return this;
+        }
+
+        public static bool TryCompile(string source, out GeometryShader shader, out string errors)
+        {
+            return TryCompile(source, ShaderType.GeometryShader, h => new GeometryShader(h), out shader, out errors);
+        }
     }
 }
