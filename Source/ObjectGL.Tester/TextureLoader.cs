@@ -24,9 +24,9 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
+using ImageSharp.PNG;
 
 namespace ObjectGL.Tester
 {
@@ -43,77 +43,59 @@ namespace ObjectGL.Tester
 
         public unsafe TextureLoader (string fileName)
         {
-            var bitmap = new Bitmap(fileName);
+            var pngImage = new PngImage(File.ReadAllBytes(fileName));
 
-            width = bitmap.Width;
-            height = bitmap.Height;
+            width = pngImage.Width;
+            height = pngImage.Height;
 
-            data = new byte[bitmap.Width * bitmap.Height * 4 * 2];
-            mipPointers = new IntPtr[GetMipCount(bitmap.Width, bitmap.Height)];
+            data = new byte[pngImage.Width * pngImage.Height * 4 * 2];
+            mipPointers = new IntPtr[GetMipCount(pngImage.Width, pngImage.Height)];
 
             gcHandle = GCHandle.Alloc(data, GCHandleType.Pinned);
             var startPointer = gcHandle.AddrOfPinnedObject();
             mipPointers[0] = startPointer;
 
-            var bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            pngImage.ToRgba8((byte*)startPointer);
+
+            int mipWidth = pngImage.Width;
+            int mipHeight = pngImage.Height;
+
+            byte* dst = (byte*)startPointer + pngImage.Width * pngImage.Height * 4;
+            byte* src;
+
+            for (int level = 1; level < mipPointers.Length; level++)
             {
-                var dst = (byte*)startPointer;
-                var src = (byte*)bitmapData.Scan0;
+                mipPointers[level] = (IntPtr)dst;
+                src = (byte*)mipPointers[level - 1];
 
-                for (int y = 0; y < bitmap.Height; y++)
+                int srcRowSpan = mipWidth * 4;
+
+                mipWidth = Math.Max(mipWidth / 2, 1);
+                mipHeight = Math.Max(mipHeight / 2, 1);
+
+                for (int y = 0; y < mipHeight; y++)
                 {
-                    for (int x = 0; x < bitmap.Width; x++)
+                    for (int x = 0; x < mipWidth; x++)
                     {
-                        //*(int*) dst = *(int*) &src;
-
-                        dst[0] = src[2];
-                        dst[1] = src[1];
-                        dst[2] = src[0];
-                        dst[3] = 255;
-
-                        src += 3;
-                        dst += 4;
-                    }
-                }
-
-                int mipWidth = bitmap.Width;
-                int mipHeight = bitmap.Height;
-
-                for (int level = 1; level < mipPointers.Length; level++)
-                {
-                    mipPointers[level] = (IntPtr)dst;
-                    src = (byte*)mipPointers[level - 1];
-
-                    int srcRowSpan = mipWidth * 4;
-
-                    mipWidth = Math.Max(mipWidth / 2, 1);
-                    mipHeight = Math.Max(mipHeight / 2, 1);
-
-                    for (int y = 0; y < mipHeight; y++)
-                    {
-                        for (int x = 0; x < mipWidth; x++)
+                        for (int i = 0; i < 3; i++)
                         {
-                            for (int i = 0; i < 3; i++)
-                            {
-                                float tl = SrgbToLinear(src[i] / 255f);
-                                float tr = SrgbToLinear(src[i + 4] / 255f);
-                                float bl = SrgbToLinear(src[i + srcRowSpan] / 255f);
-                                float br = SrgbToLinear(src[i + 4 + srcRowSpan] / 255f);
+                            float tl = SrgbToLinear(src[i] / 255f);
+                            float tr = SrgbToLinear(src[i + 4] / 255f);
+                            float bl = SrgbToLinear(src[i + srcRowSpan] / 255f);
+                            float br = SrgbToLinear(src[i + 4 + srcRowSpan] / 255f);
 
-                                dst[i] = (byte) (LinearToSrgb((tl + tr + bl + br)/4f)*255.9999f);
-                            }
-
-                            dst[3] = 255;
-
-                            src += 8;
-                            dst += 4;
+                            dst[i] = (byte)(LinearToSrgb((tl + tr + bl + br) / 4f) * 255.9999f);
                         }
 
-                        src += srcRowSpan;
+                        dst[3] = 255;
+
+                        src += 8;
+                        dst += 4;
                     }
+
+                    src += srcRowSpan;
                 }
             }
-            bitmap.UnlockBits(bitmapData);
         }
 
         public IntPtr GetMipData(int level)
