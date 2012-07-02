@@ -80,7 +80,7 @@ namespace ObjectGL.Tester
             scene.OnNewFrame((float)totalSeconds, (float)e.Time);
             SwapBuffers();
 
-            Title = string.Format("FPS: {0}", RenderFrequency);
+            //Title = string.Format("FPS: {0}", RenderFrequency);
 
             base.OnRenderFrame(e);
         }
