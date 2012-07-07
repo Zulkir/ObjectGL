@@ -39,6 +39,12 @@ namespace ObjectGL
             UnpinPointer = () => { };
         }
 
+        public Data(IntPtr pointer, Action unpinPointer)
+        {
+            Pointer = pointer;
+            UnpinPointer = unpinPointer;
+        }
+
         public unsafe Data(Array array, int byteOffset = 0)
         {
             GCHandle gcHandle = GCHandle.Alloc(array, GCHandleType.Pinned);
