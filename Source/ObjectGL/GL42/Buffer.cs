@@ -60,10 +60,11 @@ namespace ObjectGL.GL42
             initialData.UnpinPointer();
         }
 
-        public void SetData(Context currentContext, BufferTarget editingTarget, IntPtr data)
+        public void SetData(Context currentContext, BufferTarget editingTarget, Data data)
         {
             currentContext.BindBuffer(editingTarget, this);
-            GL.BufferData(editingTarget, (IntPtr)sizeInBytes, data, usage);
+            GL.BufferData(editingTarget, (IntPtr)sizeInBytes, data.Pointer, usage);
+            data.UnpinPointer();
         }
 
         public unsafe void Dispose()
