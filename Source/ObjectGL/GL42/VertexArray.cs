@@ -59,7 +59,7 @@ namespace ObjectGL.GL42
         }
 
         public void SetVertexAttributeF(Context currentContext, int index, Buffer buffer,
-            byte dimension, VertexAttribPointerType type, bool normalized, int stride, int offset, int divisor = 0)
+            VertexAttributeDimension dimension, VertexAttribPointerType type, bool normalized, int stride, int offset, int divisor = 0)
         {
             var newDesc = new VertexAttributeDescription
             {
@@ -82,7 +82,7 @@ namespace ObjectGL.GL42
                 GL.EnableVertexAttribArray(index);
 
             currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer);
-            GL.VertexAttribPointer(index, dimension, type, normalized, stride, offset);
+            GL.VertexAttribPointer(index, (int)dimension, type, normalized, stride, offset);
 
             if (vertexAttributes[index].Divisor != divisor)
                 GL.VertexAttribDivisor(index, divisor);
@@ -94,7 +94,7 @@ namespace ObjectGL.GL42
         }
 
         public void SetVertexAttributeI(Context currentContext, int index, Buffer buffer,
-            byte dimension, VertexAttribIPointerType type, int stride, int offset, int divisor = 0)
+            VertexAttributeDimension dimension, VertexAttribIPointerType type, int stride, int offset, int divisor = 0)
         {
             var newDesc = new VertexAttributeDescription
             {
@@ -116,7 +116,7 @@ namespace ObjectGL.GL42
                 GL.EnableVertexAttribArray(index);
 
             currentContext.BindBuffer(BufferTarget.ArrayBuffer, buffer);
-            GL.VertexAttribIPointer(index, dimension, type, stride, (IntPtr)offset);
+            GL.VertexAttribIPointer(index, (int)dimension, type, stride, (IntPtr)offset);
 
             if (vertexAttributes[index].Divisor != divisor)
                 GL.VertexAttribDivisor(index, divisor);

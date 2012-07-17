@@ -234,9 +234,9 @@ void main()
 
             vertexArray = new VertexArray(Context);
             vertexArray.SetElementArrayBuffer(Context, indices);
-            vertexArray.SetVertexAttributeF(Context, 0, vertices, 3, VertexAttribPointerType.Float, false, 32, 0);
-            vertexArray.SetVertexAttributeF(Context, 1, vertices, 3, VertexAttribPointerType.Float, false, 32, 12);
-            vertexArray.SetVertexAttributeF(Context, 2, vertices, 2, VertexAttribPointerType.Float, false, 32, 24);
+            vertexArray.SetVertexAttributeF(Context, 0, vertices, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 0);
+            vertexArray.SetVertexAttributeF(Context, 1, vertices, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 12);
+            vertexArray.SetVertexAttributeF(Context, 2, vertices, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, 32, 24);
         }
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)

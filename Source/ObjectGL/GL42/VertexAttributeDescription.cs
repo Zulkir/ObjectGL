@@ -29,7 +29,7 @@ namespace ObjectGL.GL42
     {
         public bool IsEnabled;
         public VertexArraySetFunction SetFunction;
-        public byte Dimension;
+        public VertexAttributeDimension Dimension;
         public bool IsNormalized;
         public int Type;
         public int Stride;
