@@ -38,7 +38,7 @@ namespace ObjectGL.Tester
         private double totalSeconds;
 
         public MyGameWindow() 
-            : base(600, 400, new GraphicsMode(new ColorFormat(32), 24, 8, 4), "Object.GL Tester", 
+            : base(256, 256, new GraphicsMode(new ColorFormat(32), 24, 8, 4), "Object.GL Tester", 
             GameWindowFlags.Default, DisplayDevice.Default)
         {
             VSync = VSyncMode.On;
@@ -52,9 +52,9 @@ namespace ObjectGL.Tester
             context = new Context(Context);
 
             //scene = new TriangleScene(context, this);
-            //scene = new TexturedQuadScene(context, this);
+            scene = new TexturedQuadScene(context, this);
             //scene = new TexturedCubeScene(context, this);
-            scene = new RenderToTextureScene(context, this);
+            //scene = new RenderToTextureScene(context, this);
             scene.Initialize();
 
             unsafe

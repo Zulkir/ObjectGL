@@ -79,7 +79,7 @@ out vec4 out_color;
 
 void main()
 {
-    out_color = texture(DiffuseMap, v_tex_coord);
+    out_color = pow(texture(DiffuseMap, v_tex_coord), vec4(1/2.2));
 }
 ";
 
@@ -112,16 +112,16 @@ void main()
                 0, 1, 2, 0, 2, 3
             }));
 
-            using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
+            using (var textureLoader = new TextureLoader("../Textures/Chess256.png"))
             {
-                diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
+                diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Srgb8Alpha8,
                                            FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
             }
 
             sampler = new Sampler();
-            sampler.SetMagFilter(TextureMagFilter.Nearest);
-            sampler.SetMinFilter(TextureMinFilter.NearestMipmapLinear);
-            sampler.SetMaxAnisotropy(16f);
+            sampler.SetMagFilter(TextureMagFilter.Linear);
+            sampler.SetMinFilter(TextureMinFilter.LinearMipmapLinear);
+            //sampler.SetMaxAnisotropy(16f);
 
             string shaderErrors;
 
