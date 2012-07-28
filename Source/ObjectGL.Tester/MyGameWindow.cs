@@ -52,9 +52,10 @@ namespace ObjectGL.Tester
             context = new Context(Context);
 
             //scene = new TriangleScene(context, this);
-            scene = new TexturedQuadScene(context, this);
+            //scene = new TexturedQuadScene(context, this);
             //scene = new TexturedCubeScene(context, this);
             //scene = new RenderToTextureScene(context, this);
+            scene = new ParticlesWithGSScene(context, this);
             scene.Initialize();
 
             unsafe
