@@ -23,6 +23,8 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+#define INTEL_WORKAROUND
+
 using System;
 using ObjectGL.GL42;
 using OpenTK;
@@ -125,8 +127,10 @@ void main()
         Buffer indices;
 
         Buffer transform;
-        Buffer cameraInside;
+        Buffer camera;
+#if INTEL_WORKAROUND
         Buffer cameraOutside;
+#endif
         Buffer cameraExtra;
         Buffer light;
 
@@ -201,8 +205,10 @@ void main()
             }));
 
             transform = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
-            cameraInside = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            camera = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+#if INTEL_WORKAROUND
             cameraOutside = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+#endif
             cameraExtra = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
             light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
 
@@ -257,7 +263,7 @@ void main()
             Vector3 lightPosition = new Vector3(10, -7, 2);
 
             transform.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&world));
-            cameraInside.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
             cameraExtra.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
             light.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
 
@@ -273,7 +279,7 @@ void main()
 
             Context.Pipeline.Program = program;
             Context.Pipeline.UniformBuffers[0] = transform;
-            Context.Pipeline.UniformBuffers[1] = cameraInside;
+            Context.Pipeline.UniformBuffers[1] = camera;
             Context.Pipeline.UniformBuffers[2] = light;
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Textures[0] = diffuseMap;
@@ -296,12 +302,18 @@ void main()
             viewProjection = view * proj;
             viewProjection.Transpose();
 
+#if INTEL_WORKAROUND
             cameraOutside.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+#else
+            camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+#endif
 
             Context.Pipeline.Framebuffer = null;
             Context.Pipeline.Viewports[0].Width = GameWindow.ClientSize.Width;
             Context.Pipeline.Viewports[0].Height = GameWindow.ClientSize.Height;
+#if INTEL_WORKAROUND
             Context.Pipeline.UniformBuffers[1] = cameraOutside;
+#endif
             Context.Pipeline.Textures[0] = renderTarget;
             Context.Pipeline.Samplers[0] = sampler;
             Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Ccw;
