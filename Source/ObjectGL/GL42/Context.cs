@@ -159,70 +159,70 @@ namespace ObjectGL.GL42
         }
 
         #region Draw
-        public void DrawArrays(BeginMode mode, int first, int count)
+        public void DrawArrays(BeginMode mode, int firstVertex, int vertexCount)
         {
             ConsumePipeline();
-            GL.DrawArrays(mode, first, count);
+            GL.DrawArrays(mode, firstVertex, vertexCount);
         }
 
-        public void DrawArraysIndirect(BeginMode mode, int offset)
+        public void DrawArraysIndirect(BeginMode mode, int argsBufferOffset)
         {
             ConsumePipeline();
-            GL.DrawArraysIndirect((ArbDrawIndirect)mode, (IntPtr)offset);
+            GL.DrawArraysIndirect((ArbDrawIndirect)mode, (IntPtr)argsBufferOffset);
         }
 
-        public void DrawArraysInstanced(BeginMode mode, int first, int count, int primcount)
+        public void DrawArraysInstanced(BeginMode mode, int firstVertex, int vertexCountPerInstance, int instanceCount)
         {
             ConsumePipeline();
-            GL.DrawArraysInstanced(mode, first, count, primcount);
+            GL.DrawArraysInstanced(mode, firstVertex, vertexCountPerInstance, instanceCount);
         }
 
         // todo: DrawArraysInstancedBaseInstance
 
-        public void DrawElements(BeginMode mode, int count, DrawElementsType type, int offset)
+        public void DrawElements(BeginMode mode, int indexCount, DrawElementsType indexType, int indexBufferOffset)
         {
             ConsumePipeline();
-            GL.DrawElements(mode, count, type, offset);
+            GL.DrawElements(mode, indexCount, indexType, indexBufferOffset);
         }
 
-        public void DrawElementsBaseVertex(BeginMode mode, int count, DrawElementsType type, int offset, int basevertex)
+        public void DrawElementsBaseVertex(BeginMode mode, int indexCount, DrawElementsType indexType, int indexBufferOffset, int baseVertex)
         {
             ConsumePipeline();
-            GL.DrawElementsBaseVertex(mode, count, type, (IntPtr)offset, basevertex);
+            GL.DrawElementsBaseVertex(mode, indexCount, indexType, (IntPtr)indexBufferOffset, baseVertex);
         }
 
-        public void DrawElementsIndirect(BeginMode mode, DrawElementsType type, int offset)
+        public void DrawElementsIndirect(BeginMode mode, DrawElementsType indexType, int argsBufferOffset)
         {
             ConsumePipeline();
-            GL.DrawElementsIndirect((ArbDrawIndirect)mode, (ArbDrawIndirect)type, (IntPtr)offset);
+            GL.DrawElementsIndirect((ArbDrawIndirect)mode, (ArbDrawIndirect)indexType, (IntPtr)argsBufferOffset);
         }
 
-        public void DrawElementsInstanced(BeginMode mode, int count, DrawElementsType type, int offset, int primcount)
+        public void DrawElementsInstanced(BeginMode mode, int indexCountPerInstance, DrawElementsType indexType, int indexBufferOffset, int instanceCount)
         {
             ConsumePipeline();
-            GL.DrawElementsInstanced(mode, count, type, (IntPtr)offset, primcount);
+            GL.DrawElementsInstanced(mode, indexCountPerInstance, indexType, (IntPtr)indexBufferOffset, instanceCount);
         }
 
         // todo: DrawElementsInstancedBaseInstance
 
-        public void DrawElementsInstancedBaseVertex(BeginMode mode, int count, DrawElementsType type, int offset, int primcount, int basevertex)
+        public void DrawElementsInstancedBaseVertex(BeginMode mode, int indexCountPerInstance, DrawElementsType indexType, int indexBufferOffset, int instanceCount, int baseVertex)
         {
             ConsumePipeline();
-            GL.DrawElementsInstancedBaseVertex(mode, count, type, (IntPtr)offset, primcount, basevertex);
+            GL.DrawElementsInstancedBaseVertex(mode, indexCountPerInstance, indexType, (IntPtr)indexBufferOffset, instanceCount, baseVertex);
         }
 
         // todo: DrawElementsInstancedBaseVertexBaseInstance
 
-        public void DrawRangeElements(BeginMode mode, int start, int end, int count, DrawElementsType type, int offset)
+        public void DrawRangeElements(BeginMode mode, int minVertexIndex, int maxVertexIndex, int indexCount, DrawElementsType indexType, int indexBufferOffset)
         {
             ConsumePipeline();
-            GL.DrawRangeElements(mode, start, end, count, type, (IntPtr)offset);
+            GL.DrawRangeElements(mode, minVertexIndex, maxVertexIndex, indexCount, indexType, (IntPtr)indexBufferOffset);
         }
 
-        public void DrawRangeElementsBaseVertex(BeginMode mode, int start, int end, int count, DrawElementsType type, int offset, int basevertex)
+        public void DrawRangeElementsBaseVertex(BeginMode mode, int minVertexIndex, int maxVertexIndex, int indexCount, DrawElementsType indexType, int indexBufferOffset, int baseVertex)
         {
             ConsumePipeline();
-            GL.DrawRangeElementsBaseVertex(mode, start, end, count, type, (IntPtr)offset, basevertex);
+            GL.DrawRangeElementsBaseVertex(mode, minVertexIndex, maxVertexIndex, indexCount, indexType, (IntPtr)indexBufferOffset, baseVertex);
         }
 
         // todo: DrawTransformFeedback
