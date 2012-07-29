@@ -124,12 +124,12 @@ void main()
         const int ParticleCount = 512;
         const float ParticleSpeed = 0.75f;
 
+        ShaderProgram program;
+        VertexArray vertexArray;
+
         Buffer timeBuffer;
         Buffer cameraBuffer;
 
-        VertexArray vertexArray;
-        ShaderProgram program;
-        
         public ColorfulSpaceScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
         {
         }
@@ -176,8 +176,8 @@ void main()
             Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Program = program;
+            Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.UniformBuffers[0] = timeBuffer;
             Context.Pipeline.UniformBuffers[1] = cameraBuffer;
 

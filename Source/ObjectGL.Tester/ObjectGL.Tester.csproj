@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MyGameWindow.cs" />
-    <Compile Include="ParticlesWithGSScene.cs" />
+    <Compile Include="ColorfulSpaceScene.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RenderToTextureScene.cs" />

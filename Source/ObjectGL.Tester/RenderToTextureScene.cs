@@ -123,23 +123,19 @@ void main()
         Texture2D renderTarget;
         Renderbuffer depthStencil;
 
-        Buffer vertices;
-        Buffer indices;
+        ShaderProgram program;
+        VertexArray vertexArray;
 
-        Buffer transform;
-        Buffer camera;
+        Buffer transformBuffer;
+        Buffer cameraBuffer;
 #if INTEL_WORKAROUND
-        Buffer cameraOutside;
+        Buffer cameraOutsideBuffer;
 #endif
-        Buffer cameraExtra;
-        Buffer light;
+        Buffer cameraExtraBuffer;
+        Buffer lightBuffer;
 
         Texture2D diffuseMap;
         Sampler sampler;
-
-        ShaderProgram program;
-
-        VertexArray vertexArray;
 
         public RenderToTextureScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
         {
@@ -161,7 +157,7 @@ void main()
                 throw new InvalidOperationException();
             }
 
-            vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
+            var vertexBuffer = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
                 new Vertex(1f, -1f, 1f, 1f, 0.0f, 0.0f, 0f, 0f),
                 new Vertex(1f, 1f, 1f, 1f, 0.0f, 0.0f, 1f, 0f),
@@ -194,7 +190,7 @@ void main()
                 new Vertex(1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 1f)
             }));
 
-            indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
+            var indexBuffer = new Buffer(Context, BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
             { 
                 0, 1, 2, 0, 2, 3,
                 4, 5, 6, 4, 6, 7,
@@ -204,13 +200,19 @@ void main()
                 20, 21, 22, 20, 22, 23
             }));
 
-            transform = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
-            camera = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            vertexArray = new VertexArray(Context);
+            vertexArray.SetElementArrayBuffer(Context, indexBuffer);
+            vertexArray.SetVertexAttributeF(Context, 0, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 0);
+            vertexArray.SetVertexAttributeF(Context, 1, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 12);
+            vertexArray.SetVertexAttributeF(Context, 2, vertexBuffer, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, 32, 24);
+
+            transformBuffer = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            cameraBuffer = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
 #if INTEL_WORKAROUND
-            cameraOutside = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            cameraOutsideBuffer = new Buffer(Context, BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
 #endif
-            cameraExtra = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
-            light = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
+            cameraExtraBuffer = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
+            lightBuffer = new Buffer(Context, BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
@@ -237,12 +239,6 @@ void main()
                 new[] { "DiffuseMap" },  
                 0, out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
-
-            vertexArray = new VertexArray(Context);
-            vertexArray.SetElementArrayBuffer(Context, indices);
-            vertexArray.SetVertexAttributeF(Context, 0, vertices, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 0);
-            vertexArray.SetVertexAttributeF(Context, 1, vertices, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 12);
-            vertexArray.SetVertexAttributeF(Context, 2, vertices, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, 32, 24);
         }
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
@@ -262,10 +258,10 @@ void main()
 
             Vector3 lightPosition = new Vector3(10, -7, 2);
 
-            transform.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&world));
-            camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
-            cameraExtra.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
-            light.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
+            transformBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&world));
+            cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraExtraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
+            lightBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
 
             framebuffer.ClearColor(Context, 0, Color4.CornflowerBlue);
             framebuffer.ClearDepthStencil(Context, DepthStencil.Both, 1.0f, 0);
@@ -278,10 +274,10 @@ void main()
             Context.Pipeline.Viewports[0].Height = RenderTargetSize;
 
             Context.Pipeline.Program = program;
-            Context.Pipeline.UniformBuffers[0] = transform;
-            Context.Pipeline.UniformBuffers[1] = camera;
-            Context.Pipeline.UniformBuffers[2] = light;
             Context.Pipeline.VertexArray = vertexArray;
+            Context.Pipeline.UniformBuffers[0] = transformBuffer;
+            Context.Pipeline.UniformBuffers[1] = cameraBuffer;
+            Context.Pipeline.UniformBuffers[2] = lightBuffer;
             Context.Pipeline.Textures[0] = diffuseMap;
             Context.Pipeline.Samplers[0] = sampler;
 
@@ -303,7 +299,7 @@ void main()
             viewProjection.Transpose();
 
 #if INTEL_WORKAROUND
-            cameraOutside.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraOutsideBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #else
             camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #endif
@@ -312,7 +308,7 @@ void main()
             Context.Pipeline.Viewports[0].Width = GameWindow.ClientSize.Width;
             Context.Pipeline.Viewports[0].Height = GameWindow.ClientSize.Height;
 #if INTEL_WORKAROUND
-            Context.Pipeline.UniformBuffers[1] = cameraOutside;
+            Context.Pipeline.UniformBuffers[1] = cameraOutsideBuffer;
 #endif
             Context.Pipeline.Textures[0] = renderTarget;
             Context.Pipeline.Samplers[0] = sampler;

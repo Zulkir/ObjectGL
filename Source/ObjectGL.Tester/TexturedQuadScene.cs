@@ -83,15 +83,10 @@ void main()
 }
 ";
 
-        Buffer vertices;
-        Buffer indices;
-
+        ShaderProgram program;
+        VertexArray vertexArray;
         Texture2D diffuseMap;
         Sampler sampler;
-
-        ShaderProgram program;
-
-        VertexArray vertexArray;
 
         public TexturedQuadScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
         {
@@ -99,7 +94,7 @@ void main()
 
         public override void Initialize()
         {
-            vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
+            var vertexBuffer = new Buffer(Context, BufferTarget.ArrayBuffer, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
                 new Vertex(-1f, -1f, 0f, 1f),
                 new Vertex(-1f, 1f, 0f, 0f),
@@ -107,10 +102,15 @@ void main()
                 new Vertex(1f, -1f, 1f, 1f),
             }));
 
-            indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
+            var indexBuffer = new Buffer(Context, BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
             { 
                 0, 1, 2, 0, 2, 3
             }));
+
+            vertexArray = new VertexArray(Context);
+            vertexArray.SetElementArrayBuffer(Context, indexBuffer);
+            vertexArray.SetVertexAttributeF(Context, 0, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 0);
+            vertexArray.SetVertexAttributeF(Context, 1, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 16);
 
             using (var textureLoader = new TextureLoader("../Textures/Chess256.png"))
             {
@@ -121,7 +121,7 @@ void main()
             sampler = new Sampler();
             sampler.SetMagFilter(TextureMagFilter.Linear);
             sampler.SetMinFilter(TextureMinFilter.LinearMipmapLinear);
-            //sampler.SetMaxAnisotropy(16f);
+            sampler.SetMaxAnisotropy(16f);
 
             string shaderErrors;
 
@@ -137,11 +137,6 @@ void main()
                 new[] { "DiffuseMap" },  
                 0, out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
-
-            vertexArray = new VertexArray(Context);
-            vertexArray.SetElementArrayBuffer(Context, indices);
-            vertexArray.SetVertexAttributeF(Context, 0, vertices, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 0);
-            vertexArray.SetVertexAttributeF(Context, 1, vertices, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 16);
         }
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
@@ -153,9 +148,6 @@ void main()
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Textures[0] = diffuseMap;
             Context.Pipeline.Samplers[0] = sampler;
-
-            Context.Pipeline.DepthStencil.DepthTestEnable = true;
-            Context.Pipeline.DepthStencil.DepthMask = true;
 
             Context.DrawElements(BeginMode.Triangles, 6, DrawElementsType.UnsignedShort, 0);
         }

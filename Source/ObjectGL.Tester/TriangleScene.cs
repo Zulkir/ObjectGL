@@ -66,12 +66,8 @@ void main()
 }
 ";
 
-        Buffer vertices;
-        Buffer indices;
-
-        ShaderProgram program;
-
         VertexArray vertexArray;
+        ShaderProgram program;
 
         public TriangleScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
         {
@@ -79,14 +75,19 @@ void main()
 
         public override void Initialize()
         {
-            vertices = new Buffer(Context, BufferTarget.ArrayBuffer, 3 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
+            var vertexBuffer = new Buffer(Context, BufferTarget.ArrayBuffer, 3 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
                 new Vertex { Position = new Vector4(-0.5f, -0.5f, 0f, 1f), Color = Color4.Red},
                 new Vertex { Position = new Vector4(0.0f, 0.5f, 0f, 1f), Color = Color4.Green},
                 new Vertex { Position = new Vector4(0.5f, -0.5f, 0f, 1f), Color = Color4.Yellow}
             }));
 
-            indices = new Buffer(Context, BufferTarget.ElementArrayBuffer, 3 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] { 0, 1, 2 }));
+            var indexBuffer = new Buffer(Context, BufferTarget.ElementArrayBuffer, 3 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] { 0, 1, 2 }));
+
+            vertexArray = new VertexArray(Context);
+            vertexArray.SetElementArrayBuffer(Context, indexBuffer);
+            vertexArray.SetVertexAttributeF(Context, 0, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 0);
+            vertexArray.SetVertexAttributeF(Context, 1, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 16);
 
             string shaderErrors;
 
@@ -98,10 +99,7 @@ void main()
                 !ShaderProgram.TryLink(Context, vsh, fsh, null, new[]{"in_position", "in_color"}, null, null, null, 0, out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
 
-            vertexArray = new VertexArray(Context);
-            vertexArray.SetElementArrayBuffer(Context, indices);
-            vertexArray.SetVertexAttributeF(Context, 0, vertices, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 0);
-            vertexArray.SetVertexAttributeF(Context, 1, vertices, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 16);
+            
         }
 
         public override void OnNewFrame(float totalSeconds, float elapsedSeconds)
@@ -109,8 +107,8 @@ void main()
             Context.ClearWindowColor(Color4.CornflowerBlue);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.Program = program;
+            Context.Pipeline.VertexArray = vertexArray;
 
             Context.DrawElements(BeginMode.Triangles, 3, DrawElementsType.UnsignedShort, 0);
         }
