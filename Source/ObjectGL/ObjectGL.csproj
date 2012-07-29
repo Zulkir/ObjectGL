@@ -40,6 +40,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GL42\TransformFeedback.cs" />
     <Compile Include="GL42\VertexAttributeDimension.cs" />
     <Compile Include="RedundantObject.cs" />
     <Compile Include="GL42\CompareFunc.cs" />
@@ -72,7 +73,6 @@
     <Compile Include="GL42\PipelineDepthStencilAspect.cs" />
     <Compile Include="GL42\PipelineRasterizerAspect.cs" />
     <Compile Include="GL42\PipelineSamplersAspect.cs" />
-    <Compile Include="GL42\PipelineTransformFeedbackBufferAspect.cs" />
     <Compile Include="GL42\PipelineUniformBuffersAspect.cs" />
     <Compile Include="RedundantBool.cs" />
     <Compile Include="RedundantEnable.cs" />

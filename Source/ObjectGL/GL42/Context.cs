@@ -92,6 +92,11 @@ namespace ObjectGL.GL42
             buffersAspect.BindVertexArray(vertexArray);
         }
 
+        internal void BindTransformFeedback(TransformFeedback transformFeedback)
+        {
+            buffersAspect.BindTransformFeedback(transformFeedback);
+        }
+
         internal void BindBuffer(BufferTarget target, Buffer buffer)
         {
             buffersAspect.BindBuffer(target, buffer);
@@ -127,7 +132,6 @@ namespace ObjectGL.GL42
         {
             programAspect.ConsumePipelineProgram(pipeline.Program);
             buffersAspect.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
-            buffersAspect.ConsumePipelineTransformFeedbackBuffers(pipeline.TransformFeedbackBuffers);
             buffersAspect.ConsumePipelineVertexArray(pipeline.VertexArray);
             texturesAspect.ConsumePipelineTextures(pipeline.Textures);
             samplersAspect.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
@@ -234,6 +238,17 @@ namespace ObjectGL.GL42
         // todo: DrawTransformFeedbackStreamInstanced
 
         #endregion
+
+        public void BeginTransformFeedback(TransformFeedback transformFeedback, BeginFeedbackMode beginFeedbackMode)
+        {
+            buffersAspect.BindTransformFeedback(transformFeedback);
+            GL.BeginTransformFeedback(beginFeedbackMode);
+        }
+
+        public void EndTransformFeedback()
+        {
+            GL.EndTransformFeedback();
+        }
 
         public void SwapBuffers()
         {

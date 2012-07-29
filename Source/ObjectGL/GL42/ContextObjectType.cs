@@ -33,6 +33,7 @@ namespace ObjectGL.GL42
         Sampler,
         Shader,
         ShaderProgram,
-        VertexArray
+        VertexArray,
+        TransformFeedback
     }
 }

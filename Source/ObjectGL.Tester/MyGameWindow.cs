@@ -55,7 +55,8 @@ namespace ObjectGL.Tester
             //scene = new TexturedQuadScene(context, this);
             //scene = new TexturedCubeScene(context, this);
             //scene = new RenderToTextureScene(context, this);
-            scene = new ColorfulSpaceScene(context, this);
+            //scene = new ColorfulSpaceScene(context, this);
+            scene = new PatrticleSimulationScene(context, this);
             scene.Initialize();
 
             unsafe

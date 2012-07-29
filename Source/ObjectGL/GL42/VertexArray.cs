@@ -51,10 +51,10 @@ namespace ObjectGL.GL42
 
         public void SetElementArrayBuffer(Context currentContext, Buffer buffer)
         {
-            if (elementArrayBuffer == buffer) return;
-
+            if (elementArrayBuffer == buffer) 
+                return;
             currentContext.BindVertexArray(this);
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, buffer != null ? buffer.Handle : 0);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, Helpers.ObjectHandle(buffer));
             elementArrayBuffer = buffer;
         }
 
@@ -137,29 +137,17 @@ namespace ObjectGL.GL42
 
             vertexAttributes[index].IsEnabled = false;
 
-            if (enabledVertexAttributesRange == index)
-            {
+            if (index == enabledVertexAttributesRange - 1)
                 while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
-                {
                     enabledVertexAttributesRange--;
-                }
-            }
         }
 
         public void DisableVertexAttributesStartingFrom(Context currentContext, int startIndex)
         {
-            if (startIndex >= enabledVertexAttributesRange) return;
-
-            for (int i = startIndex; i < vertexAttributes.Length; i++)
-            {
+            if (startIndex >= enabledVertexAttributesRange) 
+                return;
+            for (int i = startIndex; i < enabledVertexAttributesRange; i++)
                 DisableVertexAttribute(currentContext, i);
-            }
-
-            enabledVertexAttributesRange = startIndex;
-            while (enabledVertexAttributesRange > 0 && !vertexAttributes[enabledVertexAttributesRange - 1].IsEnabled)
-            {
-                enabledVertexAttributesRange--;
-            }
         }
 
         public unsafe void Dispose()

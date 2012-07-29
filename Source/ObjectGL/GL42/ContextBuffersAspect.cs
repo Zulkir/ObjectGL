@@ -33,6 +33,7 @@ namespace ObjectGL.GL42
         private class BuffersAspect
         {
             readonly RedundantObject<VertexArray> vertexArrayBinding = new RedundantObject<VertexArray>(o => GL.BindVertexArray(Helpers.ObjectHandle(o)));
+            readonly RedundantObject<TransformFeedback> transformFeedbackBinding = new RedundantObject<TransformFeedback>(o => GL.BindTransformFeedback(TransformFeedbackTarget.TransformFeedback, Helpers.ObjectHandle(o))); 
 
             readonly RedundantObject<Buffer> arrayBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.ArrayBuffer, Helpers.ObjectHandle(o)));
             readonly RedundantObject<Buffer> copyReadBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.CopyReadBuffer, Helpers.ObjectHandle(o)));
@@ -44,21 +45,12 @@ namespace ObjectGL.GL42
             readonly RedundantObject<Buffer> drawIndirectBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.DrawIndirectBuffer, Helpers.ObjectHandle(o)));
             readonly RedundantObject<Buffer> transformFeedbackBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.TransformFeedbackBuffer, Helpers.ObjectHandle(o)));
             readonly RedundantObject<Buffer> uniformBufferBinding = new RedundantObject<Buffer>(o => GL.BindBuffer(BufferTarget.UniformBuffer, Helpers.ObjectHandle(o)));
-            readonly RedundantObject<Buffer>[] transormFeedbackBufferIndexedBindingsArray;
             readonly RedundantObject<Buffer>[] uniformBufferIndexedBindingsArray;
 
-            int boundTransformFeedbackBufferRange = 0;
             int boundUniformBufferRange = 0;
 
             public BuffersAspect(Implementation implementation)
             {
-                transormFeedbackBufferIndexedBindingsArray = new RedundantObject<Buffer>[implementation.MaxTransformFeedbackBuffers];
-                for (int i = 0; i < implementation.MaxTransformFeedbackBuffers; i++)
-                {
-                    int iLoc = i;
-                    transormFeedbackBufferIndexedBindingsArray[i] = new RedundantObject<Buffer>(o => GL.BindBufferBase(BufferTarget.TransformFeedbackBuffer, iLoc, Helpers.ObjectHandle(o)));
-                }
-
                 uniformBufferIndexedBindingsArray = new RedundantObject<Buffer>[implementation.MaxUniformBufferBindings];
                 for (int i = 0; i < implementation.MaxUniformBufferBindings; i++)
                 {
@@ -72,23 +64,35 @@ namespace ObjectGL.GL42
                 vertexArrayBinding.Set(vertexArray);
             }
 
+            public void BindTransformFeedback(TransformFeedback transformFeedback)
+            {
+                transformFeedbackBinding.Force(transformFeedback);
+            }
+
             public void BindBuffer(BufferTarget target, Buffer buffer)
             {
-                if (target == BufferTarget.ElementArrayBuffer)
-                    vertexArrayBinding.Set(null);
-
                 switch (target)
                 {
                     case BufferTarget.ArrayBuffer: arrayBufferBinding.Set(buffer); return;
                     case BufferTarget.CopyReadBuffer: copyReadBufferBinding.Set(buffer); return;
                     case BufferTarget.CopyWriteBuffer: copyWriteBufferBinding.Set(buffer); return;
-                    case BufferTarget.ElementArrayBuffer: elementArrayBufferBinding.Set(buffer); return;
                     case BufferTarget.PixelPackBuffer: pixelPackBufferBinding.Set(buffer); return;
                     case BufferTarget.PixelUnpackBuffer: pixelUnpackBufferBinding.Set(buffer); return;
                     case BufferTarget.TextureBuffer: textureBufferBinding.Set(buffer); return;
                     case BufferTarget.DrawIndirectBuffer: drawIndirectBufferBinding.Set(buffer); return;
-                    case BufferTarget.TransformFeedbackBuffer: transformFeedbackBufferBinding.Set(buffer); return;
                     case BufferTarget.UniformBuffer: uniformBufferBinding.Set(buffer); return;
+                    case BufferTarget.ElementArrayBuffer:
+                    {
+                        vertexArrayBinding.Set(null);
+                        elementArrayBufferBinding.Set(buffer); 
+                        return;
+                    }
+                    case BufferTarget.TransformFeedbackBuffer:
+                    {
+                        transformFeedbackBinding.Set(null);
+                        transformFeedbackBufferBinding.Set(buffer); 
+                        return;
+                    }
                     default: throw new ArgumentOutOfRangeException("target");
                 }
             }
@@ -101,31 +105,10 @@ namespace ObjectGL.GL42
             public void ConsumePipelineUniformBuffers(Pipeline.UniformBuffersAspect pipelineUniformBuffers)
             {
                 for (int i = 0; i < pipelineUniformBuffers.EnabledUniformBufferRange; i++)
-                {
                     uniformBufferIndexedBindingsArray[i].Set(pipelineUniformBuffers[i]);
-                }
-
                 for (int i = pipelineUniformBuffers.EnabledUniformBufferRange; i < boundUniformBufferRange; i++)
-                {
                     uniformBufferIndexedBindingsArray[i].Set(null);
-                }
-
                 boundUniformBufferRange = pipelineUniformBuffers.EnabledUniformBufferRange;
-            }
-
-            public void ConsumePipelineTransformFeedbackBuffers(Pipeline.TransformFeedbackBufferAspect transformFeedbackBuffers)
-            {
-                for (int i = 0; i < transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i++)
-                {
-                    transormFeedbackBufferIndexedBindingsArray[i].Set(transformFeedbackBuffers[i]);
-                }
-
-                for (int i = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange; i < boundTransformFeedbackBufferRange; i++)
-                {
-                    transormFeedbackBufferIndexedBindingsArray[i].Set(null);
-                }
-
-                boundTransformFeedbackBufferRange = transformFeedbackBuffers.EnabledTransformFeedbackBufferRange;
             }
         }
     }

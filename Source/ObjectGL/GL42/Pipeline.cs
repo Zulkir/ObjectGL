@@ -35,7 +35,6 @@ namespace ObjectGL.GL42
 
         ShaderProgram program;
         readonly UniformBuffersAspect uniformBuffers;
-        readonly TransformFeedbackBufferAspect transformFeedbackBuffers;
 
         VertexArray vertexArray;
         readonly TexturesAspect textures;
@@ -54,7 +53,6 @@ namespace ObjectGL.GL42
             this.context = context;
 
             uniformBuffers = new UniformBuffersAspect(context);
-            transformFeedbackBuffers = new TransformFeedbackBufferAspect(context);
             textures = new TexturesAspect(context);
             samplers = new SamplersAspect(context);
             viewports = new ViewportsAspect(context);
@@ -76,7 +74,6 @@ namespace ObjectGL.GL42
         }
 
         public UniformBuffersAspect UniformBuffers { get { return uniformBuffers; } }
-        public TransformFeedbackBufferAspect TransformFeedbackBuffers { get { return transformFeedbackBuffers; } }
 
         public VertexArray VertexArray
         {
