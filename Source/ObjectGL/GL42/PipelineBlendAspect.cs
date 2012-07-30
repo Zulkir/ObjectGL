@@ -101,7 +101,7 @@ namespace ObjectGL.GL42
             public bool AlphaToCoverageEnable { get; set; }
             public Color4 BlendColor { get; set; }
             public TargetCollection Targets { get; private set; }
-            public bool IndependentBlendEnable { get; private set; }
+            public bool IndependentBlendEnable { get; set; }
 
             internal BlendAspect(Context context)
             {
