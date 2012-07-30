@@ -79,7 +79,7 @@ namespace ObjectGL.GL42
             {
                 readonly Target[] targets;
 
-                internal int Count { get { return targets.Length; } }
+                public int Count { get { return targets.Length; } }
 
                 public Target this[int targetIndex]
                 {
