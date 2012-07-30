@@ -35,15 +35,15 @@ namespace ObjectGL.GL42
             #region Nested classes
             private struct Part
             {
-                public BlendEquationMode EquationMode;
-                public BlendingFactorSrc SrcFactor;
-                public BlendingFactorDest DestFactor;
+                public BlendFunc EquationMode;
+                public BlendFactor SrcFactor;
+                public BlendFactor DestFactor;
 
                 public void Initialize()
                 {
-                    EquationMode = BlendEquationMode.FuncAdd;
-                    SrcFactor = BlendingFactorSrc.One;
-                    DestFactor = BlendingFactorDest.Zero;
+                    EquationMode = BlendFunc.Add;
+                    SrcFactor = BlendFactor.One;
+                    DestFactor = BlendFactor.Zero;
                 }
             }
 
@@ -77,9 +77,9 @@ namespace ObjectGL.GL42
                         if (color.EquationMode != pipelineTarget.Color.EquationMode || alpha.EquationMode != pipelineTarget.Alpha.EquationMode)
                         {
                             if (independent)
-                                GL.BlendEquationSeparate(index, pipelineTarget.Color.EquationMode, pipelineTarget.Alpha.EquationMode);
+                                GL.BlendEquationSeparate(index, (BlendEquationMode)pipelineTarget.Color.EquationMode, (BlendEquationMode)pipelineTarget.Alpha.EquationMode);
                             else
-                                GL.BlendEquationSeparate(pipelineTarget.Color.EquationMode, pipelineTarget.Alpha.EquationMode);
+                                GL.BlendEquationSeparate((BlendEquationMode)pipelineTarget.Color.EquationMode, (BlendEquationMode)pipelineTarget.Alpha.EquationMode);
                             color.EquationMode = pipelineTarget.Color.EquationMode;
                             alpha.EquationMode = pipelineTarget.Alpha.EquationMode;
                         }
@@ -98,8 +98,8 @@ namespace ObjectGL.GL42
                             else
                             {
                                 GL.BlendFuncSeparate(
-                                    pipelineTarget.Color.SrcFactor, pipelineTarget.Color.DestFactor,
-                                    pipelineTarget.Alpha.SrcFactor, pipelineTarget.Alpha.DestFactor);
+                                    (BlendingFactorSrc)pipelineTarget.Color.SrcFactor, (BlendingFactorDest)pipelineTarget.Color.DestFactor,
+                                    (BlendingFactorSrc)pipelineTarget.Alpha.SrcFactor, (BlendingFactorDest)pipelineTarget.Alpha.DestFactor);
                             }
                             color.SrcFactor = pipelineTarget.Color.SrcFactor;
                             color.DestFactor = pipelineTarget.Color.DestFactor;
@@ -114,7 +114,7 @@ namespace ObjectGL.GL42
                             if (independent)
                                 GL.BlendEquation(index, (Version40)pipelineTarget.Color.EquationMode);
                             else
-                                GL.BlendEquation(pipelineTarget.Color.EquationMode);
+                                GL.BlendEquation((BlendEquationMode)pipelineTarget.Color.EquationMode);
                             color.EquationMode = alpha.EquationMode = pipelineTarget.Color.EquationMode;
                         }
 
@@ -124,7 +124,7 @@ namespace ObjectGL.GL42
                             if (independent)
                                 GL.BlendFunc(index, (Version40)pipelineTarget.Color.SrcFactor, (Version40)pipelineTarget.Color.DestFactor);
                             else
-                                GL.BlendFunc(pipelineTarget.Color.SrcFactor, pipelineTarget.Color.DestFactor);
+                                GL.BlendFunc((BlendingFactorSrc)pipelineTarget.Color.SrcFactor, (BlendingFactorDest)pipelineTarget.Color.DestFactor);
                             color.SrcFactor = alpha.SrcFactor = pipelineTarget.Color.SrcFactor;
                             color.DestFactor = alpha.DestFactor = pipelineTarget.Color.DestFactor;
                         }

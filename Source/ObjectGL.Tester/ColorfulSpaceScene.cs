@@ -209,8 +209,8 @@ void main()
             Context.Pipeline.DepthStencil.DepthMask = false;
             Context.Pipeline.DepthStencil.DepthTestEnable = false;
             Context.Pipeline.Blend.BlendEnable = true;
-            Context.Pipeline.Blend.Targets[0].Color.SrcFactor = BlendingFactorSrc.One;
-            Context.Pipeline.Blend.Targets[0].Color.DestFactor = BlendingFactorDest.One;
+            Context.Pipeline.Blend.Targets[0].Color.SrcFactor = BlendFactor.One;
+            Context.Pipeline.Blend.Targets[0].Color.DestFactor = BlendFactor.One;
 
             Context.DrawArrays(BeginMode.Points, 0, ParticleCount);
         }

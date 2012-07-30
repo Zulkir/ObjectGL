@@ -24,7 +24,6 @@ freely, subject to the following restrictions:
 #endregion
 
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
 {
@@ -38,9 +37,9 @@ namespace ObjectGL.GL42
                 #region Nested classes
                 public class Part
                 {
-                    public BlendEquationMode EquationMode { get; set; }
-                    public BlendingFactorSrc SrcFactor { get; set; }
-                    public BlendingFactorDest DestFactor { get; set; }
+                    public BlendFunc EquationMode { get; set; }
+                    public BlendFactor SrcFactor { get; set; }
+                    public BlendFactor DestFactor { get; set; }
 
                     internal Part()
                     {
@@ -49,9 +48,9 @@ namespace ObjectGL.GL42
 
                     public void SetDefault()
                     {
-                        EquationMode = BlendEquationMode.FuncAdd;
-                        SrcFactor = BlendingFactorSrc.One;
-                        DestFactor = BlendingFactorDest.Zero;
+                        EquationMode = BlendFunc.Add;
+                        SrcFactor = BlendFactor.One;
+                        DestFactor = BlendFactor.Zero;
                     }
                 }
                 #endregion
