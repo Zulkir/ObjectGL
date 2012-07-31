@@ -134,27 +134,28 @@ namespace ObjectGL.GL42
             #endregion
 
             readonly Target[] targets;
-            readonly RedundantEnable blendEnable = new RedundantEnable(EnableCap.Blend);
             readonly RedundantEnable alphaToCoverageEnable = new RedundantEnable((EnableCap)All.SampleAlphaToCoverage);
+            readonly RedundantEnable blendEnable = new RedundantEnable(EnableCap.Blend);
+            readonly RedundantEnable sampleMaskEnable = new RedundantEnable(EnableCap.SampleMask);
+            readonly RedundantUInt sampleMask = new RedundantUInt(m => GL.SampleMask(0, m));
             Color4 blendColor = new Color4();
-
             bool independentBlendEnable = false;
 
             public BlendAspect(Implementation implementation)
             {
                 targets = new Target[implementation.MaxDrawBuffers];
                 for (int i = 0; i < targets.Length; i++)
-                {
                     targets[i] = new Target(i);
-                }
             }
 
             public void ConsumePipelineBlend(Pipeline.BlendAspect pipelineBlend)
             {
+                alphaToCoverageEnable.Set(pipelineBlend.AlphaToCoverageEnable);
+                sampleMaskEnable.Set(pipelineBlend.SampleMask != uint.MaxValue);
+                sampleMask.Set(pipelineBlend.SampleMask);
+
                 blendEnable.Set(pipelineBlend.BlendEnable);
                 if (!pipelineBlend.BlendEnable) return;
-
-                alphaToCoverageEnable.Set(pipelineBlend.AlphaToCoverageEnable);
 
                 var pipelineBlendColor = pipelineBlend.BlendColor;
                 if (!Helpers.ColorsEqual(ref blendColor, ref pipelineBlendColor))
@@ -166,17 +167,10 @@ namespace ObjectGL.GL42
                 if (pipelineBlend.IndependentBlendEnable)
                 {
                     if (!independentBlendEnable)
-                    {
                         for (int i = 1; i < targets.Length; i++)
-                        {
                             targets[i].CopyFrom(targets[0]);
-                        }
-                    }
-
                     for (int i = 0; i < targets.Length; i++)
-                    {
                         targets[i].ConsumePipelineTarget(pipelineBlend.Targets[i]);
-                    }
                 }
                 else
                 {

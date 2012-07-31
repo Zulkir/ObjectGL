@@ -109,6 +109,7 @@
     <Compile Include="GL42\VertexAttributeDescription.cs" />
     <Compile Include="GL42\VertexShader.cs" />
     <Compile Include="GL42\Framebuffer.cs" />
+    <Compile Include="RedundantUInt.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

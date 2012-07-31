@@ -96,39 +96,36 @@ namespace ObjectGL.GL42
             }
             #endregion
 
+            public TargetCollection Targets { get; private set; }
+            public Color4 BlendColor { get; set; }
+            public uint SampleMask { get; set; }
             public bool BlendEnable { get; set; }
             public bool AlphaToCoverageEnable { get; set; }
-            public Color4 BlendColor { get; set; }
-            public TargetCollection Targets { get; private set; }
             public bool IndependentBlendEnable { get; set; }
 
             internal BlendAspect(Context context)
             {
+                Targets = new TargetCollection(context.Implementation.MaxDrawBuffers);
+                BlendColor = new Color4(0f, 0f, 0f, 0f);
+                SampleMask = uint.MaxValue;
                 BlendEnable = false;
                 AlphaToCoverageEnable = false;
-                BlendColor = new Color4(0f, 0f, 0f, 0f);
-                Targets = new TargetCollection(context.Implementation.MaxDrawBuffers);
                 IndependentBlendEnable = false;
             }
 
             public void SetDefault(bool forceDefaultOnEachTarget)
             {
+                BlendColor = new Color4(0f, 0f, 0f, 0f);
+                SampleMask = uint.MaxValue;
                 BlendEnable = false;
                 AlphaToCoverageEnable = false;
-                BlendColor = new Color4(0f, 0f, 0f, 0f);
                 IndependentBlendEnable = false;
 
                 if (forceDefaultOnEachTarget)
-                {
                     for (int i = 0; i < Targets.Count; i++)
-                    {
                         Targets[i].SetDefault();
-                    }
-                }
                 else
-                {
                     Targets[0].SetDefault();
-                }
             }
         }
     }
