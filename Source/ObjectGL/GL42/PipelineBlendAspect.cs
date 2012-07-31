@@ -57,7 +57,7 @@ namespace ObjectGL.GL42
 
                 public Part Color { get; private set; }
                 public Part Alpha { get; private set; }
-                public bool SeparateAlphaBlendEnable { get; private set; }
+                public bool SeparateAlphaBlendEnable { get; set; }
 
                 internal Target()
                 {
