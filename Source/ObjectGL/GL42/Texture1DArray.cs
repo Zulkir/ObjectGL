@@ -32,18 +32,12 @@ namespace ObjectGL.GL42
 {
     public class Texture1DArray : Texture
     {
-        readonly int width;
-
-        public int Width { get { return width; } }
-
         Texture1DArray(Context currentContext,
                        int width, int sliceCount, int mipCount,
                        Format internalFormat, Func<int, Data> getInitialDataForMip,
                        Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture1DArray, internalFormat, sliceCount, mipCount == 0 ? CalculateMipCount(width) : mipCount)
+            : base(TextureTarget.Texture1DArray, width, 1, 1, internalFormat, sliceCount, mipCount == 0 ? CalculateMipCount(width) : mipCount)
         {
-            this.width = width;
-
             currentContext.BindTexture(Target, this);
 
             int mipWidth = width;

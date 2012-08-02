@@ -23,7 +23,9 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
 using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
 {
@@ -41,6 +43,51 @@ namespace ObjectGL.GL42
         public static int ObjectHandle(IContextObject contextObject)
         {
             return contextObject != null ? contextObject.Handle : 0;
+        }
+
+        public static int SizeOfFormat(SizedInternalFormat internalFormat)
+        {
+            switch (internalFormat)
+            {
+                case SizedInternalFormat.Rgba32f:
+                case SizedInternalFormat.Rgba32ui:
+                case SizedInternalFormat.Rgba32i:
+                    return 16;
+                case SizedInternalFormat.Rgba16f:
+                case SizedInternalFormat.Rgba16:
+                case SizedInternalFormat.Rgba16ui:
+                case SizedInternalFormat.Rgba16i:
+                case SizedInternalFormat.Rg32f:
+                case SizedInternalFormat.Rg32ui:
+                case SizedInternalFormat.Rg32i:
+                    return 8;
+                case SizedInternalFormat.Rgba8:
+                case SizedInternalFormat.Rgba8ui:
+                case SizedInternalFormat.Rgba8i:
+                case SizedInternalFormat.Rg16f:
+                case SizedInternalFormat.Rg16:
+                case SizedInternalFormat.Rg16ui:
+                case SizedInternalFormat.Rg16i:
+                    return 4;
+                case SizedInternalFormat.R32f:
+                case SizedInternalFormat.R32ui:
+                case SizedInternalFormat.R32i:
+                    return 4;
+                case SizedInternalFormat.Rg8:
+                case SizedInternalFormat.Rg8ui:
+                case SizedInternalFormat.Rg8i:
+                case SizedInternalFormat.R16f:
+                case SizedInternalFormat.R16:
+                case SizedInternalFormat.R16ui:
+                case SizedInternalFormat.R16i:
+                    return 2;
+                case SizedInternalFormat.R8:
+                case SizedInternalFormat.R8ui:
+                case SizedInternalFormat.R8i:
+                    return 1;
+                default:
+                    throw new ArgumentOutOfRangeException("internalFormat");
+            }
         }
     }
 }

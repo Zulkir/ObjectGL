@@ -30,23 +30,14 @@ namespace ObjectGL.GL42
 {
     public class TextureRectangle : Texture
     {
-        readonly int width;
-        readonly int height;
-
-        public int Width { get { return width; } }
-        public int Height { get { return height; } } 
-
         TextureRectangle(Context currentContext,
                   int width, int height,
                   Format internalFormat, Data initialData,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.TextureRectangle, internalFormat, 1, 1)
+            : base(TextureTarget.TextureRectangle, width, height, 1, internalFormat, 1, 1)
         {
             if ((width == 0) || ((width & (~width + 1)) != width)) throw new ArgumentException("'width' must be a power of two");
             if ((height == 0) || ((height & (~height + 1)) != height)) throw new ArgumentException("'width' must be a power of two");
-
-            this.width = width;
-            this.height = height;
 
             currentContext.BindTexture(Target, this);
 

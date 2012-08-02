@@ -29,22 +29,16 @@ namespace ObjectGL.GL42
 {
     public class Texture2DMultisampleArray : Texture
     {
-        readonly int width;
-        readonly int height;
         readonly int samples;
 
-        public int Width { get { return width; } }
-        public int Height { get { return height; } }
         public int Samples { get { return samples; } }
 
         public Texture2DMultisampleArray(Context currentContext,
                          int width, int height, int sliceCount, int samples,
                          Format internalFormat,
                          bool fixedSampleLocations = false)
-            : base(TextureTarget.Texture2DMultisampleArray, internalFormat, sliceCount, 1)
+            : base(TextureTarget.Texture2DMultisampleArray, width, height, 1, internalFormat, sliceCount, 1)
         {
-            this.width = width;
-            this.height = height;
             this.samples = samples;
 
             currentContext.BindTexture(Target, this);

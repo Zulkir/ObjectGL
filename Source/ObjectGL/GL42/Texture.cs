@@ -33,6 +33,10 @@ namespace ObjectGL.GL42
         readonly int handle;
         readonly ResourceType resourceType;
 
+        readonly int width;
+        readonly int height;
+        readonly int depth;
+
         readonly TextureTarget target;
         readonly Format internalFormat;
         readonly int sliceCount;
@@ -45,6 +49,10 @@ namespace ObjectGL.GL42
         public int Handle { get { return handle; } }
         public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
         public ResourceType ResourceType { get { return resourceType; } }
+
+        public int Width { get { return width; } }
+        public int Height { get { return height; } }
+        public int Depth { get { return depth; } }
 
         public TextureTarget Target { get { return target; } }
         public Format InternalFormat { get { return internalFormat; } }
@@ -68,9 +76,15 @@ namespace ObjectGL.GL42
         */
 
         protected unsafe Texture(TextureTarget target,
+            int width, int height, int depth,
             Format internalFormat, int sliceCount, int mipCount)
         {
             resourceType = TextureTargetToResourceType(target);
+
+            this.width = width;
+            this.height = height;
+            this.depth = depth;
+
             this.target = target;
             this.internalFormat = internalFormat;
             this.sliceCount = sliceCount;

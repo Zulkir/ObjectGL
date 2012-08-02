@@ -32,21 +32,12 @@ namespace ObjectGL.GL42
 {
     public class Texture2D : Texture
     {
-        readonly int width;
-        readonly int height;
-
-        public int Width { get { return width; } }
-        public int Height { get { return height; } }
-
         Texture2D(Context currentContext,
                   int width, int height, int mipCount,
                   Format internalFormat, Func<int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture2D, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
+            : base(TextureTarget.Texture2D, width, height, 1, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
         {
-            this.width = width;
-            this.height = height;
-
             currentContext.BindTexture(Target, this);
 
             int mipWidth = width;

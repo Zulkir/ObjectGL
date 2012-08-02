@@ -30,21 +30,12 @@ namespace ObjectGL.GL42
 {
     public class TextureCubemapArray : Texture
     {
-        readonly int width;
-        readonly int height;
-
-        public int Width { get { return width; } }
-        public int Height { get { return height; } }
-
         TextureCubemapArray(Context currentContext,
                   int width, int height, int sliceCount, int mipCount,
                   Format internalFormat, Func<CubemapFace, int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.TextureCubeMapArray, internalFormat, sliceCount, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
+            : base(TextureTarget.TextureCubeMapArray, width, height, 1, internalFormat, sliceCount, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
         {
-            this.width = width;
-            this.height = height;
-
             currentContext.BindTexture(Target, this);
 
             int mipWidth = width;

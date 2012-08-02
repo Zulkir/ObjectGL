@@ -32,24 +32,12 @@ namespace ObjectGL.GL42
 {
     public class Texture3D : Texture
     {
-        readonly int width;
-        readonly int height;
-        readonly int depth;
-
-        public int Width { get { return width; } }
-        public int Height { get { return height; } }
-        public int Depth { get { return depth; } }
-
         Texture3D(Context currentContext,
                   int width, int height, int depth, int mipCount,
                   Format internalFormat, Func<int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture3D, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height, depth) : mipCount)
+            : base(TextureTarget.Texture3D, width, height, depth, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height, depth) : mipCount)
         {
-            this.width = width;
-            this.height = height;
-            this.depth = depth;
-
             currentContext.BindTexture(Target, this);
 
             int mipWidth = width;

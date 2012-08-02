@@ -31,18 +31,12 @@ namespace ObjectGL.GL42
 {
     public class Texture1D : Texture
     {
-        readonly int width;
-
-        public int Width { get { return width; } }
-
         Texture1D(Context currentContext,
                   int width, int mipCount,
                   Format internalFormat, Func<int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, IntPtr> glTexImage)
-            : base(TextureTarget.Texture1D, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width) : mipCount)
+            : base(TextureTarget.Texture1D, width, 1, 1, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width) : mipCount)
         {
-            this.width = width;
-
             currentContext.BindTexture(Target, this);
 
             int mipWidth = width;

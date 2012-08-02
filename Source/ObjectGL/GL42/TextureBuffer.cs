@@ -23,6 +23,7 @@ freely, subject to the following restrictions:
 */
 #endregion
 
+using System;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
@@ -34,7 +35,9 @@ namespace ObjectGL.GL42
         public Buffer Buffer { get { return buffer; } }
 
         public TextureBuffer(Context currentContext, Buffer buffer, SizedInternalFormat internalFormat)
-            : base(TextureTarget.TextureBuffer, (Format)internalFormat, 1, 1)
+            : base(TextureTarget.TextureBuffer, 
+            Math.Min(buffer.SizeInBytes / Helpers.SizeOfFormat(internalFormat), currentContext.Implementation.MaxTextureBufferSize), 1, 1, 
+            (Format)internalFormat, 1, 1)
         {
             this.buffer = buffer;
 

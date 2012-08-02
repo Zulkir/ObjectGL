@@ -49,6 +49,8 @@ namespace ObjectGL.GL42
         public float ViewportBoundsRange { get; private set; }
         public float MaxViewportDims { get; private set; }
 
+        public int MaxTextureBufferSize { get; private set; }
+
         internal unsafe Implementation()
         {
             int localInt;
@@ -94,6 +96,9 @@ namespace ObjectGL.GL42
 
             GL.GetFloat(GetPName.MaxViewportDims, &localFloat);
             MaxViewportDims = localFloat;
+
+            GL.GetInteger(GetPName.MaxTextureBufferSize, &localInt);
+            MaxTextureBufferSize = localInt;
         }
     }
 }
