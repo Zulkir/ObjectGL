@@ -44,10 +44,10 @@ namespace ObjectGL.GL42
             for (int i = 0; i < MipCount; i++)
             {
                 Data data = getInitialDataForMip(i);
-                glTexImage(TextureTarget.Texture1D, i, (PixelInternalFormat)internalFormat, mipWidth, data.Pointer);
+                glTexImage(Target, i, (PixelInternalFormat)internalFormat, mipWidth, data.Pointer);
                 data.UnpinPointer();
 
-                mipWidth = Math.Max(mipWidth/2, 1);
+                mipWidth = Math.Max(mipWidth / 2, 1);
             }
         }
 
@@ -83,6 +83,24 @@ namespace ObjectGL.GL42
             : this(currentContext, width, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, p) => GL.CompressedTexImage1D(tt, l, f, w, 0, getComressedImageSizeForMip(l), p))
         {
+        }
+
+        public void SetData(Context currentContext, int level, 
+            Data data, FormatColor format, FormatType type, 
+            ByteAlignment unpackAlignment = ByteAlignment.Four)
+        {
+            currentContext.SetUnpackAlignment(unpackAlignment);
+            currentContext.BindTexture(Target, this);
+            GL.TexImage1D(Target, level, (PixelInternalFormat)InternalFormat, CalculateMipSize(level, Width), 0, (PixelFormat)format, (PixelType)type, data.Pointer);
+            data.UnpinPointer();
+        }
+
+        public void SetData(Context currentContext, int level,
+            Data data, int compressedSize)
+        {
+            currentContext.BindTexture(Target, this);
+            GL.CompressedTexImage1D(Target, level, (PixelInternalFormat)InternalFormat, CalculateMipSize(level, Width), 0, compressedSize, data.Pointer);
+            data.UnpinPointer();
         }
     }
 }

@@ -150,7 +150,6 @@ namespace ObjectGL.GL42
             GL.DeleteTextures(1, &handleProxy);
         }
 
-
         public static int CalculateMipCount(int width, int height = 0, int depth = 0)
         {
             int largestDimension = Math.Max(Math.Max(width, height), depth);
@@ -164,7 +163,12 @@ namespace ObjectGL.GL42
 
             return result;
         }
-        
+
+        public static int CalculateMipSize(int level, int baseSliceSize)
+        {
+            return Math.Max(1, baseSliceSize >> level);
+        }
+
         public static FormatColor GetAppropriateFormatColor(Format pixelInternalFormat)
         {
             switch (pixelInternalFormat)

@@ -88,5 +88,23 @@ namespace ObjectGL.GL42
                    GL.CompressedTexImage3D(tt, l, f, w, h, d, 0, getComressedImageSizeForMip(l), p))
         {
         }
+
+        public void SetData(Context currentContext, int level,
+            Data data, FormatColor format, FormatType type,
+            ByteAlignment unpackAlignment = ByteAlignment.Four)
+        {
+            currentContext.SetUnpackAlignment(unpackAlignment);
+            currentContext.BindTexture(Target, this);
+            GL.TexImage3D(Target, level, (PixelInternalFormat)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), CalculateMipSize(level, Depth), 0, (PixelFormat)format, (PixelType)type, data.Pointer);
+            data.UnpinPointer();
+        }
+
+        public void SetData(Context currentContext, int level,
+            Data data, int compressedSize)
+        {
+            currentContext.BindTexture(Target, this);
+            GL.CompressedTexImage3D(Target, level, (PixelInternalFormat)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), CalculateMipSize(level, Depth), 0, compressedSize, data.Pointer);
+            data.UnpinPointer();
+        }
     }
 }
