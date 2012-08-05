@@ -38,6 +38,7 @@ namespace ObjectGL.GL42
 
         readonly ProgramAspect programAspect;
         readonly BuffersAspect buffersAspect;
+        readonly RenderbufferAspect renderbufferAspect;
         readonly TexturesAspect texturesAspect;
         readonly SamplersAspect samplersAspect;
         readonly FramebufferAspect framebuffersAspect;
@@ -72,6 +73,7 @@ namespace ObjectGL.GL42
 
             programAspect = new ProgramAspect();
             buffersAspect = new BuffersAspect(implementation);
+            renderbufferAspect = new RenderbufferAspect();
             texturesAspect = new TexturesAspect(implementation);
             samplersAspect = new SamplersAspect(implementation);
             framebuffersAspect = new FramebufferAspect();
@@ -109,7 +111,7 @@ namespace ObjectGL.GL42
 
         internal void BindRenderbuffer(Renderbuffer renderbuffer)
         {
-            framebuffersAspect.BindRenderbuffer(renderbuffer);
+            renderbufferAspect.BindRenderbuffer(renderbuffer);
         }
 
         internal void BindDrawFramebuffer(Framebuffer framebuffer)
@@ -125,6 +127,13 @@ namespace ObjectGL.GL42
         internal FramebufferTarget BindAnyFramebuffer(Framebuffer framebuffer)
         {
             return framebuffersAspect.BindAnyFramebuffer(framebuffer);
+        }
+        #endregion
+
+        #region Set
+        internal void SetUnpackAlignment(ByteAlignment alignment)
+        {
+            renderbufferAspect.SetUnpackAlignment(alignment);
         }
         #endregion
 

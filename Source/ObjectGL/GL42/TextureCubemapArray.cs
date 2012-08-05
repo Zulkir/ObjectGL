@@ -66,17 +66,24 @@ namespace ObjectGL.GL42
 
         public TextureCubemapArray(Context currentContext,
                          int width, int height, int sliceCount, int mipCount,
-                         Format internalFormat, FormatColor format, FormatType type,
-                         Func<CubemapFace, int, Data> getInitialDataForMip)
+                         Format internalFormat, 
+                         Func<CubemapFace, int, Data> getInitialDataForMip,
+                         FormatColor format, FormatType type,
+                         ByteAlignment unpackAlignment = ByteAlignment.Four)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, h, s, p) => GL.TexImage3D(tt, l, f, w, h, s, 0, (PixelFormat)format, (PixelType)type, p))
+                   (tt, l, f, w, h, s, p) =>
+                   {
+                       currentContext.SetUnpackAlignment(unpackAlignment);
+                       GL.TexImage3D(tt, l, f, w, h, s, 0, (PixelFormat)format, (PixelType)type, p);
+                   })
         {
         }
         
         public TextureCubemapArray(Context currentContext,
                          int width, int height, int sliceCount, int mipCount,
-                         Format internalFormat, Func<int, int> getComressedImageSizeForMip,
-                         Func<CubemapFace, int, Data> getCompressedInitialDataForMip)
+                         Format internalFormat,
+                         Func<CubemapFace, int, Data> getCompressedInitialDataForMip,
+                         Func<int, int> getComressedImageSizeForMip)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, s, p) => GL.CompressedTexImage3D(tt, l, f, w, h, s, 0, getComressedImageSizeForMip(l), p))
         {

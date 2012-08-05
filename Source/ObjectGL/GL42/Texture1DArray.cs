@@ -63,17 +63,23 @@ namespace ObjectGL.GL42
 
         public Texture1DArray(Context currentContext,
                               int width, int sliceCount, int mipCount,
-                              Format internalFormat, FormatColor format, FormatType type,
-                              Func<int, Data> getInitialDataForMip)
+                              Format internalFormat, Func<int, Data> getInitialDataForMip, 
+                              FormatColor format, FormatType type,
+                              ByteAlignment unpackAlignment = ByteAlignment.Four)
             : this(currentContext, width, sliceCount, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, s, p) => GL.TexImage2D(tt, l, f, w, s, 0, (PixelFormat)format, (PixelType)type, p))
+                   (tt, l, f, w, s, p) =>
+                   {
+                       currentContext.SetUnpackAlignment(unpackAlignment);
+                       GL.TexImage2D(tt, l, f, w, s, 0, (PixelFormat)format, (PixelType)type, p);
+                   })
         {
         }
 
         public Texture1DArray(Context currentContext,
                               int width, int sliceCount, int mipCount,
-                              Format internalFormat, Func<int, int> getComressedImageSizeForMip,
-                              Func<int, Data> getCompressedInitialDataForMip)
+                              Format internalFormat, 
+                              Func<int, Data> getCompressedInitialDataForMip,
+                              Func<int, int> getComressedImageSizeForMip)
             : this(currentContext, width, sliceCount, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, s, p) => GL.CompressedTexImage2D(tt, l, f, w, s, 0, getComressedImageSizeForMip(l), p))
         {

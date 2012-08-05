@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="GL42\BlendFactor.cs" />
     <Compile Include="GL42\BlendFunc.cs" />
+    <Compile Include="GL42\ByteAlignment.cs" />
+    <Compile Include="GL42\ContextRenderbufferAspect.cs" />
     <Compile Include="GL42\TransformFeedback.cs" />
     <Compile Include="GL42\VertexAttributeDimension.cs" />
     <Compile Include="RedundantObject.cs" />

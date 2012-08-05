@@ -62,17 +62,24 @@ namespace ObjectGL.GL42
 
         public Texture1D(Context currentContext,
                          int width, int mipCount,
-                         Format internalFormat, FormatColor format, FormatType type,
-                         Func<int, Data> getInitialDataForMip)
+                         Format internalFormat,
+                         Func<int, Data> getInitialDataForMip, 
+                         FormatColor format, FormatType type, 
+                         ByteAlignment unpackAlignment = ByteAlignment.Four)
             : this(currentContext, width, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, p) => GL.TexImage1D(tt, l, f, w, 0, (PixelFormat)format, (PixelType)type, p))
+                   (tt, l, f, w, p) =>
+                   {
+                       currentContext.SetUnpackAlignment(unpackAlignment);
+                       GL.TexImage1D(tt, l, f, w, 0, (PixelFormat)format, (PixelType)type, p);
+                   })
         {
         }
 
         public Texture1D(Context currentContext,
                          int width, int mipCount,
-                         Format internalFormat, Func<int, int> getComressedImageSizeForMip,
-                         Func<int, Data> getCompressedInitialDataForMip)
+                         Format internalFormat,
+                         Func<int, Data> getCompressedInitialDataForMip,
+                         Func<int, int> getComressedImageSizeForMip)
             : this(currentContext, width, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, p) => GL.CompressedTexImage1D(tt, l, f, w, 0, getComressedImageSizeForMip(l), p))
         {

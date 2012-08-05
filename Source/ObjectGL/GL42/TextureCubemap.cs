@@ -66,17 +66,22 @@ namespace ObjectGL.GL42
 
         public TextureCubemap(Context currentContext,
                          int width, int height, int mipCount,
-                         Format internalFormat, FormatColor format, FormatType type,
-                         Func<CubemapFace, int, Data> getInitialDataForMip)
+                         Format internalFormat, Func<CubemapFace, int, Data> getInitialDataForMip, 
+                         FormatColor format, FormatType type,
+                         ByteAlignment unpackAlignment = ByteAlignment.Four)
             : this(currentContext, width, height, mipCount, internalFormat, getInitialDataForMip,
-                   (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0, (PixelFormat)format, (PixelType)type, p))
+                   (tt, l, f, w, h, p) =>
+                   {
+                       currentContext.SetUnpackAlignment(unpackAlignment);
+                       GL.TexImage2D(tt, l, f, w, h, 0, (PixelFormat)format, (PixelType)type, p);
+                   })
         {
         }
 
         public TextureCubemap(Context currentContext,
                          int width, int height, int mipCount,
-                         Format internalFormat, Func<int, int> getComressedImageSizeForMip,
-                         Func<CubemapFace, int, Data> getCompressedInitialDataForMip)
+                         Format internalFormat, Func<CubemapFace, int, Data> getCompressedInitialDataForMip, 
+                         Func<int, int> getComressedImageSizeForMip)
             : this(currentContext, width, height, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, p) => GL.CompressedTexImage2D(tt, l, f, w, h, 0, getComressedImageSizeForMip(l), p))
         {

@@ -115,7 +115,7 @@ void main()
             using (var textureLoader = new TextureLoader("../Textures/Chess256.png"))
             {
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Srgb8Alpha8,
-                                           FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
+                                           i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             sampler = new Sampler();

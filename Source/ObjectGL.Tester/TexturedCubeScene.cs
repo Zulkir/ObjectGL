@@ -199,13 +199,13 @@ void main()
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
                 diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
-                                           FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
+                                           i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             using (var textureLoader = new TextureLoader("../Textures/SpecularTest.png"))
             {
                 specularMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Rgba8,
-                                           FormatColor.Rgba, FormatType.UnsignedByte, i => textureLoader.GetMipData(i));
+                                           i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             sampler = new Sampler();

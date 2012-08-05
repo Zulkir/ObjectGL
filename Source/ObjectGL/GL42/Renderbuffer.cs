@@ -61,14 +61,9 @@ namespace ObjectGL.GL42
             currentContext.BindRenderbuffer(this);
 
             if (samples == 0)
-            {
-                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, (RenderbufferStorage)internalFormat, width, height);
-            }
+                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, (RenderbufferStorage) internalFormat, width, height);
             else
-            {
-                GL.RenderbufferStorageMultisample(RenderbufferTarget.Renderbuffer, samples, (RenderbufferStorage)internalFormat, width, height);
-            }
-            
+                GL.RenderbufferStorageMultisample(RenderbufferTarget.Renderbuffer, samples, (RenderbufferStorage) internalFormat, width, height);
         }
 
         public unsafe void Dispose()

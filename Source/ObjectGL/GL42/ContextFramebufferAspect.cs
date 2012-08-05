@@ -33,7 +33,6 @@ namespace ObjectGL.GL42
         {
             readonly RedundantObject<Framebuffer> drawFramebufferBinding = new RedundantObject<Framebuffer>(o => GL.BindFramebuffer(FramebufferTarget.DrawFramebuffer, Helpers.ObjectHandle(o)));
             readonly RedundantObject<Framebuffer> readFramebufferBinding = new RedundantObject<Framebuffer>(o => GL.BindFramebuffer(FramebufferTarget.ReadFramebuffer, Helpers.ObjectHandle(o)));
-            readonly RedundantObject<Renderbuffer> renderbufferBinding = new RedundantObject<Renderbuffer>(o => GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, Helpers.ObjectHandle(o)));
 
             public void BindDrawFramebuffer(Framebuffer framebuffer)
             {
@@ -51,11 +50,6 @@ namespace ObjectGL.GL42
                 if (readFramebufferBinding.HasValueSet(framebuffer)) return FramebufferTarget.ReadFramebuffer;
                 readFramebufferBinding.Set(framebuffer);
                 return FramebufferTarget.ReadFramebuffer;
-            }
-
-            public void BindRenderbuffer(Renderbuffer renderbuffer)
-            {
-                renderbufferBinding.Set(renderbuffer);
             }
 
             public void ConsumePipelineFramebuffer(Framebuffer framebuffer)
