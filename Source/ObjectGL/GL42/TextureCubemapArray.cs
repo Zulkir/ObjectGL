@@ -69,11 +69,11 @@ namespace ObjectGL.GL42
                          Format internalFormat, 
                          Func<CubemapFace, int, Data> getInitialDataForMip,
                          FormatColor format, FormatType type,
-                         Func<int, ByteAlignment> getRowByteAlignmentForMip)
+                         Func<CubemapFace, int, ByteAlignment> getRowByteAlignmentForMip)
             : this(currentContext, width, height, sliceCount, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, h, s, p) =>
                    {
-                       currentContext.SetUnpackAlignment(getRowByteAlignmentForMip(l));
+                       currentContext.SetUnpackAlignment(getRowByteAlignmentForMip((CubemapFace)tt, l));
                        GL.TexImage3D(tt, l, f, w, h, s, 0, (PixelFormat)format, (PixelType)type, p);
                    })
         {
