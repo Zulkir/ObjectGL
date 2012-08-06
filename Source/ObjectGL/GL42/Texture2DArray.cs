@@ -87,7 +87,7 @@ namespace ObjectGL.GL42
         {
         }
 
-        public void SetData(Context currentContext, int level, int slice,
+        public void SetData(Context currentContext, int slice, int level,
             Data data, FormatColor format, FormatType type,
             ByteAlignment unpackAlignment = ByteAlignment.Four)
         {
@@ -97,7 +97,7 @@ namespace ObjectGL.GL42
             data.UnpinPointer();
         }
 
-        public void SetData(Context currentContext, int level, int slice,
+        public void SetData(Context currentContext, int slice, int level,
             Data data, int compressedSize)
         {
             currentContext.BindTexture(Target, this);
