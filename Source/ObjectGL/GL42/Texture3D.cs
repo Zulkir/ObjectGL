@@ -69,11 +69,11 @@ namespace ObjectGL.GL42
                          int width, int height, int depth, int mipCount,
                          Format internalFormat, Func<int, Data> getInitialDataForMip, 
                          FormatColor format, FormatType type,
-                         ByteAlignment unpackAlignment = ByteAlignment.Four)
+                         Func<int, ByteAlignment> getRowByteAlignmentForMip)
             : this(currentContext, width, height, depth, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, h, d, p) =>
                    {
-                       currentContext.SetUnpackAlignment(unpackAlignment);
+                       currentContext.SetUnpackAlignment(getRowByteAlignmentForMip(l));
                        GL.TexImage3D(tt, l, f, w, h, d, 0, (PixelFormat)format, (PixelType)type, p);
                    })
         {
