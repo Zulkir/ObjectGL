@@ -45,6 +45,20 @@ namespace ObjectGL.GL42
             return contextObject != null ? contextObject.Handle : 0;
         }
 
+        public static int CubemapFaceIndex(CubemapFace face)
+        {
+            switch (face)
+            {
+                case CubemapFace.PositiveX: return 0;
+                case CubemapFace.NegativeX: return 1;
+                case CubemapFace.PositiveY: return 2;
+                case CubemapFace.NegativeY: return 3;
+                case CubemapFace.PositiveZ: return 4;
+                case CubemapFace.NegativeZ: return 5;
+                default: throw new ArgumentOutOfRangeException("face");
+            }
+        }
+
         public static int SizeOfFormat(SizedInternalFormat internalFormat)
         {
             switch (internalFormat)
