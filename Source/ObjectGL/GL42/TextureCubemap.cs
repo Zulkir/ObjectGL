@@ -31,45 +31,43 @@ namespace ObjectGL.GL42
     public class TextureCubemap : Texture
     {
         TextureCubemap(Context currentContext,
-                  int width, int height, int mipCount,
+                  int width, int mipCount,
                   Format internalFormat, Func<CubemapFace, int, Data> getInitialDataForMip,
                   Action<TextureTarget, int, PixelInternalFormat, int, int, IntPtr> glTexImage)
-            : base(TextureTarget.TextureCubeMap, width, height, 1, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, height) : mipCount)
+            : base(TextureTarget.TextureCubeMap, width, width, 1, internalFormat, 1, mipCount == 0 ? CalculateMipCount(width, width) : mipCount)
         {
             currentContext.BindTexture(Target, this);
 
             int mipWidth = width;
-            int mipHeight = height;
 
             for (int j = (int)CubemapFace.PositiveX; j < (int)CubemapFace.PositiveX + 6; j++)
             {
                 for (int i = 0; i < MipCount; i++)
                 {
                     Data data = getInitialDataForMip((CubemapFace)j, i);
-                    glTexImage((TextureTarget)j, i, (PixelInternalFormat)internalFormat, mipWidth, mipHeight, data.Pointer);
+                    glTexImage((TextureTarget)j, i, (PixelInternalFormat)internalFormat, mipWidth, mipWidth, data.Pointer);
                     data.UnpinPointer();
 
                     mipWidth = Math.Max(mipWidth / 2, 1);
-                    mipHeight = Math.Max(mipHeight / 2, 1);
                 }
             }
         }
 
         public TextureCubemap(Context currentContext,
-                         int width, int height, int mipCount,
+                         int width, int mipCount,
                          Format internalFormat)
-            : this(currentContext, width, height, mipCount, internalFormat, (f, i) => new Data(IntPtr.Zero),
+            : this(currentContext, width, mipCount, internalFormat, (f, i) => new Data(IntPtr.Zero),
                    (tt, l, f, w, h, p) => GL.TexImage2D(tt, l, f, w, h, 0,
                        (PixelFormat)GetAppropriateFormatColor(internalFormat), (PixelType)GetAppropriateFormatType(internalFormat), p))
         {
         }
 
         public TextureCubemap(Context currentContext,
-                         int width, int height, int mipCount,
+                         int width, int mipCount,
                          Format internalFormat, Func<CubemapFace, int, Data> getInitialDataForMip, 
                          FormatColor format, FormatType type,
                          Func<CubemapFace, int, ByteAlignment> getRowByteAlignmentForMip)
-            : this(currentContext, width, height, mipCount, internalFormat, getInitialDataForMip,
+            : this(currentContext, width, mipCount, internalFormat, getInitialDataForMip,
                    (tt, l, f, w, h, p) =>
                    {
                        currentContext.SetUnpackAlignment(getRowByteAlignmentForMip((CubemapFace)tt, l));
@@ -79,10 +77,10 @@ namespace ObjectGL.GL42
         }
 
         public TextureCubemap(Context currentContext,
-                         int width, int height, int mipCount,
+                         int width, int mipCount,
                          Format internalFormat, Func<CubemapFace, int, Data> getCompressedInitialDataForMip, 
                          Func<int, int> getComressedImageSizeForMip)
-            : this(currentContext, width, height, mipCount, internalFormat, getCompressedInitialDataForMip,
+            : this(currentContext, width, mipCount, internalFormat, getCompressedInitialDataForMip,
                    (tt, l, f, w, h, p) => GL.CompressedTexImage2D(tt, l, f, w, h, 0, getComressedImageSizeForMip(l), p))
         {
         }
