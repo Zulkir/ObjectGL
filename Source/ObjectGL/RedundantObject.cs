@@ -27,53 +27,15 @@ using System;
 
 namespace ObjectGL
 {
-    class RedundantObject<T> where T : class
+    class RedundantObject<T> : RedundantBase<T> where T : class
     {
-        readonly Action<T> action;
-        T currentValue;
-        bool invalid;
-
-        public RedundantObject(Action<T> action)
+        public RedundantObject(Action<T> action) : base(action)
         {
-            if (action == null) throw new ArgumentNullException("action");
-
-            this.action = action;
-            invalid = true;
         }
 
-        public T Get()
+        protected override bool ValuesEqual(T v1, T v2)
         {
-            if (invalid) throw new InvalidOperationException("Trying to get a binding's value, while it is yet unknown.");
-
-            return currentValue;
-        }
-
-        public bool HasValueSet()
-        {
-            return !invalid;
-        }
-
-        public bool HasValueSet(T value)
-        {
-            return !invalid && ReferenceEquals(value, currentValue);
-        }
-
-        public void Set(T value)
-        {
-            if (!invalid && ReferenceEquals(value, currentValue)) return;
-            Force(value);
-        }
-
-        public void Force(T value)
-        {
-            action(value);
-            currentValue = value;
-            invalid = false;
-        }
-
-        public void Invalidate()
-        {
-            invalid = true;
+            return ReferenceEquals(v1, v2);
         }
     }
 }

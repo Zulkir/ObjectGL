@@ -46,6 +46,7 @@
     <Compile Include="GL42\ContextRenderbufferAspect.cs" />
     <Compile Include="GL42\TransformFeedback.cs" />
     <Compile Include="GL42\VertexAttributeDimension.cs" />
+    <Compile Include="RedundantBase.cs" />
     <Compile Include="RedundantObject.cs" />
     <Compile Include="GL42\CompareFunc.cs" />
     <Compile Include="GL42\ContextBlendAspect.cs" />
