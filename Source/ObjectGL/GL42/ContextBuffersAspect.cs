@@ -55,7 +55,11 @@ namespace ObjectGL.GL42
                 for (int i = 0; i < implementation.MaxUniformBufferBindings; i++)
                 {
                     int iLoc = i;
-                    uniformBufferIndexedBindingsArray[i] = new RedundantObject<Buffer>(o => GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, Helpers.ObjectHandle(o)));
+                    uniformBufferIndexedBindingsArray[i] = new RedundantObject<Buffer>(o =>
+                        {
+                            GL.BindBufferBase(BufferTarget.UniformBuffer, iLoc, Helpers.ObjectHandle(o));
+                            uniformBufferBinding.OnOutsideChange(o);
+                        });
                 }
             }
 
