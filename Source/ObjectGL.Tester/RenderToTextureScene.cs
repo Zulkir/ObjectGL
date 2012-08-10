@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-#define INTEL_WORKAROUND
+//#define INTEL_WORKAROUND
 
 using System;
 using ObjectGL.GL42;
@@ -301,7 +301,7 @@ void main()
 #if INTEL_WORKAROUND
             cameraOutsideBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #else
-            camera.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #endif
 
             Context.Pipeline.Framebuffer = null;
