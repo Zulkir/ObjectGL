@@ -23,7 +23,7 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-//#define INTEL_WORKAROUND
+#define INTEL_WORKAROUND
 
 using System;
 using ObjectGL.GL42;
