@@ -34,6 +34,7 @@ namespace ObjectGL.GL42
         public string Version { get; private set; }
         public string ShadingLanguageVersion { get; private set; }
 
+        public int MaxPatchVertices { get; private set; }
         public int MaxVertexAttributes { get; private set; }
         public int MaxCombinedTextureImageUnits { get; private set; }
         public int MaxUniformBufferBindings { get; private set; }
@@ -60,6 +61,9 @@ namespace ObjectGL.GL42
             Renderer = GL.GetString(StringName.Renderer);
             Version = GL.GetString(StringName.Version);
             ShadingLanguageVersion = GL.GetString(StringName.ShadingLanguageVersion);
+
+            GL.GetInteger((GetPName)All.MaxPatchVertices, &localInt);
+            MaxPatchVertices = localInt;
 
             GL.GetInteger(GetPName.MaxVertexAttribs, &localInt);
             MaxVertexAttributes = localInt;

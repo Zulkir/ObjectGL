@@ -30,8 +30,9 @@ namespace ObjectGL.GL42
 {
     public partial class Context
     {
-        private class BuffersAspect
+        private class VertexAndBuffersAspect
         {
+            readonly RedundantInt patchVertexCountBinding = new RedundantInt(x => { if (x != 0) GL.PatchParameter(PatchParameterInt.PatchVertices, x); });
             readonly RedundantObject<VertexArray> vertexArrayBinding = new RedundantObject<VertexArray>(o => GL.BindVertexArray(Helpers.ObjectHandle(o)));
             readonly RedundantObject<TransformFeedback> transformFeedbackBinding = new RedundantObject<TransformFeedback>(o => GL.BindTransformFeedback(TransformFeedbackTarget.TransformFeedback, Helpers.ObjectHandle(o))); 
 
@@ -49,7 +50,7 @@ namespace ObjectGL.GL42
 
             int boundUniformBufferRange = 0;
 
-            public BuffersAspect(Implementation implementation)
+            public VertexAndBuffersAspect(Implementation implementation)
             {
                 uniformBufferIndexedBindingsArray = new RedundantObject<Buffer>[implementation.MaxUniformBufferBindings];
                 for (int i = 0; i < implementation.MaxUniformBufferBindings; i++)
@@ -99,6 +100,11 @@ namespace ObjectGL.GL42
                     }
                     default: throw new ArgumentOutOfRangeException("target");
                 }
+            }
+
+            public void ConsumePipelinePatchVertexCount(int patchVertexCount)
+            {
+                patchVertexCountBinding.Set(patchVertexCount);
             }
 
             public void ConsumePipelineVertexArray(VertexArray vertexArray)

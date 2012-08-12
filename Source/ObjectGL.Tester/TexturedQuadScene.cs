@@ -130,16 +130,18 @@ void main()
 
             if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
                 !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, vsh, fsh, null, 
-                new[] { "in_position", "in_tex_coord" },
-                null,
-                null, 
-                new[] { "DiffuseMap" },  
-                0, out program, out shaderErrors))
+                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
+                {
+                    VertexShaders = vsh,
+                    FragmentShaders = fsh,
+                    VertexAttributeNames = new[] { "in_position", "in_tex_coord" },
+                    SamplerNames = new[] { "DiffuseMap" }
+                }, 
+                out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
         }
 
-        public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
+        public override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
             Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);

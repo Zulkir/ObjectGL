@@ -44,13 +44,16 @@
     <Compile Include="GL42\BlendFunc.cs" />
     <Compile Include="GL42\ByteAlignment.cs" />
     <Compile Include="GL42\ContextRenderbufferAspect.cs" />
+    <Compile Include="GL42\ShaderProgramDescription.cs" />
+    <Compile Include="GL42\TesselationControlShader.cs" />
+    <Compile Include="GL42\TesselationEvaluationShader.cs" />
     <Compile Include="GL42\TransformFeedback.cs" />
     <Compile Include="GL42\VertexAttributeDimension.cs" />
     <Compile Include="RedundantBase.cs" />
     <Compile Include="RedundantObject.cs" />
     <Compile Include="GL42\CompareFunc.cs" />
     <Compile Include="GL42\ContextBlendAspect.cs" />
-    <Compile Include="GL42\ContextBuffersAspect.cs" />
+    <Compile Include="GL42\ContextVertexAndBuffersAspect.cs" />
     <Compile Include="GL42\ContextDepthStencilAspect.cs" />
     <Compile Include="GL42\ContextObjectType.cs" />
     <Compile Include="GL42\ContextProgramAspect.cs" />

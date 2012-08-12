@@ -37,7 +37,7 @@ namespace ObjectGL.GL42
         readonly Pipeline pipeline;
 
         readonly ProgramAspect programAspect;
-        readonly BuffersAspect buffersAspect;
+        readonly VertexAndBuffersAspect vertexAndBuffersAspect;
         readonly RenderbufferAspect renderbufferAspect;
         readonly TexturesAspect texturesAspect;
         readonly SamplersAspect samplersAspect;
@@ -72,7 +72,7 @@ namespace ObjectGL.GL42
             pipeline = new Pipeline(this);
 
             programAspect = new ProgramAspect();
-            buffersAspect = new BuffersAspect(implementation);
+            vertexAndBuffersAspect = new VertexAndBuffersAspect(implementation);
             renderbufferAspect = new RenderbufferAspect();
             texturesAspect = new TexturesAspect(implementation);
             samplersAspect = new SamplersAspect(implementation);
@@ -91,17 +91,17 @@ namespace ObjectGL.GL42
 
         internal void BindVertexArray(VertexArray vertexArray)
         {
-            buffersAspect.BindVertexArray(vertexArray);
+            vertexAndBuffersAspect.BindVertexArray(vertexArray);
         }
 
         internal void BindTransformFeedback(TransformFeedback transformFeedback)
         {
-            buffersAspect.BindTransformFeedback(transformFeedback);
+            vertexAndBuffersAspect.BindTransformFeedback(transformFeedback);
         }
 
         internal void BindBuffer(BufferTarget target, Buffer buffer)
         {
-            buffersAspect.BindBuffer(target, buffer);
+            vertexAndBuffersAspect.BindBuffer(target, buffer);
         }
 
         internal void BindTexture(TextureTarget target, Texture texture)
@@ -140,8 +140,9 @@ namespace ObjectGL.GL42
         internal void ConsumePipeline()
         {
             programAspect.ConsumePipelineProgram(pipeline.Program);
-            buffersAspect.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
-            buffersAspect.ConsumePipelineVertexArray(pipeline.VertexArray);
+            vertexAndBuffersAspect.ConsumePipelinePatchVertexCount(pipeline.PatchVertexCount);
+            vertexAndBuffersAspect.ConsumePipelineVertexArray(pipeline.VertexArray);
+            vertexAndBuffersAspect.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
             texturesAspect.ConsumePipelineTextures(pipeline.Textures);
             samplersAspect.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
             framebuffersAspect.ConsumePipelineFramebuffer(pipeline.Framebuffer);
@@ -250,7 +251,7 @@ namespace ObjectGL.GL42
 
         public void BeginTransformFeedback(TransformFeedback transformFeedback, BeginFeedbackMode beginFeedbackMode)
         {
-            buffersAspect.BindTransformFeedback(transformFeedback);
+            vertexAndBuffersAspect.BindTransformFeedback(transformFeedback);
             GL.BeginTransformFeedback(beginFeedbackMode);
         }
 

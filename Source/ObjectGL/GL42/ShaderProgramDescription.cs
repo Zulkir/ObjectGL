@@ -23,31 +23,22 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System.Collections;
 using System.Collections.Generic;
 using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
 {
-    public sealed class FragmentShader : Shader, IEnumerable<FragmentShader>
+    public struct ShaderProgramDescription
     {
-        private FragmentShader(int handle)
-            : base(handle, ShaderType.FragmentShader)
-        { }
-
-        IEnumerator<FragmentShader> IEnumerable<FragmentShader>.GetEnumerator()
-        {
-            yield return this;
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            yield return this;
-        }
-
-        public static bool TryCompile(string source, out FragmentShader shader, out string errors)
-        {
-            return TryCompile(source, ShaderType.FragmentShader, h => new FragmentShader(h), out shader, out errors);
-        }
+        public IEnumerable<VertexShader> VertexShaders;
+        public IEnumerable<TesselationControlShader> TesselationControlShaders;
+        public IEnumerable<TesselationEvaluationShader> TesselationEvaluationShaders;
+        public IEnumerable<GeometryShader> GeometryShaders;
+        public IEnumerable<FragmentShader> FragmentShaders;
+        public string[] VertexAttributeNames;
+        public string[] UniformBufferNames;
+        public string[] TransformFeedbackAttributeNames;
+        public string[] SamplerNames;
+        public TransformFeedbackMode TransformFeedbackMode;
     }
 }

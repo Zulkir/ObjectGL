@@ -29,13 +29,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
 {
-    public sealed class FragmentShader : Shader, IEnumerable<FragmentShader>
+    public class TesselationControlShader : Shader, IEnumerable<TesselationControlShader>
     {
-        private FragmentShader(int handle)
-            : base(handle, ShaderType.FragmentShader)
+        private TesselationControlShader(int handle)
+            : base(handle, ShaderType.TessControlShader)
         { }
 
-        IEnumerator<FragmentShader> IEnumerable<FragmentShader>.GetEnumerator()
+        IEnumerator<TesselationControlShader> IEnumerable<TesselationControlShader>.GetEnumerator()
         {
             yield return this;
         }
@@ -45,9 +45,9 @@ namespace ObjectGL.GL42
             yield return this;
         }
 
-        public static bool TryCompile(string source, out FragmentShader shader, out string errors)
+        public static bool TryCompile(string source, out TesselationControlShader shader, out string errors)
         {
-            return TryCompile(source, ShaderType.FragmentShader, h => new FragmentShader(h), out shader, out errors);
+            return TryCompile(source, ShaderType.TessControlShader, h => new TesselationControlShader(h), out shader, out errors);
         }
     }
 }

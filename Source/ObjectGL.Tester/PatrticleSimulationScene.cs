@@ -177,12 +177,15 @@ void main()
 
             if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
                 !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, vsh, fsh, null,
-                new[] { "in_position", "in_velocity", "in_spawn_cooldown", "in_initial_velocity", "in_color" },
-                null,
-                new[] { "v_position", "v_velocity", "v_spawn_cooldown", "v_initial_velocity", "v_color" },
-                null,
-                TransformFeedbackMode.InterleavedAttribs, out program, out shaderErrors))
+                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
+                {
+                    VertexShaders = vsh,
+                    FragmentShaders = fsh,
+                    VertexAttributeNames = new[] { "in_position", "in_velocity", "in_spawn_cooldown", "in_initial_velocity", "in_color" },
+                    TransformFeedbackAttributeNames = new[] { "v_position", "v_velocity", "v_spawn_cooldown", "v_initial_velocity", "v_color" },
+                    TransformFeedbackMode = TransformFeedbackMode.InterleavedAttribs
+                }, 
+                out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
         }
 

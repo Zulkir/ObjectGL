@@ -37,6 +37,7 @@ namespace ObjectGL.GL42
         readonly UniformBuffersAspect uniformBuffers;
 
         VertexArray vertexArray;
+        int patchVertexCount;
         readonly TexturesAspect textures;
         readonly SamplersAspect samplers;
 
@@ -83,6 +84,12 @@ namespace ObjectGL.GL42
                 if (value == null) throw new ArgumentNullException("value");
                 vertexArray = value;
             }
+        }
+
+        public int PatchVertexCount
+        {
+            get { return patchVertexCount; }
+            set { patchVertexCount = value; }
         }
 
         public TexturesAspect Textures { get { return textures; } }

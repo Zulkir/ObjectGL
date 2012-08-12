@@ -96,7 +96,13 @@ void main()
 
             if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
                 !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, vsh, fsh, null, new[]{"in_position", "in_color"}, null, null, null, 0, out program, out shaderErrors))
+                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
+                {
+                    VertexShaders = vsh,
+                    FragmentShaders = fsh,
+                    VertexAttributeNames = new[] { "in_position", "in_color" }
+                },  
+                out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
 
             

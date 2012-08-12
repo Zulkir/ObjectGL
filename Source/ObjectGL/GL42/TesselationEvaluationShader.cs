@@ -1,4 +1,4 @@
-﻿#region License
+#region License
 /*
 Copyright (c) 2012 Daniil Rodin
 
@@ -29,13 +29,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
 {
-    public sealed class FragmentShader : Shader, IEnumerable<FragmentShader>
+    public class TesselationEvaluationShader : Shader, IEnumerable<TesselationEvaluationShader>
     {
-        private FragmentShader(int handle)
-            : base(handle, ShaderType.FragmentShader)
+        private TesselationEvaluationShader(int handle)
+            : base(handle, ShaderType.TessEvaluationShader)
         { }
 
-        IEnumerator<FragmentShader> IEnumerable<FragmentShader>.GetEnumerator()
+        IEnumerator<TesselationEvaluationShader> IEnumerable<TesselationEvaluationShader>.GetEnumerator()
         {
             yield return this;
         }
@@ -45,9 +45,9 @@ namespace ObjectGL.GL42
             yield return this;
         }
 
-        public static bool TryCompile(string source, out FragmentShader shader, out string errors)
+        public static bool TryCompile(string source, out TesselationEvaluationShader shader, out string errors)
         {
-            return TryCompile(source, ShaderType.FragmentShader, h => new FragmentShader(h), out shader, out errors);
+            return TryCompile(source, ShaderType.TessControlShader, h => new TesselationEvaluationShader(h), out shader, out errors);
         }
     }
 }

@@ -24,7 +24,6 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using OpenTK.Graphics.OpenGL;
 
@@ -52,55 +51,49 @@ namespace ObjectGL.GL42
 
         public static unsafe bool TryLink(
             Context currentContext,
-            IEnumerable<VertexShader> vertexShaders,
-            IEnumerable<FragmentShader> fragmentShaders,
-            IEnumerable<GeometryShader> geometryShaders, 
-            string[] attributeNames,
-            string[] uniformBufferNames,
-            string[] transformFeedbackAttributeNames,
-            string[] samplerNames,
-            TransformFeedbackMode transformFeedbackMode,
+            ShaderProgramDescription description,
             out ShaderProgram program,
             out string errors)
         {
-            if (vertexShaders == null) throw new ArgumentNullException("vertexShaders");
-            if (fragmentShaders == null) throw new ArgumentNullException("fragmentShaders");
+            if (description.VertexShaders == null) throw new ArgumentNullException("description.VertexShaders");
+            if (description.FragmentShaders == null) throw new ArgumentNullException("description.FragmentShaders");
 
-            attributeNames = attributeNames ?? EmptyStringArray;
-            if (attributeNames.Any(x => x != null && attributeNames.Count(y => y == x) != 1))
+            description.VertexAttributeNames = description.VertexAttributeNames ?? EmptyStringArray;
+            if (description.VertexAttributeNames.Any(x => x != null && description.VertexAttributeNames.Count(y => y == x) != 1))
                 throw new ArgumentException("All non-null attribute names must be unique.");
 
-            uniformBufferNames = uniformBufferNames ?? EmptyStringArray;
-            if (uniformBufferNames.Any(x => x != null && uniformBufferNames.Count(y => y == x) != 1))
+            description.UniformBufferNames = description.UniformBufferNames ?? EmptyStringArray;
+            if (description.UniformBufferNames.Any(x => x != null && description.UniformBufferNames.Count(y => y == x) != 1))
                 throw new ArgumentException("All non-null uniform buffer names must be unique.");
 
-            transformFeedbackAttributeNames = transformFeedbackAttributeNames ?? EmptyStringArray;
-            if (transformFeedbackAttributeNames.Any(x => transformFeedbackAttributeNames.Count(y => y == x) != 1))
-                throw new ArgumentException("All transform feedback attribute names must be unique.");
+            description.TransformFeedbackAttributeNames = description.TransformFeedbackAttributeNames ?? EmptyStringArray;
+            if (description.TransformFeedbackAttributeNames.Any(x => !x.StartsWith("gl_") &&
+                description.TransformFeedbackAttributeNames.Count(y => y == x) != 1))
+                throw new ArgumentException("All transform feedback attribute names (except gl_*** strings) must be unique.");
 
-            samplerNames = samplerNames ?? EmptyStringArray;
-            if (samplerNames.Any(x => x != null && samplerNames.Count(y => y == x) != 1))
+            description.SamplerNames = description.SamplerNames ?? EmptyStringArray;
+            if (description.SamplerNames.Any(x => x != null && description.SamplerNames.Count(y => y == x) != 1))
                 throw new ArgumentException("All non-null sampler names must be unique.");
 
             int handle = GL.CreateProgram();
             program = new ShaderProgram(handle);
 
-            geometryShaders = geometryShaders ?? EmptyGeometryShaderArray;
+            description.GeometryShaders = description.GeometryShaders ?? EmptyGeometryShaderArray;
 
-            foreach (var shader in vertexShaders)
+            foreach (var shader in description.VertexShaders)
                 GL.AttachShader(handle, shader.Handle);
-            foreach (var shader in fragmentShaders)
+            foreach (var shader in description.FragmentShaders)
                 GL.AttachShader(handle, shader.Handle);
-            foreach (var shader in geometryShaders)
+            foreach (var shader in description.GeometryShaders)
                 GL.AttachShader(handle, shader.Handle);
-                
-            for (int i = 0; i < attributeNames.Length; i++)
-            {
-                if (attributeNames[i] != null)
-                    GL.BindAttribLocation(handle, i, attributeNames[i]);
-            }
 
-            GL.TransformFeedbackVaryings(handle, transformFeedbackAttributeNames.Length, transformFeedbackAttributeNames, transformFeedbackMode);
+            for (int i = 0; i < description.VertexAttributeNames.Length; i++)
+                if (description.VertexAttributeNames[i] != null)
+                    GL.BindAttribLocation(handle, i, description.VertexAttributeNames[i]);
+
+            if (description.TransformFeedbackAttributeNames.Length > 0)
+                GL.TransformFeedbackVaryings(handle, description.TransformFeedbackAttributeNames.Length, 
+                    description.TransformFeedbackAttributeNames, description.TransformFeedbackMode);
 
             GL.LinkProgram(handle);
 
@@ -113,21 +106,21 @@ namespace ObjectGL.GL42
                 return false;
             }
 
-            for (int i = 0; i < attributeNames.Length; i++)
+            for (int i = 0; i < description.VertexAttributeNames.Length; i++)
             {
-                if (attributeNames[i] != null && GL.GetAttribLocation(handle, attributeNames[i]) != i)
-                    throw new ArgumentException(string.Format("Vertex attribute '{0}' is not present in the program.", attributeNames[i]));
+                if (description.VertexAttributeNames[i] != null && GL.GetAttribLocation(handle, description.VertexAttributeNames[i]) != i)
+                    throw new ArgumentException(string.Format("Vertex attribute '{0}' is not present in the program.", description.VertexAttributeNames[i]));
             }
 
-            for (int i = 0; i < uniformBufferNames.Length; i++)
+            for (int i = 0; i < description.UniformBufferNames.Length; i++)
             {
-                if (uniformBufferNames[i] == null) continue;
+                if (description.UniformBufferNames[i] == null) continue;
 
-                int programSpecificIndex = GL.GetUniformBlockIndex(handle, uniformBufferNames[i]);
+                int programSpecificIndex = GL.GetUniformBlockIndex(handle, description.UniformBufferNames[i]);
                 if (programSpecificIndex == (int)Version31.InvalidIndex)
                 {
                     program = null;
-                    errors = string.Format("Uniform Bufffer '{0}' not found.", uniformBufferNames[i]);
+                    errors = string.Format("Uniform Bufffer '{0}' not found.", description.UniformBufferNames[i]);
                     return false;
                 }
 
@@ -136,11 +129,11 @@ namespace ObjectGL.GL42
 
             currentContext.UseProgram(program);
 
-            for (int i = 0; i < samplerNames.Length; i++)
+            for (int i = 0; i < description.SamplerNames.Length; i++)
             {
-                if (samplerNames[i] == null) continue;
+                if (description.SamplerNames[i] == null) continue;
 
-                int samplerUniformLocation = GL.GetUniformLocation(handle, samplerNames[i]);
+                int samplerUniformLocation = GL.GetUniformLocation(handle, description.SamplerNames[i]);
                 GL.Uniform1(samplerUniformLocation, i);
             }
 

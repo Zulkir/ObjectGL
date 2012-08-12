@@ -29,15 +29,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
 {
-    public class VertexShader : Shader, IEnumerable<VertexShader>
+    public sealed class VertexShader : Shader, IEnumerable<VertexShader>
     {
         private VertexShader(int handle)
             : base(handle, ShaderType.VertexShader)
-        {
-            
-        }
+        { }
 
-        public IEnumerator<VertexShader> GetEnumerator()
+        IEnumerator<VertexShader> IEnumerable<VertexShader>.GetEnumerator()
         {
             yield return this;
         }

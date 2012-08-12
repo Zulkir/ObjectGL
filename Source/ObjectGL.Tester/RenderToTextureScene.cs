@@ -232,12 +232,15 @@ void main()
 
             if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
                 !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, vsh, fsh, null, 
-                new[] { "in_position", "in_normal", "in_tex_coord" },
-                new[] { "Transform", "Camera", "Light" }, 
-                null, 
-                new[] { "DiffuseMap" },  
-                0, out program, out shaderErrors))
+                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
+                {
+                    VertexShaders = vsh,
+                    FragmentShaders = fsh,
+                    VertexAttributeNames = new[] { "in_position", "in_normal", "in_tex_coord" },
+                    UniformBufferNames = new[] { "Transform", "Camera", "Light" },
+                    SamplerNames = new[] { "DiffuseMap" }
+                }, 
+                out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
         }
 

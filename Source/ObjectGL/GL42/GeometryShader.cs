@@ -29,14 +29,13 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL42
 {
-    public class GeometryShader : Shader, IEnumerable<GeometryShader>
+    public sealed class GeometryShader : Shader, IEnumerable<GeometryShader>
     {
         private GeometryShader(int handle)
             : base(handle, ShaderType.GeometryShader)
-        {
-        }
+        { }
 
-        public IEnumerator<GeometryShader> GetEnumerator()
+        IEnumerator<GeometryShader> IEnumerable<GeometryShader>.GetEnumerator()
         {
             yield return this;
         }
