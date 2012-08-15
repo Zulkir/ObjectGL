@@ -33,6 +33,8 @@ namespace ObjectGL.GL42
         public string Renderer { get; private set; }
         public string Version { get; private set; }
         public string ShadingLanguageVersion { get; private set; }
+        public int MajorVersion { get; private set; }
+        public int MinorVersion { get; private set; }
 
         public int MaxPatchVertices { get; private set; }
         public int MaxVertexAttributes { get; private set; }
@@ -61,6 +63,12 @@ namespace ObjectGL.GL42
             Renderer = GL.GetString(StringName.Renderer);
             Version = GL.GetString(StringName.Version);
             ShadingLanguageVersion = GL.GetString(StringName.ShadingLanguageVersion);
+
+            GL.GetInteger(GetPName.MajorVersion, &localInt);
+            MajorVersion = localInt;
+
+            GL.GetInteger(GetPName.MinorVersion, &localInt);
+            MinorVersion = localInt;
 
             GL.GetInteger((GetPName)All.MaxPatchVertices, &localInt);
             MaxPatchVertices = localInt;
