@@ -1,3 +1,14 @@
 ObjectGL is a free open source .NET library, based on OpenTK, that provides access to OpenGL functions in object-oriented manner, not the painful and error-prone 'bind-to-edit' model.
 
-Please note, that the first priority of ObjectGL is to provide access to the core OpenGL 3.x functionality with some ARB extensions that are core in OpenGL 4.2.
+While modern OpenGL is designed in terms of objects, the API itself is designed with the mindset of reusing existing functions as much as possible. This creates a counter-intuitive API with functions that depend heavily on implicit parameters and at the same time change implicit parameters for some other functions.
+
+ObjectGL is created to provide access to the OpenGL in the same terms in which it is designed - in terms of vertex array objects, buffer objects, sampler objects and so on, while managing the 'binding of handles to targets' behind the scenes and as effectively as possible.
+
+The project is still under development, but already supports many of the OpenGL capabilities including, but not limited to
+
+- Geometry shaders and transform feedback (using TransformFeedback objects)
+- Tesselation shaders
+- Rendering to all possible kinds of textures (including rendering to layered images)
+- Instancing
+
+To learn how ObjectGL maps onto OpenGL object model, please refer to the 'Scenes' within ObjectGL.Tester project. Those are concise demonstrations of how to use ObjectGL to access specific OpenGL features.
