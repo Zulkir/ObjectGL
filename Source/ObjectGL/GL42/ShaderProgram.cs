@@ -47,6 +47,8 @@ namespace ObjectGL.GL42
         }
 
         static readonly string[] EmptyStringArray = new string[0];
+        static readonly TesselationControlShader[] EmptyTessControlShaderArray = new TesselationControlShader[0];
+        static readonly TesselationEvaluationShader[] EmptyTessEvalShaderArray = new TesselationEvaluationShader[0];
         static readonly GeometryShader[] EmptyGeometryShaderArray = new GeometryShader[0];
 
         public static unsafe bool TryLink(
@@ -78,15 +80,21 @@ namespace ObjectGL.GL42
             int handle = GL.CreateProgram();
             program = new ShaderProgram(handle);
 
+            description.TesselationControlShaders = description.TesselationControlShaders ?? EmptyTessControlShaderArray;
+            description.TesselationEvaluationShaders = description.TesselationEvaluationShaders ?? EmptyTessEvalShaderArray;
             description.GeometryShaders = description.GeometryShaders ?? EmptyGeometryShaderArray;
 
             foreach (var shader in description.VertexShaders)
                 GL.AttachShader(handle, shader.Handle);
-            foreach (var shader in description.FragmentShaders)
+            foreach (var shader in description.TesselationControlShaders)
+                GL.AttachShader(handle, shader.Handle);
+            foreach (var shader in description.TesselationEvaluationShaders)
                 GL.AttachShader(handle, shader.Handle);
             foreach (var shader in description.GeometryShaders)
                 GL.AttachShader(handle, shader.Handle);
-
+            foreach (var shader in description.FragmentShaders)
+                GL.AttachShader(handle, shader.Handle);
+            
             for (int i = 0; i < description.VertexAttributeNames.Length; i++)
                 if (description.VertexAttributeNames[i] != null)
                     GL.BindAttribLocation(handle, i, description.VertexAttributeNames[i]);

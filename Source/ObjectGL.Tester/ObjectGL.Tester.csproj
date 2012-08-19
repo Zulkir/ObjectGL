@@ -46,6 +46,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CurveTesselationScene.cs" />
     <Compile Include="PatrticleSimulationScene.cs" />
     <Compile Include="MyGameWindow.cs" />
     <Compile Include="ColorfulSpaceScene.cs" />

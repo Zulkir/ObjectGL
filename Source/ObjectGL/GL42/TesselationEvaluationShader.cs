@@ -47,7 +47,7 @@ namespace ObjectGL.GL42
 
         public static bool TryCompile(string source, out TesselationEvaluationShader shader, out string errors)
         {
-            return TryCompile(source, ShaderType.TessControlShader, h => new TesselationEvaluationShader(h), out shader, out errors);
+            return TryCompile(source, ShaderType.TessEvaluationShader, h => new TesselationEvaluationShader(h), out shader, out errors);
         }
     }
 }
