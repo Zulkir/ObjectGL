@@ -32,7 +32,7 @@ using Buffer = ObjectGL.GL42.Buffer;
 
 namespace ObjectGL.Tester
 {
-    class PatrticleSimulationScene : Scene
+    class PatrticleFountainScene : Scene
     {
         struct Vertex
         {
@@ -137,7 +137,7 @@ void main()
         TransformFeedback transformFeedbackSource;
         TransformFeedback transformFeedbackTarget;
 
-        public PatrticleSimulationScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
+        public PatrticleFountainScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
         {
         }
 
