@@ -127,7 +127,7 @@ namespace ObjectGL.GL42
             };
 
             Attach(currentContext, attachmentPoint, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
-                GL.FramebufferTexture1D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+                GL.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level));
         }
 
         public void AttachTextureImage(Context currentContext, FramebufferAttachmentPoint attachmentPoint, Texture1DArray texture, int level, int layer)
@@ -170,7 +170,7 @@ namespace ObjectGL.GL42
             };
 
             Attach(currentContext, attachmentPoint, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
-                GL.FramebufferTexture2D(ft, fa, d.TextureTarget, d.Texture.Handle, d.Level));
+                GL.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level));
         }
 
         public void AttachTextureImage(Context currentContext, FramebufferAttachmentPoint attachmentPoint, Texture2DArray texture, int level, int layer)
@@ -212,7 +212,7 @@ namespace ObjectGL.GL42
             };
 
             Attach(currentContext, attachmentPoint, ref newDesc, (FramebufferTarget ft, FramebufferAttachment fa, ref FramebufferAttachmentDescription d) =>
-                GL.FramebufferTexture2D(ft, fa, d.TextureTarget, d.Texture.Handle, 0));
+                GL.FramebufferTexture(ft, fa, d.Texture.Handle, 0));
         }
 
         public void AttachTextureImage(Context currentContext, FramebufferAttachmentPoint attachmentPoint, Texture2DMultisampleArray texture, int layer)
