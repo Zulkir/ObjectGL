@@ -104,8 +104,6 @@ void main()
                 },  
                 out program, out shaderErrors))
                 throw new ArgumentException("Program errors:\n\n" + shaderErrors);
-
-            
         }
 
         public override void OnNewFrame(float totalSeconds, float elapsedSeconds)

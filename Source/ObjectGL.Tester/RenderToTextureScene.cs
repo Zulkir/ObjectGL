@@ -83,7 +83,7 @@ void main()
     gl_Position = worldPosition * ViewProjection;
 
     v_world_position = worldPosition.xyz;
-    v_world_normal = (vec4(in_normal, 0.0f) * World).xyz;;
+    v_world_normal = (vec4(in_normal, 0f) * World).xyz;;
     v_tex_coord = in_tex_coord;
 }
 ";
@@ -109,9 +109,9 @@ void main()
     vec3 toLight = normalize(LightPosition - v_world_position);
     vec3 normal = normalize(v_world_normal);
 
-    float diffuseFactor = clamp(dot(toLight, normal), 0.0f, 1.0f);
+    float diffuseFactor = clamp(dot(toLight, normal), 0f, 1.0f);
 
-    out_color = vec4(texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0.0f, 1.0f),
+    out_color = vec4(texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0f, 1.0f),
                 1.0f);
 }
 ";
@@ -159,35 +159,35 @@ void main()
 
             var vertexBuffer = new Buffer(Context, BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
             {
-                new Vertex(1f, -1f, 1f, 1f, 0.0f, 0.0f, 0f, 0f),
-                new Vertex(1f, 1f, 1f, 1f, 0.0f, 0.0f, 1f, 0f),
-                new Vertex(1f, 1f, -1f, 1f, 0.0f, 0.0f, 1f, 1f),
-                new Vertex(1f, -1f, -1f, 1f, 0.0f, 0.0f, 0f, 1f),
+                new Vertex(1f, -1f, 1f, 1f, 0f, 0f, 0f, 0f),
+                new Vertex(1f, 1f, 1f, 1f, 0f, 0f, 1f, 0f),
+                new Vertex(1f, 1f, -1f, 1f, 0f, 0f, 1f, 1f),
+                new Vertex(1f, -1f, -1f, 1f, 0f, 0f, 0f, 1f),
 
-                new Vertex(1f, 1f, 1f, 0.0f, 1f, 0.0f, 0f, 0f),
-                new Vertex(-1f, 1f, 1f, 0.0f, 1f, 0.0f, 1f, 0f),
-                new Vertex(-1f, 1f, -1f, 0.0f, 1f, 0.0f, 1f, 1f),
-                new Vertex(1f, 1f, -1f, 0.0f, 1f, 0.0f, 0f, 1f),
+                new Vertex(1f, 1f, 1f, 0f, 1f, 0f, 0f, 0f),
+                new Vertex(-1f, 1f, 1f, 0f, 1f, 0f, 1f, 0f),
+                new Vertex(-1f, 1f, -1f, 0f, 1f, 0f, 1f, 1f),
+                new Vertex(1f, 1f, -1f, 0f, 1f, 0f, 0f, 1f),
 
-                new Vertex(-1f, 1f, 1f, -1f, 0.0f, 0.0f, 0f, 0f),
-                new Vertex(-1f, -1f, 1f, -1f, 0.0f, 0.0f, 1f, 0f),
-                new Vertex(-1f, -1f, -1f, -1f, 0.0f, 0.0f, 1f, 1f),
-                new Vertex(-1f, 1f, -1f, -1f, 0.0f, 0.0f, 0f, 1f),
+                new Vertex(-1f, 1f, 1f, -1f, 0f, 0f, 0f, 0f),
+                new Vertex(-1f, -1f, 1f, -1f, 0f, 0f, 1f, 0f),
+                new Vertex(-1f, -1f, -1f, -1f, 0f, 0f, 1f, 1f),
+                new Vertex(-1f, 1f, -1f, -1f, 0f, 0f, 0f, 1f),
 
-                new Vertex(-1f, -1f, 1f, 0.0f, -1f, 0.0f, 0f, 0f),
-                new Vertex(1f, -1f, 1f, 0.0f, -1f, 0.0f, 1f, 0f),
-                new Vertex(1f, -1f, -1f, 0.0f, -1f, 0.0f, 1f, 1f),
-                new Vertex(-1f, -1f, -1f, 0.0f, -1f, 0.0f, 0f, 1f),
+                new Vertex(-1f, -1f, 1f, 0f, -1f, 0f, 0f, 0f),
+                new Vertex(1f, -1f, 1f, 0f, -1f, 0f, 1f, 0f),
+                new Vertex(1f, -1f, -1f, 0f, -1f, 0f, 1f, 1f),
+                new Vertex(-1f, -1f, -1f, 0f, -1f, 0f, 0f, 1f),
 
-                new Vertex(-1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 0f),
-                new Vertex(-1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 0f),
-                new Vertex(1f, 1f, 1f, 0.0f, 0.0f, 1f, 1f, 1f),
-                new Vertex(1f, -1f, 1f, 0.0f, 0.0f, 1f, 0f, 1f),
+                new Vertex(-1f, -1f, 1f, 0f, 0f, 1f, 0f, 0f),
+                new Vertex(-1f, 1f, 1f, 0f, 0f, 1f, 1f, 0f),
+                new Vertex(1f, 1f, 1f, 0f, 0f, 1f, 1f, 1f),
+                new Vertex(1f, -1f, 1f, 0f, 0f, 1f, 0f, 1f),
 
-                new Vertex(-1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 0f),
-                new Vertex(-1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 0f),
-                new Vertex(1f, -1f, -1f, 0.0f, 0.0f, -1f, 1f, 1f),
-                new Vertex(1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 1f)
+                new Vertex(-1f, 1f, -1f, 0f, 0f, -1f, 0f, 0f),
+                new Vertex(-1f, -1f, -1f, 0f, 0f, -1f, 1f, 0f),
+                new Vertex(1f, -1f, -1f, 0f, 0f, -1f, 1f, 1f),
+                new Vertex(1f, 1f, -1f, 0f, 0f, -1f, 0f, 1f)
             }));
 
             var indexBuffer = new Buffer(Context, BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
@@ -272,6 +272,13 @@ void main()
             Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
+            Context.Pipeline.DepthStencil.DepthTestEnable = true;
+            Context.Pipeline.DepthStencil.DepthMask = true;
+
+            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Cw;
+            Context.Pipeline.Rasterizer.CullFaceEnable = true;
+            Context.Pipeline.Rasterizer.CullFace = CullFaceMode.Front;
+
             Context.Pipeline.Framebuffer = framebuffer;
             Context.Pipeline.Viewports[0].Width = RenderTargetSize;
             Context.Pipeline.Viewports[0].Height = RenderTargetSize;
@@ -283,12 +290,6 @@ void main()
             Context.Pipeline.UniformBuffers[2] = lightBuffer;
             Context.Pipeline.Textures[0] = diffuseMap;
             Context.Pipeline.Samplers[0] = sampler;
-
-            Context.Pipeline.DepthStencil.DepthTestEnable = true;
-            Context.Pipeline.DepthStencil.DepthMask = true;
-            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Cw;
-            Context.Pipeline.Rasterizer.CullFaceEnable = true;
-            Context.Pipeline.Rasterizer.CullFace = CullFaceMode.Front;
 
             // Inside cube
 
@@ -306,6 +307,7 @@ void main()
 #else
             cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #endif
+            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Ccw;
 
             Context.Pipeline.Framebuffer = null;
             Context.Pipeline.Viewports[0].Width = GameWindow.ClientSize.Width;
@@ -315,8 +317,7 @@ void main()
 #endif
             Context.Pipeline.Textures[0] = renderTarget;
             Context.Pipeline.Samplers[0] = sampler;
-            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Ccw;
-
+            
             Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
         }
     }

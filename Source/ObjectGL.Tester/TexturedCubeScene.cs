@@ -255,6 +255,9 @@ void main()
             Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
+            Context.Pipeline.DepthStencil.DepthTestEnable = true;
+            Context.Pipeline.DepthStencil.DepthMask = true;
+
             Context.Pipeline.Program = program;
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.UniformBuffers[0] = transformBuffer;
@@ -265,9 +268,6 @@ void main()
             Context.Pipeline.Samplers[0] = sampler;
             Context.Pipeline.Textures[1] = specularMap;
             Context.Pipeline.Samplers[1] = sampler;
-
-            Context.Pipeline.DepthStencil.DepthTestEnable = true;
-            Context.Pipeline.DepthStencil.DepthMask = true;
 
             Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
         }

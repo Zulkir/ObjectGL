@@ -204,16 +204,17 @@ void main()
             Context.ClearWindowColor(Color4.Black);
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
+            Context.Pipeline.DepthStencil.DepthMask = false;
+            Context.Pipeline.DepthStencil.DepthTestEnable = false;
+
+            Context.Pipeline.Blend.BlendEnable = true;
+            Context.Pipeline.Blend.Targets[0].Color.SrcFactor = BlendFactor.One;
+            Context.Pipeline.Blend.Targets[0].Color.DestFactor = BlendFactor.One;
+
             Context.Pipeline.Program = program;
             Context.Pipeline.VertexArray = vertexArray;
             Context.Pipeline.UniformBuffers[0] = timeBuffer;
             Context.Pipeline.UniformBuffers[1] = cameraBuffer;
-
-            Context.Pipeline.DepthStencil.DepthMask = false;
-            Context.Pipeline.DepthStencil.DepthTestEnable = false;
-            Context.Pipeline.Blend.BlendEnable = true;
-            Context.Pipeline.Blend.Targets[0].Color.SrcFactor = BlendFactor.One;
-            Context.Pipeline.Blend.Targets[0].Color.DestFactor = BlendFactor.One;
 
             Context.DrawArrays(BeginMode.Points, 0, ParticleCount);
         }
