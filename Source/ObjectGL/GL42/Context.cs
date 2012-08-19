@@ -191,7 +191,11 @@ namespace ObjectGL.GL42
             GL.DrawArraysInstanced(mode, firstVertex, vertexCountPerInstance, instanceCount);
         }
 
-        // todo: DrawArraysInstancedBaseInstance
+        public void DrawArraysInstancedBaseInstance(BeginMode mode, int firstVertex, int vertexCountPerInstance, int instanceCount, int baseInstance)
+        {
+            ConsumePipeline();
+            GL.DrawArraysInstancedBaseInstance(mode, firstVertex, vertexCountPerInstance, instanceCount, (uint)baseInstance);
+        }
 
         public void DrawElements(BeginMode mode, int indexCount, DrawElementsType indexType, int indexBufferOffset)
         {
@@ -217,7 +221,11 @@ namespace ObjectGL.GL42
             GL.DrawElementsInstanced(mode, indexCountPerInstance, indexType, (IntPtr)indexBufferOffset, instanceCount);
         }
 
-        // todo: DrawElementsInstancedBaseInstance
+        public void DrawElementsInstancedBaseInstance(BeginMode mode, int indexCountPerInstance, DrawElementsType indexType, int indexBufferOffset, int instanceCount, int baseInstance)
+        {
+            ConsumePipeline();
+            GL.DrawElementsInstancedBaseInstance(mode, indexCountPerInstance, indexType, (IntPtr)indexBufferOffset, instanceCount, (uint)baseInstance);
+        }
 
         public void DrawElementsInstancedBaseVertex(BeginMode mode, int indexCountPerInstance, DrawElementsType indexType, int indexBufferOffset, int instanceCount, int baseVertex)
         {
@@ -225,7 +233,11 @@ namespace ObjectGL.GL42
             GL.DrawElementsInstancedBaseVertex(mode, indexCountPerInstance, indexType, (IntPtr)indexBufferOffset, instanceCount, baseVertex);
         }
 
-        // todo: DrawElementsInstancedBaseVertexBaseInstance
+        public void DrawElementsInstancedBaseVertexBaseInstance(BeginMode mode, int indexCountPerInstance, DrawElementsType indexType, int indexBufferOffset, int instanceCount, int baseVertex, int baseInstance)
+        {
+            ConsumePipeline();
+            GL.DrawElementsInstancedBaseVertexBaseInstance(mode, indexCountPerInstance, indexType, (IntPtr)indexBufferOffset, instanceCount, baseVertex, (uint)baseInstance);
+        }
 
         public void DrawRangeElements(BeginMode mode, int minVertexIndex, int maxVertexIndex, int indexCount, DrawElementsType indexType, int indexBufferOffset)
         {
@@ -239,13 +251,37 @@ namespace ObjectGL.GL42
             GL.DrawRangeElementsBaseVertex(mode, minVertexIndex, maxVertexIndex, indexCount, indexType, (IntPtr)indexBufferOffset, baseVertex);
         }
 
-        // todo: DrawTransformFeedback
+        public void DrawTransformFeedback(BeginMode mode, TransformFeedback transformFeedback)
+        {
+            if (transformFeedback == null)
+                throw new ArgumentNullException("transformFeedback");
+            ConsumePipeline();
+            GL.DrawTransformFeedback(mode, transformFeedback.Handle);
+        }
 
-        // todo: DrawTransformFeedbackInstanced
+        public void DrawTransformFeedbackInstanced(BeginMode mode, TransformFeedback transformFeedback, int instanceCount)
+        {
+            if (transformFeedback == null)
+                throw new ArgumentNullException("transformFeedback");
+            ConsumePipeline();
+            GL.DrawTransformFeedbackInstanced(mode, (uint)transformFeedback.Handle, instanceCount);
+        }
 
-        // todo: DrawTransformFeedbackStream
+        public void DrawTransformFeedbackStream(BeginMode mode, TransformFeedback transformFeedback, int stream)
+        {
+            if (transformFeedback == null)
+                throw new ArgumentNullException("transformFeedback");
+            ConsumePipeline();
+            GL.DrawTransformFeedbackStream(mode, transformFeedback.Handle, stream);
+        }
 
-        // todo: DrawTransformFeedbackStreamInstanced
+        public void DrawTransformFeedbackStreamInstanced(BeginMode mode, TransformFeedback transformFeedback, int stream, int instanceCount)
+        {
+            if (transformFeedback == null)
+                throw new ArgumentNullException("transformFeedback");
+            ConsumePipeline();
+            GL.DrawTransformFeedbackStreamInstanced(mode, (uint)transformFeedback.Handle, (uint)stream, instanceCount);
+        }
 
         #endregion
 
