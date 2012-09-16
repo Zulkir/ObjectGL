@@ -23,8 +23,6 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-
 namespace ObjectGL.GL42
 {
     public partial class Pipeline
@@ -38,6 +36,7 @@ namespace ObjectGL.GL42
 
         VertexArray vertexArray;
         int patchVertexCount;
+        Buffer drawIndirectBuffer;
         readonly TexturesAspect textures;
         readonly SamplersAspect samplers;
 
@@ -47,7 +46,6 @@ namespace ObjectGL.GL42
         readonly RasterizerAspect rasterizer;
         readonly DepthStencilAspect depthStencil;
         readonly BlendAspect blend;
-
 
         internal Pipeline(Context context)
         {
@@ -66,12 +64,7 @@ namespace ObjectGL.GL42
         public ShaderProgram Program
         {
             get { return program; }
-            set
-            {
-                if (value == null) throw new ArgumentNullException("value");
-
-                program = value;
-            }
+            set { program = value; }
         }
 
         public UniformBuffersAspect UniformBuffers { get { return uniformBuffers; } }
@@ -79,11 +72,13 @@ namespace ObjectGL.GL42
         public VertexArray VertexArray
         {
             get { return vertexArray; }
-            set
-            {
-                if (value == null) throw new ArgumentNullException("value");
-                vertexArray = value;
-            }
+            set { vertexArray = value; }
+        }
+
+        public Buffer DrawIndirectBuffer
+        {
+            get { return drawIndirectBuffer; }
+            set { drawIndirectBuffer = value; }
         }
 
         public int PatchVertexCount

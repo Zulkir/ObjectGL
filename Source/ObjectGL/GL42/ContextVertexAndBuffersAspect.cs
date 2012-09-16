@@ -112,6 +112,11 @@ namespace ObjectGL.GL42
                 BindVertexArray(vertexArray);
             }
 
+            public void ConsumePipelineDrawIndirectBuffer(Buffer drawIndirectBuffer)
+            {
+                BindBuffer(BufferTarget.DrawIndirectBuffer, drawIndirectBuffer);
+            }
+
             public void ConsumePipelineUniformBuffers(Pipeline.UniformBuffersAspect pipelineUniformBuffers)
             {
                 for (int i = 0; i < pipelineUniformBuffers.EnabledUniformBufferRange; i++)

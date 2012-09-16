@@ -142,6 +142,7 @@ namespace ObjectGL.GL42
             programAspect.ConsumePipelineProgram(pipeline.Program);
             vertexAndBuffersAspect.ConsumePipelinePatchVertexCount(pipeline.PatchVertexCount);
             vertexAndBuffersAspect.ConsumePipelineVertexArray(pipeline.VertexArray);
+            vertexAndBuffersAspect.ConsumePipelineDrawIndirectBuffer(pipeline.DrawIndirectBuffer);
             vertexAndBuffersAspect.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);
             texturesAspect.ConsumePipelineTextures(pipeline.Textures);
             samplersAspect.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
