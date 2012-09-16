@@ -44,6 +44,8 @@
     <Compile Include="GL42\BlendFunc.cs" />
     <Compile Include="GL42\ByteAlignment.cs" />
     <Compile Include="GL42\ContextRenderbufferAspect.cs" />
+    <Compile Include="GL42\ContextScissorBoxesAspect.cs" />
+    <Compile Include="GL42\PipelineScissorRectanglesAspect.cs" />
     <Compile Include="GL42\ShaderProgramDescription.cs" />
     <Compile Include="GL42\TesselationControlShader.cs" />
     <Compile Include="GL42\TesselationEvaluationShader.cs" />

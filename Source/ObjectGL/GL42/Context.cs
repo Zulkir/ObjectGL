@@ -43,6 +43,7 @@ namespace ObjectGL.GL42
         readonly SamplersAspect samplersAspect;
         readonly FramebufferAspect framebuffersAspect;
         readonly ViewportsAspect viewportsAspect;
+        readonly ScissorBoxesAspect scissorBoxesAspect;
         readonly RasterizerAspect rasterizerAspect;
         readonly DepthStencilAspect depthStencilAspect;
         readonly BlendAspect blendAspect;
@@ -78,6 +79,7 @@ namespace ObjectGL.GL42
             samplersAspect = new SamplersAspect(implementation);
             framebuffersAspect = new FramebufferAspect();
             viewportsAspect = new ViewportsAspect(implementation);
+            scissorBoxesAspect = new ScissorBoxesAspect(implementation);
             rasterizerAspect = new RasterizerAspect();
             depthStencilAspect = new DepthStencilAspect();
             blendAspect = new BlendAspect(implementation);
@@ -148,6 +150,7 @@ namespace ObjectGL.GL42
             samplersAspect.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);
             framebuffersAspect.ConsumePipelineFramebuffer(pipeline.Framebuffer);
             viewportsAspect.ConsumePipelineViewports(pipeline.Viewports);
+            scissorBoxesAspect.ConsumePipelineScissorBoxes(pipeline.ScissorBoxes, pipeline.Viewports.EnabledViewportCount);
             rasterizerAspect.ConsumePipelineRasterizer(pipeline.Rasterizer);
             depthStencilAspect.ConsumePipelineDepthStencil(pipeline.DepthStencil);
             blendAspect.ConsumePipelineBlend(pipeline.Blend);

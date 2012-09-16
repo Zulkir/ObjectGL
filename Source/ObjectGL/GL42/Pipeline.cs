@@ -42,6 +42,7 @@ namespace ObjectGL.GL42
 
         Framebuffer framebuffer;
         readonly ViewportsAspect viewports;
+        readonly ScissorBoxesAspect scissorBoxes;
 
         readonly RasterizerAspect rasterizer;
         readonly DepthStencilAspect depthStencil;
@@ -55,6 +56,7 @@ namespace ObjectGL.GL42
             textures = new TexturesAspect(context);
             samplers = new SamplersAspect(context);
             viewports = new ViewportsAspect(context);
+            scissorBoxes = new ScissorBoxesAspect(context);
             rasterizer = new RasterizerAspect();
             depthStencil = new DepthStencilAspect();
             blend = new BlendAspect(context);
@@ -97,6 +99,7 @@ namespace ObjectGL.GL42
         }
 
         public ViewportsAspect Viewports { get { return viewports; } }
+        public ScissorBoxesAspect ScissorBoxes { get { return scissorBoxes; } }
 
         public RasterizerAspect Rasterizer { get { return rasterizer; } }
         public DepthStencilAspect DepthStencil { get { return depthStencil; } }
