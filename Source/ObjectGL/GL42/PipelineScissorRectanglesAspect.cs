@@ -76,9 +76,7 @@ namespace ObjectGL.GL42
 
                 scissorBoxes = new ScissorBox[context.Implementation.MaxViewports];
                 for (int i = 0; i < scissorBoxes.Length; i++)
-                {
                     scissorBoxes[i] = new ScissorBox(scissorData[2], scissorData[3]);
-                }
             }
         }
     }

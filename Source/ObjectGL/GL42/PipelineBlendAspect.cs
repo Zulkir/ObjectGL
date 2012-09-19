@@ -89,9 +89,7 @@ namespace ObjectGL.GL42
                 {
                     targets = new Target[maxDrawBuffers];
                     for (int i = 0; i < targets.Length; i++)
-                    {
                         targets[i] = new Target();
-                    }
                 }
             }
             #endregion

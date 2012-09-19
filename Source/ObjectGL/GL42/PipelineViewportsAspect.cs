@@ -93,9 +93,7 @@ namespace ObjectGL.GL42
 
                 viewports = new Viewport[context.Implementation.MaxViewports];
                 for (int i = 0; i < viewports.Length; i++)
-                {
                     viewports[i] = new Viewport(viewportData[2], viewportData[3]);
-                }
 
                 EnabledViewportCount = 1;
             }

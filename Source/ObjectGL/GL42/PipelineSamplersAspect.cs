@@ -23,8 +23,6 @@ freely, subject to the following restrictions:
 */
 #endregion
 
-using System;
-
 namespace ObjectGL.GL42
 {
     public partial class Pipeline
@@ -40,17 +38,8 @@ namespace ObjectGL.GL42
 
             public Sampler this[int unit]
             {
-                get
-                {
-                    return samplers[unit];
-                }
-                set
-                {
-                    if (unit < 0 || unit >= samplers.Length) throw new ArgumentOutOfRangeException("unit");
-                    if (value == null) throw new ArgumentNullException("value");
-
-                    samplers[unit] = value;
-                }
+                get { return samplers[unit]; }
+                set { samplers[unit] = value; }
             }
         }
     }

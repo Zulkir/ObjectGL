@@ -54,25 +54,17 @@ namespace ObjectGL.GL42
                     textures[unit] = value;
 
                     if (value == null && unit == enabledTextureRange - 1)
-                    {
-                        while (textures[enabledTextureRange - 1] == null)
-                        {
+                        while (enabledTextureRange > 0 && textures[enabledTextureRange - 1] == null)
                             enabledTextureRange--;
-                        }
-                    }
                     else if (value != null && unit >= enabledTextureRange)
-                    {
                         enabledTextureRange = unit + 1;
-                    }
                 }
             }
 
             public void UnsetAllStartingFrom(int unit)
             {
                 if (enabledTextureRange > unit)
-                {
                     enabledTextureRange = unit;
-                }
             }
         }
     }

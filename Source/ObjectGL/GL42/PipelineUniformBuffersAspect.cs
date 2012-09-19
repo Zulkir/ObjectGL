@@ -54,25 +54,17 @@ namespace ObjectGL.GL42
                     uniformBuffers[binding] = value;
 
                     if (value == null && binding == enabledUniformBufferRange - 1)
-                    {
-                        while (uniformBuffers[enabledUniformBufferRange - 1] == null)
-                        {
+                        while (enabledUniformBufferRange > 0 && uniformBuffers[enabledUniformBufferRange - 1] == null)
                             enabledUniformBufferRange--;
-                        }
-                    }
                     else if (value != null && binding >= enabledUniformBufferRange)
-                    {
                         enabledUniformBufferRange = binding + 1;
-                    }
                 }
             }
 
             public void UnsetAllStartingFrom(int binding)
             {
                 if (enabledUniformBufferRange > binding)
-                {
                     enabledUniformBufferRange = binding;
-                }
             }
         }
     }

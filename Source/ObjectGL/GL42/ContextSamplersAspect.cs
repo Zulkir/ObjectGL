@@ -46,9 +46,7 @@ namespace ObjectGL.GL42
             internal void ConsumePipelineSamplers(Pipeline.SamplersAspect pipelineSamplers, int enabledTextureRange)
             {
                 for (int i = 0; i < enabledTextureRange; i++)
-                {
                     samplerBindings[i].Set(pipelineSamplers[i]);
-                }
             }
         }
     }
