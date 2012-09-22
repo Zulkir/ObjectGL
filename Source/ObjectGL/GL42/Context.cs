@@ -289,6 +289,16 @@ namespace ObjectGL.GL42
 
         #endregion
 
+        public void BlitFramebuffer(
+            Framebuffer src, int srcX0, int srcY0, int srcX1, int srcY1,
+            Framebuffer dst, int dstX0, int dstY0, int dstX1, int dstY1,
+            ClearBufferMask mask, BlitFramebufferFilter filter)
+        {
+            framebuffersAspect.BindReadFramebuffer(src);
+            framebuffersAspect.BindDrawFramebuffer(dst);
+            GL.BlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+        }
+
         public void BeginTransformFeedback(TransformFeedback transformFeedback, BeginFeedbackMode beginFeedbackMode)
         {
             vertexAndBuffersAspect.BindTransformFeedback(transformFeedback);
