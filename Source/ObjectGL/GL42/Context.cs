@@ -156,6 +156,22 @@ namespace ObjectGL.GL42
             blendAspect.ConsumePipelineBlend(pipeline.Blend);
         }
 
+#if Debug
+        public void Consume00() {programAspect.ConsumePipelineProgram(pipeline.Program);                                                           }
+        public void Consume01() {vertexAndBuffersAspect.ConsumePipelinePatchVertexCount(pipeline.PatchVertexCount);                                }
+        public void Consume02() {vertexAndBuffersAspect.ConsumePipelineVertexArray(pipeline.VertexArray);                                          }
+        public void Consume03() {vertexAndBuffersAspect.ConsumePipelineDrawIndirectBuffer(pipeline.DrawIndirectBuffer);                            }
+        public void Consume04() {vertexAndBuffersAspect.ConsumePipelineUniformBuffers(pipeline.UniformBuffers);                                    }
+        public void Consume05() {texturesAspect.ConsumePipelineTextures(pipeline.Textures);                                                        }
+        public void Consume06() {samplersAspect.ConsumePipelineSamplers(pipeline.Samplers, pipeline.Textures.EnabledTextureRange);                 }
+        public void Consume07() {framebuffersAspect.ConsumePipelineFramebuffer(pipeline.Framebuffer);                                              }
+        public void Consume08() {viewportsAspect.ConsumePipelineViewports(pipeline.Viewports);                                                     }
+        public void Consume09() {scissorBoxesAspect.ConsumePipelineScissorBoxes(pipeline.ScissorBoxes, pipeline.Viewports.EnabledViewportCount);   }
+        public void Consume10() {rasterizerAspect.ConsumePipelineRasterizer(pipeline.Rasterizer);                                                  }
+        public void Consume11() {depthStencilAspect.ConsumePipelineDepthStencil(pipeline.DepthStencil);                                            }
+        public void Consume12() { blendAspect.ConsumePipelineBlend(pipeline.Blend); }
+#endif
+
         public unsafe void ClearWindowColor(Color4 color)
         {
             framebuffersAspect.BindDrawFramebuffer(null);
