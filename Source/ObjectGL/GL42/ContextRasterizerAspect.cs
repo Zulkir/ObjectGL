@@ -41,6 +41,11 @@ namespace ObjectGL.GL42
             readonly RedundantEnable multisampleEnble = new RedundantEnable(EnableCap.Multisample);
             readonly RedundantEnable lineSmoothEnable = new RedundantEnable(EnableCap.LineSmooth);
 
+            public void SetScissorEnable(bool enable)
+            {
+                scissorEnable.Set(enable);
+            }
+
             public void ConsumePipelineRasterizer(Pipeline.RasterizerAspect pipelineRasterizer)
             {
                 if (polygonModeFront != pipelineRasterizer.PolygonModeFront && polygonModeBack != pipelineRasterizer.PolygonModeBack)

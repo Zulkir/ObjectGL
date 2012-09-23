@@ -139,6 +139,14 @@ namespace ObjectGL.GL42
         }
         #endregion
 
+        #region Prepare
+        internal void PrepareForClear()
+        {
+            rasterizerAspect.SetScissorEnable(false);
+            depthStencilAspect.SetDepthMask(true);
+        }
+        #endregion
+
         internal void ConsumePipeline()
         {
             programAspect.ConsumePipelineProgram(pipeline.Program);

@@ -400,23 +400,30 @@ namespace ObjectGL.GL42
         public unsafe void ClearColor(Context currentContext, int index, Color4 color)
         {
             currentContext.BindDrawFramebuffer(this);
+            currentContext.PrepareForClear();
             GL.ClearBuffer(ClearBuffer.Color, index, (float*)&color);
         }
 
         public void ClearDepthStencil(Context currentContext, DepthStencil target, float depth, int stencil)
         {
             currentContext.BindDrawFramebuffer(this);
+            currentContext.PrepareForClear();
 
             ClearBuffer clearBuffer;
             switch (target)
             {
-                case DepthStencil.Both: clearBuffer = ClearBuffer.DepthStencil; break;
-                case DepthStencil.Depth: clearBuffer = ClearBuffer.Depth; break;
-                case DepthStencil.Stencil: clearBuffer = ClearBuffer.Stencil; break;
-                default: throw new ArgumentException("'target' must be either 'Both', 'Depth', or 'Stencil'");
+                case DepthStencil.Both:
+                    GL.ClearBuffer(ClearBuffer.DepthStencil, 0, depth, stencil);
+                    return;
+                case DepthStencil.Depth:
+                    GL.ClearBuffer(ClearBuffer.Depth, 0, ref depth);
+                    return;
+                case DepthStencil.Stencil:
+                    GL.ClearBuffer(ClearBuffer.Stencil, 0, ref stencil);
+                    return;
+                default:
+                    throw new ArgumentException("'target' must be either 'Both', 'Depth', or 'Stencil'");
             }
-
-            GL.ClearBuffer(clearBuffer, 0, depth, stencil);
         }
 
         public unsafe void Dispose()

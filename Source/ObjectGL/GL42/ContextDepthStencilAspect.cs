@@ -66,6 +66,11 @@ namespace ObjectGL.GL42
                 back.Initialize();
             }
 
+            public void SetDepthMask(bool mask)
+            {
+                depthMask.Set(mask);
+            }
+
             public void ConsumePipelineDepthStencil(Pipeline.DepthStencilAspect pipelineDepthStencil)
             {
                 // todo: ignore fields when disabled
