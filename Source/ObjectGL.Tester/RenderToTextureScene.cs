@@ -78,12 +78,12 @@ out vec2 v_tex_coord;
 
 void main()
 {
-    vec4 worldPosition = vec4(in_position, 1.0f) * World;
+    vec4 worldPosition = vec4(in_position, 1.0) * World;
 
     gl_Position = worldPosition * ViewProjection;
 
     v_world_position = worldPosition.xyz;
-    v_world_normal = (vec4(in_normal, 0f) * World).xyz;;
+    v_world_normal = (vec4(in_normal, 0) * World).xyz;;
     v_tex_coord = in_tex_coord;
 }
 ";
@@ -109,10 +109,9 @@ void main()
     vec3 toLight = normalize(LightPosition - v_world_position);
     vec3 normal = normalize(v_world_normal);
 
-    float diffuseFactor = clamp(dot(toLight, normal), 0f, 1.0f);
+    float diffuseFactor = clamp(dot(toLight, normal), 0, 1.0);
 
-    out_color = vec4(texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2f, 0f, 1.0f),
-                1.0f);
+    out_color = vec4(texture(DiffuseMap, v_tex_coord).xyz * clamp(diffuseFactor + 0.2, 0, 1.0), 1.0);
 }
 ";
 

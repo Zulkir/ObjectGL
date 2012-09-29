@@ -409,7 +409,6 @@ namespace ObjectGL.GL42
             currentContext.BindDrawFramebuffer(this);
             currentContext.PrepareForClear();
 
-            ClearBuffer clearBuffer;
             switch (target)
             {
                 case DepthStencil.Both:

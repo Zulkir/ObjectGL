@@ -48,8 +48,8 @@ namespace ObjectGL.GL42
             {
                 if (drawFramebufferBinding.HasValueSet(framebuffer)) return FramebufferTarget.DrawFramebuffer;
                 if (readFramebufferBinding.HasValueSet(framebuffer)) return FramebufferTarget.ReadFramebuffer;
-                readFramebufferBinding.Set(framebuffer);
-                return FramebufferTarget.ReadFramebuffer;
+                drawFramebufferBinding.Set(framebuffer);
+                return FramebufferTarget.DrawFramebuffer;
             }
 
             public void ConsumePipelineFramebuffer(Framebuffer framebuffer)

@@ -54,8 +54,8 @@ namespace ObjectGL.Tester
             //scene = new TriangleScene(context, this);
             //scene = new TexturedQuadScene(context, this);
             //scene = new TexturedCubeScene(context, this);
-            //scene = new RenderToTextureScene(context, this);
-            scene = new ColorfulSpaceScene(context, this);
+            scene = new RenderToTextureScene(context, this);
+            //scene = new ColorfulSpaceScene(context, this);
             //scene = new PatrticleFountainScene(context, this);
             //scene = new CurveTesselationScene(context, this);
             //scene = new FireworksScene(context, this);
