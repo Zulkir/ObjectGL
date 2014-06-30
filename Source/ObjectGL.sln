@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectGL", "ObjectGL\ObjectGL.csproj", "{1EF366EC-3926-4337-A008-92FF88A0A184}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectGL.Tester", "ObjectGL.Tester\ObjectGL.Tester.csproj", "{E3BF8C7F-02A8-4D01-9A10-15636215AB1B}"
