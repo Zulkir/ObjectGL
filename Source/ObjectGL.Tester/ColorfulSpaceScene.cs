@@ -24,17 +24,43 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
-using ObjectGL.GL42;
+#region License
+/*
+Copyright (c) 2010-2014 ObjectGL Project - Daniil Rodin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
+#endregion
+
+using System.Runtime.InteropServices;
+using ObjectGL.Api;
+using ObjectGL.Api.Objects;
+using ObjectGL.Api.Objects.Resources;
+using ObjectGL.Api.PipelineAspects;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using Buffer = ObjectGL.GL42.Buffer;
 
 namespace ObjectGL.Tester
 {
-    class ColorfulSpaceScene : Scene
+    public class ColorfulSpaceScene : Scene
     {
-        struct Vertex
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Vertex
         {
             public const int SizeInBytes = 6 * sizeof(float);
 
@@ -61,7 +87,7 @@ namespace ObjectGL.Tester
             static readonly Random Rand = new Random();
         }
 
-        const string VertexShaderText =
+        private const string VertexShaderText =
 @"#version 150
 
 layout(std140) uniform Time
@@ -82,7 +108,7 @@ void main()
 }
 ";
 
-        const string GeometryShaderText =
+        private const string GeometryShaderText =
 @"#version 150
 
 layout ( points ) in;
@@ -131,7 +157,7 @@ void main()
 }
 ";
 
-        const string FragmentShaderText =
+        private const string FragmentShaderText =
 @"#version 150
 
 in vec3 g_color;
@@ -146,16 +172,16 @@ void main()
 }
 ";
 
-        const int ParticleCount = 512;
-        const float ParticleSpeed = 0.75f;
+        private const int ParticleCount = 512;
+        private const float ParticleSpeed = 0.75f;
 
-        ShaderProgram program;
-        VertexArray vertexArray;
+        private IShaderProgram program;
+        private IVertexArray vertexArray;
 
-        Buffer timeBuffer;
-        Buffer cameraBuffer;
+        private IBuffer timeBuffer;
+        private IBuffer cameraBuffer;
 
-        public ColorfulSpaceScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
+        public ColorfulSpaceScene(IContext context, GameWindow gameWindow) : base(context, gameWindow)
         {
         }
 
@@ -165,43 +191,35 @@ void main()
             for (int i = 0; i < vertexData.Length; i++)
                 vertexData[i] = new Vertex((float) i/ParticleCount);
 
-            var vertexBuffer = new Buffer(Context, BufferTarget.ArrayBuffer, ParticleCount * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, new Data(vertexData));
-            vertexArray = new VertexArray(Context);
-            vertexArray.SetVertexAttributeF(Context, 0, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
-            vertexArray.SetVertexAttributeF(Context, 1, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 3 * sizeof(float));
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, ParticleCount * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, vertexData);
+            vertexArray = Context.Create.VertexArray();
+            vertexArray.SetVertexAttributeF(0, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
+            vertexArray.SetVertexAttributeF(1, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 3 * sizeof(float));
 
-            timeBuffer = new Buffer(Context, BufferTarget.UniformBuffer, sizeof(float), BufferUsageHint.DynamicDraw);
-            cameraBuffer = new Buffer(Context, BufferTarget.UniformBuffer, sizeof(float), BufferUsageHint.DynamicDraw);
+            timeBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, sizeof(float), BufferUsageHint.DynamicDraw);
+            cameraBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, sizeof(float), BufferUsageHint.DynamicDraw);
 
-            string shaderErrors;
-
-            VertexShader vsh;
-            GeometryShader gsh;
-            FragmentShader fsh;
-
-            if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
-                !GeometryShader.TryCompile(GeometryShaderText, out gsh, out shaderErrors) ||
-                !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
-                {
-                    VertexShaders = vsh,
-                    GeometryShaders = gsh,
-                    FragmentShaders = fsh,
-                    VertexAttributeNames = new[] { "in_position", "in_color" },
-                    UniformBufferNames = new[] { "Time", "Camera" }
-                }, 
-                out program, out shaderErrors))
-                throw new ArgumentException("Program errors:\n\n" + shaderErrors);
+            var vsh = Context.Create.VertexShader(VertexShaderText);
+            var gsh = Context.Create.GeometryShader(GeometryShaderText);
+            var fsh = Context.Create.FragmentShader(FragmentShaderText);
+            program = Context.Create.Program(new ShaderProgramDescription
+            {
+                VertexShaders = new[] {vsh},
+                GeometryShaders = new[] {gsh},
+                FragmentShaders = new[] {fsh},
+                VertexAttributeNames = new[] {"in_position", "in_color"},
+                UniformBufferNames = new[] {"Time", "Camera"}
+            });
         }
 
         public override unsafe void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
             float time = totalSeconds*ParticleSpeed;
             float aspectRatio = (float)GameWindow.ClientSize.Width / GameWindow.ClientSize.Height;
-            timeBuffer.SetData(Context, BufferTarget.UniformBuffer, new Data((IntPtr)(&time)));
-            cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, new Data((IntPtr)(&aspectRatio)));
+            timeBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&time));
+            cameraBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&aspectRatio));
 
-            Context.ClearWindowColor(Color4.Black);
+            Context.ClearWindowColor(new Color4(0, 0, 0, 1));
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
             Context.Pipeline.DepthStencil.DepthMask = false;

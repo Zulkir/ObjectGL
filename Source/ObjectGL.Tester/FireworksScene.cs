@@ -1,40 +1,40 @@
 ﻿#region License
 /*
-Copyright (c) 2012 Daniil Rodin
+Copyright (c) 2010-2014 ObjectGL Project - Daniil Rodin
 
-This software is provided 'as-is', without any express or implied
-warranty. In no event will the authors be held liable for any damages
-arising from the use of this software.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Permission is granted to anyone to use this software for any purpose,
-including commercial applications, and to alter it and redistribute it
-freely, subject to the following restrictions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-   1. The origin of this software must not be misrepresented; you must not
-   claim that you wrote the original software. If you use this software
-   in a product, an acknowledgment in the product documentation would be
-   appreciated but is not required.
-
-   2. Altered source versions must be plainly marked as such, and must not be
-   misrepresented as being the original software.
-
-   3. This notice may not be removed or altered from any source
-   distribution.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 */
 #endregion
 
 using System;
-using ObjectGL.GL42;
+using System.Runtime.InteropServices;
+using ObjectGL.Api;
+using ObjectGL.Api.Objects;
+using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using Buffer = ObjectGL.GL42.Buffer;
 
 namespace ObjectGL.Tester
 {
-    class FireworksScene : Scene
+    public class FireworksScene : Scene
     {
-        struct Vertex
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Vertex
         {
             public const int SizeInBytes = 9 * sizeof(float);
 
@@ -60,7 +60,7 @@ namespace ObjectGL.Tester
             }
         }
 
-        const string VertexShaderText =
+        private const string VertexShaderText =
 @"#version 150
 
 in vec2 in_position;
@@ -87,7 +87,7 @@ void main()
 }
 ";
 
-        const string GeometryShaderText =
+        private const string GeometryShaderText =
 @"#version 150
 
 layout ( points ) in;
@@ -168,7 +168,7 @@ void main()
 }
 ";
 
-        const string FragmentShaderText =
+        private const string FragmentShaderText =
 @"#version 150
 
 in vec3 g_color;
@@ -181,78 +181,70 @@ void main()
 }
 ";
 
-        const int MaxVertices = 128;
+        private const int MaxVertices = 128;
 
-        ShaderProgram program;
-        VertexArray vertexArraySource;
-        VertexArray vertexArrayTarget;
-        TransformFeedback transformFeedbackSource;
-        TransformFeedback transformFeedbackTarget;
-        Buffer timeBuffer;
+        private IShaderProgram program;
+        private IVertexArray vertexArraySource;
+        private IVertexArray vertexArrayTarget;
+        private ITransformFeedback transformFeedbackSource;
+        private ITransformFeedback transformFeedbackTarget;
+        private IBuffer timeBuffer;
 
-        public FireworksScene(Context context, GameWindow gameWindow) : base(context, gameWindow) {}
+        public FireworksScene(IContext context, GameWindow gameWindow) : base(context, gameWindow) {}
 
         public override void Initialize()
         {
             var vertexData = new Vertex[MaxVertices];
             vertexData[0] = Vertex.Cannon;
 
-            var vertexBufferSource = new Buffer(Context, BufferTarget.TransformFeedbackBuffer, Vertex.SizeInBytes * MaxVertices, BufferUsageHint.StaticDraw, new Data(vertexData));
-            var vertexBufferTarget = new Buffer(Context, BufferTarget.TransformFeedbackBuffer, Vertex.SizeInBytes * MaxVertices, BufferUsageHint.StaticDraw);
+            var vertexBufferSource = Context.Create.Buffer(BufferTarget.TransformFeedbackBuffer, Vertex.SizeInBytes * MaxVertices, BufferUsageHint.StaticDraw, vertexData);
+            var vertexBufferTarget = Context.Create.Buffer(BufferTarget.TransformFeedbackBuffer, Vertex.SizeInBytes * MaxVertices, BufferUsageHint.StaticDraw);
 
-            vertexArraySource = new VertexArray(Context);
-            vertexArraySource.SetVertexAttributeF(Context, 0, vertexBufferSource, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
-            vertexArraySource.SetVertexAttributeF(Context, 1, vertexBufferSource, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 2 * sizeof(float));
-            vertexArraySource.SetVertexAttributeF(Context, 2, vertexBufferSource, VertexAttributeDimension.One, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 4 * sizeof(float));
-            vertexArraySource.SetVertexAttributeI(Context, 3, vertexBufferSource, VertexAttributeDimension.One, VertexAttribIPointerType.Int, Vertex.SizeInBytes, 5 * sizeof(float));
-            vertexArraySource.SetVertexAttributeF(Context, 4, vertexBufferSource, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 6 * sizeof(float));
+            vertexArraySource = Context.Create.VertexArray();
+            vertexArraySource.SetVertexAttributeF(0, vertexBufferSource, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
+            vertexArraySource.SetVertexAttributeF(1, vertexBufferSource, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 2 * sizeof(float));
+            vertexArraySource.SetVertexAttributeF(2, vertexBufferSource, VertexAttributeDimension.One, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 4 * sizeof(float));
+            vertexArraySource.SetVertexAttributeI(3, vertexBufferSource, VertexAttributeDimension.One, VertexAttribIPointerType.Int, Vertex.SizeInBytes, 5 * sizeof(float));
+            vertexArraySource.SetVertexAttributeF(4, vertexBufferSource, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 6 * sizeof(float));
 
-            vertexArrayTarget = new VertexArray(Context);
-            vertexArrayTarget.SetVertexAttributeF(Context, 0, vertexBufferTarget, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
-            vertexArrayTarget.SetVertexAttributeF(Context, 1, vertexBufferTarget, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 2 * sizeof(float));
-            vertexArrayTarget.SetVertexAttributeF(Context, 2, vertexBufferTarget, VertexAttributeDimension.One, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 4 * sizeof(float));
-            vertexArrayTarget.SetVertexAttributeI(Context, 3, vertexBufferTarget, VertexAttributeDimension.One, VertexAttribIPointerType.Int, Vertex.SizeInBytes, 5 * sizeof(float));
-            vertexArrayTarget.SetVertexAttributeF(Context, 4, vertexBufferTarget, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 6 * sizeof(float));
+            vertexArrayTarget = Context.Create.VertexArray();
+            vertexArrayTarget.SetVertexAttributeF(0, vertexBufferTarget, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
+            vertexArrayTarget.SetVertexAttributeF(1, vertexBufferTarget, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 2 * sizeof(float));
+            vertexArrayTarget.SetVertexAttributeF(2, vertexBufferTarget, VertexAttributeDimension.One, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 4 * sizeof(float));
+            vertexArrayTarget.SetVertexAttributeI(3, vertexBufferTarget, VertexAttributeDimension.One, VertexAttribIPointerType.Int, Vertex.SizeInBytes, 5 * sizeof(float));
+            vertexArrayTarget.SetVertexAttributeF(4, vertexBufferTarget, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 6 * sizeof(float));
 
-            transformFeedbackSource = new TransformFeedback(Context);
-            transformFeedbackSource.SetBuffer(Context, 0, vertexBufferSource);
+            transformFeedbackSource = Context.Create.TransformFeedback();
+            transformFeedbackSource.SetBuffer(0, vertexBufferSource);
 
-            transformFeedbackTarget = new TransformFeedback(Context);
-            transformFeedbackTarget.SetBuffer(Context, 0, vertexBufferTarget);
+            transformFeedbackTarget = Context.Create.TransformFeedback();
+            transformFeedbackTarget.SetBuffer(0, vertexBufferTarget);
 
-            timeBuffer = new Buffer(Context, BufferTarget.UniformBuffer, 2 * sizeof(float), BufferUsageHint.DynamicDraw);
+            timeBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 2 * sizeof(float), BufferUsageHint.DynamicDraw);
 
-            string shaderErrors;
-
-            VertexShader vsh;
-            GeometryShader gsh;
-            FragmentShader fsh;
-
-            if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
-                !GeometryShader.TryCompile(GeometryShaderText, out gsh, out shaderErrors) ||
-                !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
-                {
-                    VertexShaders = vsh,
-                    GeometryShaders = gsh,
-                    FragmentShaders = fsh,
-                    VertexAttributeNames = new[] { "in_position", "in_velocity", "in_timeToAction", "in_type", "in_color" },
-                    TransformFeedbackAttributeNames = new[] { "g_position", "g_velocity", "g_timeToAction", "g_type", "g_color" },
-                    TransformFeedbackMode = TransformFeedbackMode.InterleavedAttribs,
-                    UniformBufferNames = new [] { "Time" }
-                },
-                out program, out shaderErrors))
-                throw new ArgumentException("Program errors:\n\n" + shaderErrors);
+            IVertexShader vsh = Context.Create.VertexShader(VertexShaderText);
+            IGeometryShader gsh = Context.Create.GeometryShader(GeometryShaderText);
+            IFragmentShader fsh = Context.Create.FragmentShader(FragmentShaderText);
+            program = Context.Create.Program(new ShaderProgramDescription
+            {
+                VertexShaders = new[] {vsh},
+                GeometryShaders = new[] {gsh},
+                FragmentShaders = new[] {fsh},
+                VertexAttributeNames = new[] {"in_position", "in_velocity", "in_timeToAction", "in_type", "in_color"},
+                TransformFeedbackAttributeNames = new[] {"g_position", "g_velocity", "g_timeToAction", "g_type", "g_color"},
+                TransformFeedbackMode = TransformFeedbackMode.InterleavedAttribs,
+                UniformBufferNames = new[] {"Time"}
+            });
         }
 
-        bool firstTime = true;
+        private bool firstTime = true;
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
             var time = new Vector2(totalSeconds, elapsedSeconds);
-            timeBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&time));
+            timeBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&time));
 
-            Context.ClearWindowColor(Color4.Black);
+            Context.ClearWindowColor(new Color4(0, 0, 0, 1));
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
             Context.Pipeline.Program = program;
@@ -275,7 +267,7 @@ void main()
             Swap(ref transformFeedbackSource, ref transformFeedbackTarget);
         }
 
-        static void Swap<T>(ref T o1, ref T o2)
+        private static void Swap<T>(ref T o1, ref T o2)
         {
             var temp = o2;
             o2 = o1;

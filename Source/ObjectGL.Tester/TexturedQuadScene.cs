@@ -1,40 +1,39 @@
 ﻿#region License
 /*
-Copyright (c) 2012 Daniil Rodin
+Copyright (c) 2010-2014 ObjectGL Project - Daniil Rodin
 
-This software is provided 'as-is', without any express or implied
-warranty. In no event will the authors be held liable for any damages
-arising from the use of this software.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Permission is granted to anyone to use this software for any purpose,
-including commercial applications, and to alter it and redistribute it
-freely, subject to the following restrictions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-   1. The origin of this software must not be misrepresented; you must not
-   claim that you wrote the original software. If you use this software
-   in a product, an acknowledgment in the product documentation would be
-   appreciated but is not required.
-
-   2. Altered source versions must be plainly marked as such, and must not be
-   misrepresented as being the original software.
-
-   3. This notice may not be removed or altered from any source
-   distribution.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 */
 #endregion
 
-using System;
-using ObjectGL.GL42;
+using System.Runtime.InteropServices;
+using ObjectGL.Api;
+using ObjectGL.Api.Objects;
+using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using Buffer = ObjectGL.GL42.Buffer;
 
 namespace ObjectGL.Tester
 {
-    class TexturedQuadScene : Scene
+    public class TexturedQuadScene : Scene
     {
-        struct Vertex
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Vertex
         {
             public Vector4 Position;
             public Vector4 TexCoord;
@@ -53,7 +52,7 @@ namespace ObjectGL.Tester
             }
         }
 
-        const string VertexShaderText =
+        private const string VertexShaderText =
 @"#version 150
 
 in vec4 in_position;
@@ -68,7 +67,7 @@ void main()
 }
 ";
 
-        const string FragmentShaderText =
+        private const string FragmentShaderText =
 @"#version 150
 
 uniform sampler2D DiffuseMap;
@@ -83,67 +82,60 @@ void main()
 }
 ";
 
-        ShaderProgram program;
-        VertexArray vertexArray;
-        Texture2D diffuseMap;
-        Sampler sampler;
+        private IShaderProgram program;
+        private IVertexArray vertexArray;
+        private ITexture2D diffuseMap;
+        private ISampler sampler;
 
-        public TexturedQuadScene(Context context, GameWindow gameWindow) : base(context, gameWindow)
+        public TexturedQuadScene(IContext context, GameWindow gameWindow) : base(context, gameWindow)
         {
         }
 
         public override void Initialize()
         {
-            var vertexBuffer = new Buffer(Context, BufferTarget.ArrayBuffer, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new Data(new[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
             {
                 new Vertex(-1f, -1f, 0f, 1f),
                 new Vertex(-1f, 1f, 0f, 0f),
                 new Vertex(1f, 1f, 1f, 0f),
                 new Vertex(1f, -1f, 1f, 1f),
-            }));
+            });
 
-            var indexBuffer = new Buffer(Context, BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new Data(new ushort[] 
+            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[]
             { 
                 0, 1, 2, 0, 2, 3
-            }));
+            });
 
-            vertexArray = new VertexArray(Context);
-            vertexArray.SetElementArrayBuffer(Context, indexBuffer);
-            vertexArray.SetVertexAttributeF(Context, 0, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 0);
-            vertexArray.SetVertexAttributeF(Context, 1, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 16);
+            vertexArray = Context.Create.VertexArray();
+            vertexArray.SetElementArrayBuffer(indexBuffer);
+            vertexArray.SetVertexAttributeF(0, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 0);
+            vertexArray.SetVertexAttributeF(1, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 16);
 
             using (var textureLoader = new TextureLoader("../Textures/Chess256.png"))
             {
-                diffuseMap = new Texture2D(Context, textureLoader.Width, textureLoader.Height, 0, Format.Srgb8Alpha8,
+                diffuseMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Srgb8Alpha8,
                                            i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte, i => ByteAlignment.Four);
             }
 
-            sampler = new Sampler();
+            sampler = Context.Create.Sampler();
             sampler.SetMagFilter(TextureMagFilter.Linear);
             sampler.SetMinFilter(TextureMinFilter.LinearMipmapLinear);
             sampler.SetMaxAnisotropy(16f);
 
-            string shaderErrors;
-
-            VertexShader vsh;
-            FragmentShader fsh;
-
-            if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
-                !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
-                {
-                    VertexShaders = vsh,
-                    FragmentShaders = fsh,
-                    VertexAttributeNames = new[] { "in_position", "in_tex_coord" },
-                    SamplerNames = new[] { "DiffuseMap" }
-                }, 
-                out program, out shaderErrors))
-                throw new ArgumentException("Program errors:\n\n" + shaderErrors);
+            var vsh = Context.Create.VertexShader(VertexShaderText);
+            var fsh = Context.Create.FragmentShader(FragmentShaderText);
+            program = Context.Create.Program(new ShaderProgramDescription
+            {
+                VertexShaders = new[] {vsh},
+                FragmentShaders = new[] {fsh},
+                VertexAttributeNames = new[] {"in_position", "in_tex_coord"},
+                SamplerNames = new[] {"DiffuseMap"}
+            });
         }
 
         public override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            Context.ClearWindowColor(Color4.Black);
+            Context.ClearWindowColor(new Color4(0, 0, 0, 0));
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
             Context.Pipeline.Program = program;

@@ -1,40 +1,40 @@
 ﻿#region License
 /*
-Copyright (c) 2012 Daniil Rodin
+Copyright (c) 2010-2014 ObjectGL Project - Daniil Rodin
 
-This software is provided 'as-is', without any express or implied
-warranty. In no event will the authors be held liable for any damages
-arising from the use of this software.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Permission is granted to anyone to use this software for any purpose,
-including commercial applications, and to alter it and redistribute it
-freely, subject to the following restrictions:
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-   1. The origin of this software must not be misrepresented; you must not
-   claim that you wrote the original software. If you use this software
-   in a product, an acknowledgment in the product documentation would be
-   appreciated but is not required.
-
-   2. Altered source versions must be plainly marked as such, and must not be
-   misrepresented as being the original software.
-
-   3. This notice may not be removed or altered from any source
-   distribution.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 */
 #endregion
 
 using System;
-using ObjectGL.GL42;
+using System.Runtime.InteropServices;
+using ObjectGL.Api;
+using ObjectGL.Api.Objects;
+using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
-using Buffer = ObjectGL.GL42.Buffer;
 
 namespace ObjectGL.Tester
 {
-    class CurveTesselationScene : Scene
+    public class CurveTesselationScene : Scene
     {
-        struct Vertex
+        [StructLayout(LayoutKind.Sequential)]
+        private struct Vertex
         {
             public const int SizeInBytes = 2 * sizeof(float);
 
@@ -46,7 +46,7 @@ namespace ObjectGL.Tester
             }
         }
 
-        const string VertexShaderText =
+        private const string VertexShaderText =
 @"#version 400
 
 in vec2 in_position;
@@ -57,7 +57,7 @@ void main()
 }
 ";
 
-        const string TessControlShaderText =
+        private const string TessControlShaderText =
 @"#version 400
 
 layout (vertices = 4) out;
@@ -75,7 +75,7 @@ void main()
 }
 ";
 
-        const string TessEvaluationShaderText =
+        private const string TessEvaluationShaderText =
 @"#version 400
 
 layout (isolines) in;
@@ -101,7 +101,7 @@ void main()
 }
 ";
 
-        const string FragmentShaderText =
+        private const string FragmentShaderText =
 @"#version 400
 
 out vec4 out_color;
@@ -112,53 +112,44 @@ void main()
 }
 ";
 
-        public CurveTesselationScene(Context context, GameWindow gameWindow) : base(context, gameWindow) {}
+        public CurveTesselationScene(IContext context, GameWindow gameWindow) : base(context, gameWindow) {}
 
-        ShaderProgram program;
-        VertexArray vertexArray;
-        Buffer tessFactorBuffer;
+        private IShaderProgram program;
+        private IVertexArray vertexArray;
+        private IBuffer tessFactorBuffer;
 
         public override void Initialize()
         {
-            var vertexBuffer = new Buffer(Context, BufferTarget.ArrayBuffer, 12 * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, new Data(new Vertex[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 12 * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, new Vertex[]
             {
                 new Vertex(-1f, 1/3f), new Vertex(4f, 1f), new Vertex(-4f, 1f), new Vertex(1f, 1/3f),    
                 new Vertex(-1f, -1/3f), new Vertex(4f, 1/3f), new Vertex(-4f, 1/3f), new Vertex(1f, -1/3f),    
                 new Vertex(-1f, -1f), new Vertex(4f, -1/3f), new Vertex(-4f, -1/3f), new Vertex(1f, -1f)    
-            }));
+            });
             
-            vertexArray = new VertexArray(Context);
-            vertexArray.SetVertexAttributeF(Context, 0, vertexBuffer, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
+            vertexArray = Context.Create.VertexArray();
+            vertexArray.SetVertexAttributeF(0, vertexBuffer, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-            tessFactorBuffer = new Buffer(Context, BufferTarget.UniformBuffer, sizeof(int), BufferUsageHint.DynamicDraw);
+            tessFactorBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, sizeof(int), BufferUsageHint.DynamicDraw);
 
-            string shaderErrors;
-
-            VertexShader vsh;
-            TesselationControlShader tcsh;
-            TesselationEvaluationShader tesh;
-            FragmentShader fsh;
-
-            if (!VertexShader.TryCompile(VertexShaderText, out vsh, out shaderErrors) ||
-                !TesselationControlShader.TryCompile(TessControlShaderText, out tcsh, out shaderErrors) ||
-                !TesselationEvaluationShader.TryCompile(TessEvaluationShaderText, out tesh, out shaderErrors) ||
-                !FragmentShader.TryCompile(FragmentShaderText, out fsh, out shaderErrors) ||
-                !ShaderProgram.TryLink(Context, new ShaderProgramDescription
-                {
-                    VertexShaders = vsh,
-                    TesselationControlShaders = tcsh,
-                    TesselationEvaluationShaders = tesh,
-                    FragmentShaders = fsh,
-                    VertexAttributeNames = new[] { "in_position" },
-                    UniformBufferNames = new[] { "TessFactor" }
-                },
-                out program, out shaderErrors))
-                throw new ArgumentException("Program errors:\n\n" + shaderErrors);
+            var vsh = Context.Create.VertexShader(VertexShaderText);
+            var tcsh = Context.Create.TesselationControlShader(TessControlShaderText);
+            var tesh = Context.Create.TesselationEvaluationShader(TessEvaluationShaderText);
+            var fsh = Context.Create.FragmentShader(FragmentShaderText);
+            program = Context.Create.Program(new ShaderProgramDescription
+            {
+                VertexShaders = new[] {vsh},
+                TesselationControlShaders = new[] {tcsh},
+                TesselationEvaluationShaders = new[] {tesh},
+                FragmentShaders = new[] {fsh},
+                VertexAttributeNames = new[] {"in_position"},
+                UniformBufferNames = new[] {"TessFactor"}
+            });
         }
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            Context.ClearWindowColor(Color4.DarkViolet);
+            Context.ClearWindowColor(new Color4(0.5f, 0.0f, 0.75f, 1.0f));
 
             Context.Pipeline.Program = program;
             Context.Pipeline.VertexArray = vertexArray;
@@ -166,15 +157,15 @@ void main()
             Context.Pipeline.UniformBuffers[0] = tessFactorBuffer;
 
             int tessFactor = 4;
-            tessFactorBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
+            tessFactorBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
             Context.DrawArrays(BeginMode.Patches, 0, 4);
 
             tessFactor = 64;
-            tessFactorBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
+            tessFactorBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
             Context.DrawArrays(BeginMode.Patches, 4, 4);
             
             tessFactor = (int)(32.0 * (Math.Sin((totalSeconds - Math.PI) / 2.0) + 1.0)) + 1;
-            tessFactorBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
+            tessFactorBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
             Context.DrawArrays(BeginMode.Patches, 8, 4);
         }
     }
