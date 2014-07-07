@@ -25,7 +25,7 @@ THE SOFTWARE.
 using System;
 using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.GL4
 {
     public unsafe class GL42 : IGL
     {

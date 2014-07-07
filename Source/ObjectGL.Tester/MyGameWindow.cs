@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.CachingImpl;
+using ObjectGL.GL4;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
