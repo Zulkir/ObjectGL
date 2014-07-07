@@ -27,7 +27,6 @@ using ObjectGL.CachingImpl;
 using ObjectGL.GL4;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 using Context = ObjectGL.CachingImpl.Context;
 
 namespace ObjectGL.Tester
@@ -65,21 +64,6 @@ namespace ObjectGL.Tester
             //scene = new CurveTesselationScene(context, this);
             //scene = new FireworksScene(context, this);
             scene.Initialize();
-
-            unsafe
-            {
-                int major, minor;
-                GL.GetInteger(GetPName.MajorVersion, &major);
-                GL.GetInteger(GetPName.MinorVersion, &minor);
-                //MessageBox.Show(string.Format("OpenGL version {0}.{1}", major, minor));
-            }
-        }
-
-        protected override void OnResize(EventArgs e)
-        {
-            base.OnResize(e);
-
-            GL.Viewport(ClientSize);
         }
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -87,9 +71,7 @@ namespace ObjectGL.Tester
             totalSeconds += e.Time;
 
             scene.OnNewFrame((float)totalSeconds, (float)e.Time);
-            SwapBuffers();
-
-            //Title = string.Format("FPS: {0}", RenderFrequency);
+            context.SwapBuffers();
 
             base.OnRenderFrame(e);
         }
