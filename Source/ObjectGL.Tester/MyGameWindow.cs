@@ -44,8 +44,8 @@ namespace ObjectGL.Tester
             : base(256, 256, new GraphicsMode(new ColorFormat(32), 24, 8, 4), "Object.GL Tester", 
             GameWindowFlags.Default, DisplayDevice.Default)
         {
-            gl = new GL42();
-            nativeGraphicsContext = new NativeGraphicsContextWrapper(Context);
+            gl = new GL4.GL4();
+            nativeGraphicsContext = new GL4NativeGraphicsContextWrapper(Context);
             VSync = VSyncMode.On;
             Context.SwapInterval = 1;
         }

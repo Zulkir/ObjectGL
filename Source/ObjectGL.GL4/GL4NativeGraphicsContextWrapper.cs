@@ -25,13 +25,13 @@ THE SOFTWARE.
 using ObjectGL.CachingImpl;
 using OpenTK.Graphics;
 
-namespace ObjectGL.Tester
+namespace ObjectGL.GL4
 {
-    public class NativeGraphicsContextWrapper : INativeGraphicsContext
+    public class GL4NativeGraphicsContextWrapper : INativeGraphicsContext
     {
         private readonly IGraphicsContext nativeContext;
 
-        public NativeGraphicsContextWrapper(IGraphicsContext nativeContext)
+        public GL4NativeGraphicsContextWrapper(IGraphicsContext nativeContext)
         {
             this.nativeContext = nativeContext;
         }

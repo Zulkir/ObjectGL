@@ -27,7 +27,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace ObjectGL.GL4
 {
-    public unsafe class GL42 : IGL
+    public unsafe class GL4 : IGL
     {
         public void ActiveTexture(int texture)
         {
