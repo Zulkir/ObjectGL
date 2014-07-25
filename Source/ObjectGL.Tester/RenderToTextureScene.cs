@@ -247,10 +247,10 @@ void main()
 
             Vector3 lightPosition = new Vector3(10, -7, 2);
 
-            transformBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&world));
-            cameraBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
-            cameraExtraBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
-            lightBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
+            transformBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&world));
+            cameraBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraExtraBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
+            lightBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
 
             framebuffer.ClearColor(0, new Color4(0.4f, 0.6f, 0.9f, 1.0f));
             framebuffer.ClearDepthStencil(DepthStencil.Both, 1f, 0);
@@ -289,9 +289,9 @@ void main()
             viewProjection.Transpose();
 
 #if INTEL_WORKAROUND
-            cameraOutsideBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraOutsideBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #else
-            cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraBuffer.Recreate(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #endif
             Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Ccw;
 

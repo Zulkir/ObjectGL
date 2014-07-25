@@ -99,14 +99,14 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             }
         }
 
-        public void SetData(int level, IntPtr data, FormatColor format, FormatType type, ByteAlignment unpackAlignment = ByteAlignment.Four)
+        public void Recreate(int level, IntPtr data, FormatColor format, FormatType type, ByteAlignment unpackAlignment = ByteAlignment.Four)
         {
             Context.SetUnpackAlignment(unpackAlignment);
             Context.BindTexture(Target, this);
             GL.TexImage3D((int)Target, level, (int)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), CalculateMipSize(level, Depth), 0, (int)format, (int)type, data);
         }
 
-        public void SetData(int level, IntPtr data, int compressedSize)
+        public void Recreate(int level, IntPtr data, int compressedSize)
         {
             Context.BindTexture(Target, this);
             GL.CompressedTexImage3D((int)Target, level, (int)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), CalculateMipSize(level, Depth), 0, compressedSize, data);

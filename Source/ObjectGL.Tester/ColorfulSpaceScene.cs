@@ -216,8 +216,8 @@ void main()
         {
             float time = totalSeconds*ParticleSpeed;
             float aspectRatio = (float)GameWindow.ClientSize.Width / GameWindow.ClientSize.Height;
-            timeBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&time));
-            cameraBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&aspectRatio));
+            timeBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&time));
+            cameraBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&aspectRatio));
 
             Context.ClearWindowColor(new Color4(0, 0, 0, 1));
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);

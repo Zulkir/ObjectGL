@@ -28,7 +28,7 @@ namespace ObjectGL.Api.Objects.Resources
 {
     public interface ITexture2DArray : ITexture
     {
-        void SetData(int slice, int level, IntPtr data, FormatColor format, FormatType type, ByteAlignment unpackAlignment = ByteAlignment.Four);
-        void SetData(int slice, int level, IntPtr data, int compressedSize);
+        void Recreate(int slice, int level, IntPtr data, FormatColor format, FormatType type, ByteAlignment unpackAlignment = ByteAlignment.Four);
+        void Recreate(int slice, int level, IntPtr data, int compressedSize);
     }
 }

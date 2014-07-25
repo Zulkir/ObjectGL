@@ -242,7 +242,7 @@ void main()
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
             var time = new Vector2(totalSeconds, elapsedSeconds);
-            timeBuffer.SetData(BufferTarget.UniformBuffer, (IntPtr)(&time));
+            timeBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&time));
 
             Context.ClearWindowColor(new Color4(0, 0, 0, 1));
             Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);

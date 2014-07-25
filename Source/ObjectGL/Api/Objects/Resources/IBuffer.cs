@@ -32,6 +32,6 @@ namespace ObjectGL.Api.Objects.Resources
         int SizeInBytes { get; }
         BufferUsageHint Usage { get; }
 
-        void SetData(BufferTarget editingTarget, IntPtr data);
+        void Recreate(BufferTarget editingTarget, IntPtr data);
     }
 }

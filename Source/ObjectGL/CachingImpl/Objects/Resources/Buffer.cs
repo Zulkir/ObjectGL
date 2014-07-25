@@ -60,7 +60,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             GL.BufferData((int)creationTarget, (IntPtr)sizeInBytes, initialData, (int)usage);
         }
 
-        public void SetData(BufferTarget editingTarget, IntPtr data)
+        public void Recreate(BufferTarget editingTarget, IntPtr data)
         {
             context.BindBuffer(editingTarget, this);
             GL.BufferData((int)editingTarget, (IntPtr)sizeInBytes, data, (int)usage);

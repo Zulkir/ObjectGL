@@ -93,7 +93,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             }
         }
 
-        public void SetData(int slice, 
+        public void Recreate(int slice, 
                             int level,
                             IntPtr data, 
                             FormatColor format, 
@@ -105,7 +105,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             GL.TexSubImage3D((int)Target, level, 0, 0, slice, CalculateMipSize(level, Width), CalculateMipSize(level, Height), 1, (int)format, (int)type, data);
         }
 
-        public void SetData(int slice, 
+        public void Recreate(int slice, 
                             int level,
                             IntPtr data, 
                             int compressedSize)
