@@ -26,16 +26,14 @@ using System;
 
 namespace ObjectGL.Api.Objects.Resources
 {
-    public interface IBuffer : IResource
+    [Flags]
+    public enum MapAccess
     {
-        BufferTarget Target { get; }
-        int SizeInBytes { get; }
-        BufferUsageHint Usage { get; }
-
-        IntPtr Map(int offset, int length, MapAccess access);
-        bool Unmap();
-
-        void SetData(int offset, int size, IntPtr data);
-        void Recreate(IntPtr data);
+        Read = 0x1,
+        Write = 0x2,
+        InvalidateRange = 0x4,
+        InvalidateBuffer = 0x8,
+        FlushExplicit = 0x10,
+        Unsynchronized = 0x20
     }
 }

@@ -157,15 +157,15 @@ void main()
             Context.Pipeline.UniformBuffers[0] = tessFactorBuffer;
 
             int tessFactor = 4;
-            tessFactorBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
+            tessFactorBuffer.SetDataByMapping((IntPtr)(&tessFactor));
             Context.DrawArrays(BeginMode.Patches, 0, 4);
 
             tessFactor = 64;
-            tessFactorBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
+            tessFactorBuffer.SetDataByMapping((IntPtr)(&tessFactor));
             Context.DrawArrays(BeginMode.Patches, 4, 4);
             
             tessFactor = (int)(32.0 * (Math.Sin((totalSeconds - Math.PI) / 2.0) + 1.0)) + 1;
-            tessFactorBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&tessFactor));
+            tessFactorBuffer.SetDataByMapping((IntPtr)(&tessFactor));
             Context.DrawArrays(BeginMode.Patches, 8, 4);
         }
     }

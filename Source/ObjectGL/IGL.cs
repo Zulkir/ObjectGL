@@ -51,6 +51,7 @@ namespace ObjectGL
         void BlendFuncSeparate(uint buf, int srcRGB, int dstRGB, int srcAlpha, int dstAlpha);
         void BlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, int filter);
         void BufferData(int target, IntPtr size, IntPtr data, int usage);
+        void BufferSubData(int target, IntPtr offset, IntPtr size, IntPtr data);
         void ClearBuffer(int buffer, int drawBuffer, int* value);
         void ClearBuffer(int buffer, int drawBuffer, uint* value);
         void ClearBuffer(int buffer, int drawBuffer, float* value);
@@ -138,6 +139,7 @@ namespace ObjectGL
         uint GetUniformBlockIndex(uint program, string uniformBlockName);
         int GetUniformLocation(uint program, string name);
         void LinkProgram(uint program);
+        IntPtr MapBufferRange(int target, IntPtr offset, IntPtr length, int access);
         void PatchParameter(int pname, int value);
         //void PatchParameter(int pname, float* values);
         //void PixelStore(int pname, float param);
@@ -180,6 +182,7 @@ namespace ObjectGL
         void TransformFeedbackVaryings(uint program, int count, string[] varyings, int bufferMode);
         void Uniform(int location, int v0);
         void UniformBlockBinding(uint program, uint uniformBlockIndex, uint uniformBlockBinding);
+        bool UnmapBuffer(int target);
         void UseProgram(uint program);
         void VertexAttribPointer(uint index, int size, int type, bool normalized, int stride, IntPtr pointer);
         void VertexAttribIPointer(uint index, int size, int type, int stride, IntPtr pointer);

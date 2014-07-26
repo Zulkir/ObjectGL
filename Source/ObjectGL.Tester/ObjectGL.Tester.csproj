@@ -51,9 +51,11 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ContextExtensions.cs" />
+    <Compile Include="BufferExtensions.cs" />
+    <Compile Include="ContextObjectFactoryExtensions.cs" />
     <Compile Include="CurveTesselationScene.cs" />
     <Compile Include="FireworksScene.cs" />
+    <Compile Include="Memory.cs" />
     <Compile Include="PatrticleFountainScene.cs" />
     <Compile Include="MyGameWindow.cs" />
     <Compile Include="ColorfulSpaceScene.cs" />

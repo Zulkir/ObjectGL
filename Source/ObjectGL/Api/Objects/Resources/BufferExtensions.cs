@@ -26,16 +26,11 @@ using System;
 
 namespace ObjectGL.Api.Objects.Resources
 {
-    public interface IBuffer : IResource
+    public static class BufferExtensions
     {
-        BufferTarget Target { get; }
-        int SizeInBytes { get; }
-        BufferUsageHint Usage { get; }
-
-        IntPtr Map(int offset, int length, MapAccess access);
-        bool Unmap();
-
-        void SetData(int offset, int size, IntPtr data);
-        void Recreate(IntPtr data);
+         public static void SetData(this IBuffer buffer, IntPtr data)
+         {
+             buffer.SetData(0, buffer.SizeInBytes, data);
+         }
     }
 }

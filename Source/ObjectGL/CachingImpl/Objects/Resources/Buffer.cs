@@ -32,7 +32,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
     {
         private readonly Context context;
         private readonly uint handle;
-        private readonly BufferTarget creationTarget;
+        private readonly BufferTarget target;
         private readonly int sizeInBytes;
         private readonly BufferUsageHint usage;
 
@@ -41,14 +41,14 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         public uint Handle { get { return handle; } }
         public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
         public ResourceType ResourceType { get { return ResourceType.Buffer; } }
-        public BufferTarget CreationTarget { get { return creationTarget; } }
+        public BufferTarget Target { get { return target; } }
         public int SizeInBytes { get { return sizeInBytes; } }
         public BufferUsageHint Usage { get { return usage; } }
 
-        public Buffer(Context context, BufferTarget creationTarget, int sizeInBytes, BufferUsageHint usage, IntPtr initialData)
+        public Buffer(Context context, BufferTarget target, int sizeInBytes, BufferUsageHint usage, IntPtr initialData)
         {
             this.context = context;
-            this.creationTarget = creationTarget;
+            this.target = target;
             this.sizeInBytes = sizeInBytes;
             this.usage = usage;
 
@@ -56,20 +56,38 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             GL.GenBuffers(1, &handleProxy);
             handle = handleProxy;
 
-            context.BindBuffer(creationTarget, this);
-            GL.BufferData((int)creationTarget, (IntPtr)sizeInBytes, initialData, (int)usage);
-        }
-
-        public void Recreate(BufferTarget editingTarget, IntPtr data)
-        {
-            context.BindBuffer(editingTarget, this);
-            GL.BufferData((int)editingTarget, (IntPtr)sizeInBytes, data, (int)usage);
+            context.BindBuffer(target, this);
+            GL.BufferData((int)target, (IntPtr)sizeInBytes, initialData, (int)usage);
         }
 
         public void Dispose()
         {
             uint handleProxy = handle;
             GL.DeleteBuffers(1, &handleProxy);
+        }
+
+        public IntPtr Map(int offset, int length, MapAccess access)
+        {
+            context.BindBuffer(target, this);
+            return GL.MapBufferRange((int)target, (IntPtr)offset, (IntPtr)length, (int)access);
+        }
+
+        public bool Unmap()
+        {
+            context.BindBuffer(target, this);
+            return GL.UnmapBuffer((int)target);
+        }
+
+        public void SetData(int offset, int size, IntPtr data)
+        {
+            context.BindBuffer(target, this);
+            GL.BufferSubData((int)target, (IntPtr)offset, (IntPtr)size, data);
+        }
+
+        public void Recreate(IntPtr data)
+        {
+            context.BindBuffer(target, this);
+            GL.BufferData((int)target, (IntPtr)sizeInBytes, data, (int)usage);
         }
     }
 }

@@ -65,6 +65,8 @@
     <Compile Include="Api\Objects\ITransformFeedback.cs" />
     <Compile Include="Api\Objects\IVertexArray.cs" />
     <Compile Include="Api\Objects\IVertexShader.cs" />
+    <Compile Include="Api\Objects\Resources\BufferExtensions.cs" />
+    <Compile Include="Api\Objects\Resources\MapAccess.cs" />
     <Compile Include="Api\Objects\Resources\BufferTarget.cs" />
     <Compile Include="Api\Objects\Resources\BufferUsageHint.cs" />
     <Compile Include="Api\Objects\Resources\ByteAlignment.cs" />

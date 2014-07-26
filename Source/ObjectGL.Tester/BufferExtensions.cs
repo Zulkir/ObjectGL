@@ -23,19 +23,17 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Objects.Resources;
 
-namespace ObjectGL.Api.Objects.Resources
+namespace ObjectGL.Tester
 {
-    public interface IBuffer : IResource
+    public static class BufferExtensions
     {
-        BufferTarget Target { get; }
-        int SizeInBytes { get; }
-        BufferUsageHint Usage { get; }
-
-        IntPtr Map(int offset, int length, MapAccess access);
-        bool Unmap();
-
-        void SetData(int offset, int size, IntPtr data);
-        void Recreate(IntPtr data);
+         public static void SetDataByMapping(this IBuffer buffer, IntPtr data)
+         {
+             var mappedPtr = buffer.Map(0, buffer.SizeInBytes, MapAccess.Write | MapAccess.InvalidateBuffer);
+             Memory.CopyBulk(mappedPtr, data, buffer.SizeInBytes);
+             buffer.Unmap();
+         }
     }
 }

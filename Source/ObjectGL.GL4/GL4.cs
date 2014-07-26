@@ -144,6 +144,11 @@ namespace ObjectGL.GL4
             GL.BufferData((BufferTarget)target, size, data, (BufferUsageHint)usage);
         }
 
+        public void BufferSubData(int target, IntPtr offset, IntPtr size, IntPtr data)
+        {
+            GL.BufferSubData((BufferTarget)target, offset, size, data);
+        }
+
         public void ClearBuffer(int buffer, int drawBuffer, int* value)
         {
             GL.ClearBuffer((ClearBuffer)buffer, drawBuffer, value);
@@ -504,6 +509,11 @@ namespace ObjectGL.GL4
             GL.LinkProgram(program);
         }
 
+        public IntPtr MapBufferRange(int target, IntPtr offset, IntPtr length, int access)
+        {
+            return GL.MapBufferRange((BufferTarget)target, offset, length, (BufferAccessMask)access);
+        }
+
         public void PatchParameter(int pname, int value)
         {
             GL.PatchParameter((PatchParameterInt)pname, value);
@@ -657,6 +667,11 @@ namespace ObjectGL.GL4
         public void UniformBlockBinding(uint program, uint uniformBlockIndex, uint uniformBlockBinding)
         {
             GL.UniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
+        }
+
+        public bool UnmapBuffer(int target)
+        {
+            return GL.UnmapBuffer((BufferTarget)target);
         }
 
         public void UseProgram(uint program)

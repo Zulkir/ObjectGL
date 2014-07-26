@@ -248,10 +248,10 @@ void main()
 
             Vector3 lightPosition = new Vector3(10, -7, 2);
 
-            transformBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&world));
-            cameraBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
-            cameraExtraBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&cameraPosition));
-            lightBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&lightPosition));
+            transformBuffer.SetDataByMapping((IntPtr)(&world));
+            cameraBuffer.SetDataByMapping((IntPtr)(&viewProjection));
+            cameraExtraBuffer.SetDataByMapping((IntPtr)(&cameraPosition));
+            lightBuffer.SetDataByMapping((IntPtr)(&lightPosition));
 
             framebuffer.ClearColor(0, new Color4(0.4f, 0.6f, 0.9f, 1.0f));
             framebuffer.ClearDepthStencil(DepthStencil.Both, 1f, 0);
@@ -290,7 +290,7 @@ void main()
             viewProjection.Transpose();
 
 #if INTEL_WORKAROUND
-            cameraOutsideBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraOutsideBuffer.SetDataByMapping((IntPtr)(&viewProjection));
 #else
             cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #endif
