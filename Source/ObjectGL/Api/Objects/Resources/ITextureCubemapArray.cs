@@ -28,7 +28,7 @@ namespace ObjectGL.Api.Objects.Resources
 {
     public interface ITextureCubemapArray : ITexture
     {
-        void SetData(int level, int xOffset, int yOffset, int faceOffset, int width, int height, int faceCount, IntPtr data, FormatColor format, FormatType type);
-        void SetDataCompressed(int level, int xOffset, int yOffset, int faceOffset, int width, int height, int faceCount, IntPtr data, int compressedSize);
+        void SetData(int level, int xOffset, int yOffset, int faceOffset, int width, int height, int faceCount, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null);
+        void SetDataCompressed(int level, int xOffset, int yOffset, int faceOffset, int width, int height, int faceCount, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null);
     }
 }

@@ -28,7 +28,7 @@ namespace ObjectGL.Api.Objects.Resources
 {
     public interface ITexture3D : ITexture
     {
-        void SetData(int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, IntPtr data, FormatColor format, FormatType type);
-        void SetDataCompressed(int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, IntPtr data, int compressedSize);
+        void SetData(int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null);
+        void SetDataCompressed(int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null);
     }
 }

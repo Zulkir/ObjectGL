@@ -36,14 +36,16 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             GL.TexStorage1D((int)Target, mipCount, (int)internalFormat, width);
         }
 
-        public void SetData(int level, int xOffset, int width, IntPtr data, FormatColor format, FormatType type)
+        public void SetData(int level, int xOffset, int width, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer)
         {
+            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
             Context.BindTexture(Target, this);
             GL.TexSubImage1D((int)Target, level, xOffset, width, (int)format, (int)type, data);
         }
 
-        public void SetDataCompressed(int level, int xOffset, int width, IntPtr data, int compressedSize)
+        public void SetDataCompressed(int level, int xOffset, int width, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer)
         {
+            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
             Context.BindTexture(Target, this);
             GL.CompressedTexSubImage1D((int)Target, level, xOffset, width, (int)InternalFormat, compressedSize, data);
         }

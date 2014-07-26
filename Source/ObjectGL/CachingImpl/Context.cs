@@ -44,6 +44,7 @@ namespace ObjectGL.CachingImpl
         private readonly ContextVertexAndBuffersAspect vertexAndBuffersAspect;
         private readonly ContextRenderbufferAspect renderbufferAspect;
         private readonly ContextTexturesAspect texturesAspect;
+        private readonly ContextPixelPackUnpackAspect pixelPackUnpackAspect;
         private readonly ContextSamplersAspect samplersAspect;
         private readonly ContextFramebufferAspect framebuffersAspect;
         private readonly ContextViewportsAspect viewportsAspect;
@@ -75,6 +76,7 @@ namespace ObjectGL.CachingImpl
             vertexAndBuffersAspect = new ContextVertexAndBuffersAspect(gl, implementation);
             renderbufferAspect = new ContextRenderbufferAspect(gl);
             texturesAspect = new ContextTexturesAspect(gl, implementation);
+            pixelPackUnpackAspect = new ContextPixelPackUnpackAspect(gl);
             samplersAspect = new ContextSamplersAspect(gl, implementation);
             framebuffersAspect = new ContextFramebufferAspect(gl);
             viewportsAspect = new ContextViewportsAspect(gl, implementation);
@@ -134,7 +136,7 @@ namespace ObjectGL.CachingImpl
         #region Set
         internal void SetUnpackAlignment(ByteAlignment alignment)
         {
-            renderbufferAspect.SetUnpackAlignment(alignment);
+            pixelPackUnpackAspect.SetUnpackAlignment(alignment);
         }
         #endregion
 

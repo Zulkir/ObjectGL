@@ -22,24 +22,23 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api;
 using ObjectGL.Api.Objects.Resources;
 using ObjectGL.CachingImpl.Utilitties;
 
 namespace ObjectGL.CachingImpl.ContextAspects
 {
-    internal class ContextRenderbufferAspect
+    internal class ContextPixelPackUnpackAspect
     {
-        readonly RedundantObject<IRenderbuffer> renderbufferBinding;
-        
-        public ContextRenderbufferAspect(IGL gl)
+        readonly RedundantInt unpackAlignmentBinding;
+
+        public ContextPixelPackUnpackAspect(IGL gl)
         {
-            renderbufferBinding = new RedundantObject<IRenderbuffer>(gl, (g, o) => g.BindRenderbuffer((int)RenderbufferTarget.Renderbuffer, o.SafeGetHandle()));
+            unpackAlignmentBinding = new RedundantInt(gl, (g, x) => g.PixelStore((int)All.UnpackAlignment, x));
         }
 
-        public void BindRenderbuffer(IRenderbuffer renderbuffer)
+        public void SetUnpackAlignment(ByteAlignment alignment)
         {
-            renderbufferBinding.Set(renderbuffer);
+            unpackAlignmentBinding.Set((int)alignment);
         }
     }
 }

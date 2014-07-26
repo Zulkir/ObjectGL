@@ -43,74 +43,74 @@ namespace ObjectGL.Api.Objects.Resources
             return TextureHelper.CalculateMipSize(level, texture.Depth);
         }
 
-        public static void SetData(this ITexture1D texture, int level, IntPtr data, FormatColor format, FormatType type)
+        public static void SetData(this ITexture1D texture, int level, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetData(level, 0, texture.CalculateMipWidth(level), data, format, type);
+            texture.SetData(level, 0, texture.CalculateMipWidth(level), data, format, type, pixelUnpackBuffer);
         }
 
-        public static void SetDataCompressed(this ITexture1D texture, int level, IntPtr data, int compressedSize)
+        public static void SetDataCompressed(this ITexture1D texture, int level, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetDataCompressed(level, 0, texture.CalculateMipWidth(level), data, compressedSize);
+            texture.SetDataCompressed(level, 0, texture.CalculateMipWidth(level), data, compressedSize, pixelUnpackBuffer);
         }
 
-        public static void SetData(this ITexture1DArray texture, int level, int slice, IntPtr data, FormatColor format, FormatType type)
+        public static void SetData(this ITexture1DArray texture, int level, int slice, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetData(level, 0, slice, texture.CalculateMipWidth(level), 1, data, format, type);
+            texture.SetData(level, 0, slice, texture.CalculateMipWidth(level), 1, data, format, type, pixelUnpackBuffer);
         }
 
-        public static void SetDataCompressed(this ITexture1DArray texture, int level, int slice, IntPtr data, int compressedSize)
+        public static void SetDataCompressed(this ITexture1DArray texture, int level, int slice, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetDataCompressed(level, 0, slice, texture.CalculateMipWidth(level), 1, data, compressedSize);
+            texture.SetDataCompressed(level, 0, slice, texture.CalculateMipWidth(level), 1, data, compressedSize, pixelUnpackBuffer);
         }
 
-        public static void SetData(this ITexture2D texture, int level, IntPtr data, FormatColor format, FormatType type)
+        public static void SetData(this ITexture2D texture, int level, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetData(level, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, format, type);
+            texture.SetData(level, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, format, type, pixelUnpackBuffer);
         }
 
-        public static void SetDataCompressed(this ITexture2D texture, int level, IntPtr data, int compressedSize)
+        public static void SetDataCompressed(this ITexture2D texture, int level, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetDataCompressed(level, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, compressedSize);
+            texture.SetDataCompressed(level, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, compressedSize, pixelUnpackBuffer);
         }
 
-        public static void SetData(this ITexture2DArray texture, int level, int slice, IntPtr data, FormatColor format, FormatType type)
+        public static void SetData(this ITexture2DArray texture, int level, int slice, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetData(level, 0, 0, slice, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, format, type);
+            texture.SetData(level, 0, 0, slice, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, format, type, pixelUnpackBuffer);
         }
 
-        public static void SetDataCompressed(this ITexture2DArray texture, int level, int slice, IntPtr data, int compressedSize)
+        public static void SetDataCompressed(this ITexture2DArray texture, int level, int slice, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetDataCompressed(level, 0, 0, slice, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, compressedSize);
+            texture.SetDataCompressed(level, 0, 0, slice, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, compressedSize, pixelUnpackBuffer);
         }
 
-        public static void SetData(this ITexture3D texture, int level, IntPtr data, FormatColor format, FormatType type)
+        public static void SetData(this ITexture3D texture, int level, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetData(level, 0, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), texture.CalculateMipDepth(level), data, format, type);
+            texture.SetData(level, 0, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), texture.CalculateMipDepth(level), data, format, type, pixelUnpackBuffer);
         }
 
-        public static void SetDataCompressed(this ITexture3D texture, int level, IntPtr data, int compressedSize)
+        public static void SetDataCompressed(this ITexture3D texture, int level, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetDataCompressed(level, 0, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), texture.CalculateMipDepth(level), data, compressedSize);
+            texture.SetDataCompressed(level, 0, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), texture.CalculateMipDepth(level), data, compressedSize, pixelUnpackBuffer);
         }
 
-        public static void SetData(this ITextureCubemap texture, int level, int faceIndex, IntPtr data, FormatColor format, FormatType type)
+        public static void SetData(this ITextureCubemap texture, int level, int faceIndex, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetData(level, faceIndex, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, format, type);
+            texture.SetData(level, faceIndex, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, format, type, pixelUnpackBuffer);
         }
 
-        public static void SetDataCompressed(this ITextureCubemap texture, int level, int faceIndex, IntPtr data, int compressedSize)
+        public static void SetDataCompressed(this ITextureCubemap texture, int level, int faceIndex, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetDataCompressed(level, faceIndex, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, compressedSize);
+            texture.SetDataCompressed(level, faceIndex, 0, 0, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), data, compressedSize, pixelUnpackBuffer);
         }
 
-        public static void SetData(this ITextureCubemapArray texture, int level, int faceIndex, IntPtr data, FormatColor format, FormatType type)
+        public static void SetData(this ITextureCubemapArray texture, int level, int faceIndex, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetData(level, 0, 0, faceIndex, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, format, type);
+            texture.SetData(level, 0, 0, faceIndex, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, format, type, pixelUnpackBuffer);
         }
 
-        public static void SetDataCompressed(this ITextureCubemapArray texture, int level, int faceIndex, IntPtr data, int compressedSize)
+        public static void SetDataCompressed(this ITextureCubemapArray texture, int level, int faceIndex, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer = null)
         {
-            texture.SetDataCompressed(level, 0, 0, faceIndex, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, compressedSize);
+            texture.SetDataCompressed(level, 0, 0, faceIndex, texture.CalculateMipWidth(level), texture.CalculateMipHeight(level), 1, data, compressedSize, pixelUnpackBuffer);
         }
     }
 }

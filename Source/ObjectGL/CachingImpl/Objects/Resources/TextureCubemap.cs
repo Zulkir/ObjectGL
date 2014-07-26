@@ -36,14 +36,16 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             GL.TexStorage2D((int)Target, mipCount, (int)internalFormat, width, 6);
         }
 
-        public void SetData(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, FormatColor format, FormatType type)
+        public void SetData(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer)
         {
+            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
             Context.BindTexture(Target, this);
             GL.TexSubImage2D((int)(All.TextureCubeMapPositiveX + (uint)faceIndex), level, xOffset, yOffset, width, height, (int)format, (int)type, data);
         }
 
-        public void SetDataCompressed(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, int compressedSize)
+        public void SetDataCompressed(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer)
         {
+            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
             Context.BindTexture(Target, this);
             GL.CompressedTexSubImage2D((int)(All.TextureCubeMapPositiveX + (uint)faceIndex), level, xOffset, yOffset, width, height, (int)InternalFormat, compressedSize, data);
         }

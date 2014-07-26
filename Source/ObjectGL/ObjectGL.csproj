@@ -131,6 +131,7 @@
     <Compile Include="CachingImpl\ContextAspects\ContextDepthStencilAspect.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextDepthStencilSide.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextFramebufferAspect.cs" />
+    <Compile Include="CachingImpl\ContextAspects\ContextPixelPackUnpackAspect.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextProgramAspect.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextRasterizerAspect.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextRenderbufferAspect.cs" />
