@@ -34,13 +34,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         public int Samples { get { return samples; } }
         public bool FixedSampleLocations { get { return fixedSampleLocations; } }
 
-        public Texture2DMultisampleArray(Context context,
-                                         int width, 
-                                         int height, 
-                                         int sliceCount, 
-                                         int samples,
-                                         Format internalFormat,
-                                         bool fixedSampleLocations = false)
+        public Texture2DMultisampleArray(Context context, int width, int height, int sliceCount, int samples, Format internalFormat, bool fixedSampleLocations = false)
             : base(context, TextureTarget.Texture2DMultisampleArray, width, height, 1, internalFormat, sliceCount, 1)
         {
             this.samples = samples;

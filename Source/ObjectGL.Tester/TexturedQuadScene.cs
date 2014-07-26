@@ -113,8 +113,9 @@ void main()
 
             using (var textureLoader = new TextureLoader("../Textures/Chess256.png"))
             {
-                diffuseMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Srgb8Alpha8,
-                                           i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte, i => ByteAlignment.Four);
+                diffuseMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Srgb8Alpha8);
+                for (int i = 0; i < diffuseMap.MipCount; i++)
+                    diffuseMap.SetData(i, textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             sampler = Context.Create.Sampler();

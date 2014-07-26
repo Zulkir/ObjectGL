@@ -196,14 +196,16 @@ void main()
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
-                diffuseMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Rgba8,
-                                                      i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte, i => ByteAlignment.Four);
+                diffuseMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Rgba8);
+                for (int i = 0; i < diffuseMap.MipCount; i++)
+                    diffuseMap.SetData(i, textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             using (var textureLoader = new TextureLoader("../Textures/SpecularTest.png"))
             {
-                specularMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Rgba8,
-                                                       i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte, i => ByteAlignment.Four);
+                specularMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Rgba8);
+                for (int i = 0; i < diffuseMap.MipCount; i++)
+                    diffuseMap.SetData(i, textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             sampler = Context.Create.Sampler();

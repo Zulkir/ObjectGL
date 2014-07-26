@@ -59,6 +59,7 @@ namespace ObjectGL
         void CompressedTexImage1D(int target, int level, int internalformat, int width, int border, int imageSize, IntPtr data);
         void CompressedTexImage2D(int target, int level, int internalformat, int width, int height, int border, int imageSize, IntPtr data);
         void CompressedTexImage3D(int target, int level, int internalFormat, int width, int height, int depth, int border, int imageSize, IntPtr data);
+        void CompressedTexSubImage1D(int target, int level, int xoffset, int width, int format, int imageSize, IntPtr data);
         void CompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, IntPtr data);
         void CompressedTexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int imageSize, IntPtr data);
         uint CreateProgram();
@@ -168,8 +169,12 @@ namespace ObjectGL
         //void TexParameter(int target, int pname, int* parameters);
         //void TexParameterI(int target, int pname, int* parameters);
         //void TexParameterI(int target, int pname, uint* parameters);
+        void TexStorage1D(int target, int levels, int internalformat, int width);
+        void TexStorage2D(int target, int levels, int internalformat, int width, int height);
         void TexStorage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations);
+        void TexStorage3D(int target, int levels, int internalformat, int width, int height, int depth);
         void TexStorage3DMultisample(int target, int samples, int internalformat, int width, int height, int depth, bool fixedsamplelocations);
+        void TexSubImage1D(int target, int level, int xoffset, int width, int format, int type, IntPtr data);
         void TexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr data);
         void TexSubImage3D(int target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, int format, int type, IntPtr data);
         void TransformFeedbackVaryings(uint program, int count, string[] varyings, int bufferMode);

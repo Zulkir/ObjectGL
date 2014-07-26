@@ -132,29 +132,9 @@ namespace ObjectGL.CachingImpl
             return new Texture1D(context, width, mipCount, internalFormat);
         }
 
-        public ITexture1D Texture1D(int width, int mipCount, Format internalFormat, Func<int, IntPtr> getInitialDataForMip, FormatColor format, FormatType type, Func<int, ByteAlignment> getRowByteAlignmentForMip)
-        {
-            return new Texture1D(context, width, mipCount, internalFormat, getInitialDataForMip, format, type, getRowByteAlignmentForMip);
-        }
-
-        public ITexture1D Texture1D(int width, int mipCount, Format internalFormat, Func<int, IntPtr> getCompressedInitialDataForMip, Func<int, int> getComressedImageSizeForMip)
-        {
-            return new Texture1D(context, width, mipCount, internalFormat, getCompressedInitialDataForMip, getComressedImageSizeForMip);
-        }
-
         public ITexture1DArray Texture1DArray(int width, int sliceCount, int mipCount, Format internalFormat)
         {
             return new Texture1DArray(context, width, sliceCount, mipCount, internalFormat);
-        }
-
-        public ITexture1DArray Texture1DArray(int width, int sliceCount, int mipCount, Format internalFormat, Func<int, IntPtr> getInitialDataForMip, FormatColor format, FormatType type, Func<int, ByteAlignment> getRowByteAlignmentForMip)
-        {
-            return new Texture1DArray(context, width, sliceCount, mipCount, internalFormat, getInitialDataForMip, format, type, getRowByteAlignmentForMip);
-        }
-
-        public ITexture1DArray Texture1DArray(int width, int sliceCount, int mipCount, Format internalFormat, Func<int, IntPtr> getCompressedInitialDataForMip, Func<int, int> getComressedImageSizeForMip)
-        {
-            return new Texture1DArray(context, width, sliceCount, mipCount, internalFormat, getCompressedInitialDataForMip, getComressedImageSizeForMip);
         }
 
         public ITexture2D Texture2D(int width, int height, int mipCount, Format internalFormat)
@@ -162,29 +142,9 @@ namespace ObjectGL.CachingImpl
             return new Texture2D(context, width, height, mipCount, internalFormat);
         }
 
-        public ITexture2D Texture2D(int width, int height, int mipCount, Format internalFormat, Func<int, IntPtr> getInitialDataForMip, FormatColor format, FormatType type, Func<int, ByteAlignment> getRowByteAlignmentForMip)
-        {
-            return new Texture2D(context, width, height, mipCount, internalFormat, getInitialDataForMip, format, type, getRowByteAlignmentForMip);
-        }
-
-        public ITexture2D Texture2D(int width, int height, int mipCount, Format internalFormat, Func<int, IntPtr> getCompressedInitialDataForMip, Func<int, int> getComressedImageSizeForMip)
-        {
-            return new Texture2D(context, width, height, mipCount, internalFormat, getCompressedInitialDataForMip, getComressedImageSizeForMip);
-        }
-
         public ITexture2DArray Texture2DArray(int width, int height, int sliceCount, int mipCount, Format internalFormat)
         {
             return new Texture2DArray(context, width, height, sliceCount, mipCount, internalFormat);
-        }
-
-        public ITexture2DArray Texture2DArray(int width, int height, int sliceCount, int mipCount, Format internalFormat, Func<int, IntPtr> getInitialDataForMip, FormatColor format, FormatType type, Func<int, ByteAlignment> getRowByteAlignmentForMip)
-        {
-            return new Texture2DArray(context, width, height, sliceCount, mipCount, internalFormat, getInitialDataForMip, format, type, getRowByteAlignmentForMip);
-        }
-
-        public ITexture2DArray Texture2DArray(int width, int height, int sliceCount, int mipCount, Format internalFormat, Func<int, IntPtr> getCompressedInitialDataForMip, Func<int, int> getComressedImageSizeForMip)
-        {
-            return new Texture2DArray(context, width, height, sliceCount, mipCount, internalFormat, getCompressedInitialDataForMip, getComressedImageSizeForMip);
         }
 
         public ITexture2DMultisample Texture2DMultisample(int width, int height, int samples, Format internalFormat, bool fixedSampleLocations = false)
@@ -202,44 +162,14 @@ namespace ObjectGL.CachingImpl
             return new Texture3D(context, width, height, depth, mipCount, internalFormat);
         }
 
-        public ITexture3D Texture3D(int width, int height, int depth, int mipCount, Format internalFormat, Func<int, IntPtr> getInitialDataForMip, FormatColor format, FormatType type, Func<int, ByteAlignment> getRowByteAlignmentForMip)
-        {
-            return new Texture3D(context, width, height, depth, mipCount, internalFormat, getInitialDataForMip, format, type, getRowByteAlignmentForMip);
-        }
-
-        public ITexture3D Texture3D(int width, int height, int depth, int mipCount, Format internalFormat, Func<int, IntPtr> getCompressedInitialDataForMip, Func<int, int> getComressedImageSizeForMip)
-        {
-            return new Texture3D(context, width, height, depth, mipCount, internalFormat, getCompressedInitialDataForMip, getComressedImageSizeForMip);
-        }
-
         public ITextureCubemap TextureCubemap(int width, int mipCount, Format internalFormat)
         {
             return new TextureCubemap(context, width, mipCount, internalFormat);
         }
 
-        public ITextureCubemap TextureCubemap(int width, int mipCount, Format internalFormat, Func<CubemapFace, int, IntPtr> getInitialDataForMip, FormatColor format, FormatType type, Func<CubemapFace, int, ByteAlignment> getRowByteAlignmentForMip)
-        {
-            return new TextureCubemap(context, width, mipCount, internalFormat, getInitialDataForMip, format, type, getRowByteAlignmentForMip);
-        }
-
-        public ITextureCubemap TextureCubemap(int width, int mipCount, Format internalFormat, Func<CubemapFace, int, IntPtr> getCompressedInitialDataForMip, Func<CubemapFace, int, int> getComressedImageSizeForMip)
-        {
-            return new TextureCubemap(context, width, mipCount, internalFormat, getCompressedInitialDataForMip, getComressedImageSizeForMip);
-        }
-
         public ITextureCubemapArray TextureCubemapArray(int width, int cubeCount, int mipCount, Format internalFormat)
         {
             return new TextureCubemapArray(context, width, cubeCount, mipCount, internalFormat);
-        }
-
-        public ITextureCubemapArray TextureCubemapArray(int width, int cubeCount, int mipCount, Format internalFormat, Func<int, IntPtr> getInitialDataForMip, FormatColor format, FormatType type, Func<int, ByteAlignment> getRowByteAlignmentForMip)
-        {
-            return new TextureCubemapArray(context, width, cubeCount, mipCount, internalFormat, getInitialDataForMip, format, type, getRowByteAlignmentForMip);
-        }
-
-        public ITextureCubemapArray TextureCubemapArray(int width, int cubeCount, int mipCount, Format internalFormat, Func<int, IntPtr> getCompressedInitialDataForMip, Func<int, int> getComressedImageSizeForMip)
-        {
-            return new TextureCubemapArray(context, width, cubeCount, mipCount, internalFormat, getCompressedInitialDataForMip, getComressedImageSizeForMip);
         }
     }
 }

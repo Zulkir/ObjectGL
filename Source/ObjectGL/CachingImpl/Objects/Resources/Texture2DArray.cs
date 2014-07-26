@@ -29,89 +29,23 @@ namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class Texture2DArray : Texture, ITexture2DArray
     {
-        public Texture2DArray(Context context,
-                              int width, 
-                              int height, 
-                              int sliceCount, 
-                              int mipCount,
-                              Format internalFormat)
+        public Texture2DArray(Context context, int width, int height, int sliceCount, int mipCount, Format internalFormat)
             : base(context, TextureTarget.Texture2DArray, width, height, 1, internalFormat, sliceCount, mipCount)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            int mipHeight = height;
-            for (int i = 0; i < MipCount; i++)
-            {
-                GL.TexImage3D((int)Target, i, (int)internalFormat, mipWidth, mipHeight, sliceCount, 0, (int)GetAppropriateFormatColor(internalFormat), (int)GetAppropriateFormatType(internalFormat), IntPtr.Zero);
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
+            GL.TexStorage3D((int)Target, mipCount, (int)internalFormat, width, height, sliceCount);
         }
 
-        public Texture2DArray(Context context,
-                              int width, 
-                              int height, 
-                              int sliceCount, 
-                              int mipCount,
-                              Format internalFormat, 
-                              Func<int, IntPtr> getInitialDataForMip, 
-                              FormatColor format, 
-                              FormatType type,
-                              Func<int, ByteAlignment> getRowByteAlignmentForMip)
-            : base(context, TextureTarget.Texture2DArray, width, height, 1, internalFormat, sliceCount, mipCount)
+        public void SetData(int level, int xOffset, int yOffset, int sliceOffset, int width, int height, int sliceCount, IntPtr data, FormatColor format, FormatType type)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            int mipHeight = height;
-            for (int i = 0; i < MipCount; i++)
-            {
-                Context.SetUnpackAlignment(getRowByteAlignmentForMip(i));
-                GL.TexImage3D((int)Target, i, (int)internalFormat, mipWidth, mipHeight, sliceCount, 0, (int)format, (int)type, getInitialDataForMip(i));
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
+            GL.TexSubImage3D((int)Target, level, xOffset, yOffset, sliceOffset, width, height, sliceCount, (int)format, (int)type, data);
         }
 
-        public Texture2DArray(Context context,
-                              int width, 
-                              int height, 
-                              int sliceCount, 
-                              int mipCount,
-                              Format internalFormat, 
-                              Func<int, IntPtr> getCompressedInitialDataForMip, 
-                              Func<int, int> getComressedImageSizeForMip)
-            : base(context, TextureTarget.Texture2DArray, width, height, 1, internalFormat, sliceCount, mipCount)
+        public void SetDataCompressed(int level, int xOffset, int yOffset, int sliceOffset, int width, int height, int sliceCount, IntPtr data, int compressedSize)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            int mipHeight = height;
-            for (int i = 0; i < MipCount; i++)
-            {
-                GL.CompressedTexImage3D((int)Target, i, (int)internalFormat, mipWidth, mipHeight, sliceCount, 0, getComressedImageSizeForMip(i), getCompressedInitialDataForMip(i));
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
-        }
-
-        public void Recreate(int slice, 
-                            int level,
-                            IntPtr data, 
-                            FormatColor format, 
-                            FormatType type,
-            ByteAlignment unpackAlignment = ByteAlignment.Four)
-        {
-            Context.SetUnpackAlignment(unpackAlignment);
-            Context.BindTexture(Target, this);
-            GL.TexSubImage3D((int)Target, level, 0, 0, slice, CalculateMipSize(level, Width), CalculateMipSize(level, Height), 1, (int)format, (int)type, data);
-        }
-
-        public void Recreate(int slice, 
-                            int level,
-                            IntPtr data, 
-                            int compressedSize)
-        {
-            Context.BindTexture(Target, this);
-            GL.CompressedTexSubImage3D((int)Target, level, 0, 0, slice, CalculateMipSize(level, Width), CalculateMipSize(level, Height), 1, (int)InternalFormat, compressedSize, data);
+            GL.CompressedTexSubImage3D((int)Target, level, xOffset, yOffset, sliceOffset, width, height, sliceCount, (int)InternalFormat, compressedSize, data);
         }
     }
 }

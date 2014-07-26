@@ -28,7 +28,7 @@ namespace ObjectGL.Api.Objects.Resources
 {
     public interface ITexture1DArray : ITexture
     {
-        void Recreate(int slice, int level, IntPtr data, FormatColor format, FormatType type, ByteAlignment unpackAlignment = ByteAlignment.Four);
-        void Recreate(int slice, int level, IntPtr data, int compressedSize);
+        void SetData(int level, int xOffset, int sliceOffset, int width, int sliceCount, IntPtr data, FormatColor format, FormatType type);
+        void SetDataCompressed(int level, int xOffset, int sliceOffset, int width, int sliceCount, IntPtr data, int compressedSize);
     }
 }

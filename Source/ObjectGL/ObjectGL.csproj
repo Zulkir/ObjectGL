@@ -86,6 +86,7 @@
     <Compile Include="Api\Objects\Resources\ITextureCubemapArray.cs" />
     <Compile Include="Api\Objects\Resources\RenderbufferTarget.cs" />
     <Compile Include="Api\Objects\Resources\ResourceType.cs" />
+    <Compile Include="Api\Objects\Resources\TextureExtensions.cs" />
     <Compile Include="Api\Objects\Resources\TextureTarget.cs" />
     <Compile Include="Api\Objects\ShaderType.cs" />
     <Compile Include="Api\Objects\TextureCompareMode.cs" />

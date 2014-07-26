@@ -29,78 +29,23 @@ namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class Texture2D : Texture, ITexture2D
     {
-        public Texture2D(Context context,
-                         int width, 
-                         int height, 
-                         int mipCount,
-                         Format internalFormat)
+        public Texture2D(Context context, int width, int height, int mipCount, Format internalFormat)
             : base(context, TextureTarget.Texture2D, width, height, 1, internalFormat, 1, mipCount)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            int mipHeight = height;
-            for (int i = 0; i < MipCount; i++)
-            {
-                GL.TexImage2D((int)Target, i, (int)internalFormat, mipWidth, mipHeight, 0, (int)GetAppropriateFormatColor(internalFormat), (int)GetAppropriateFormatType(internalFormat), IntPtr.Zero);
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
+            GL.TexStorage2D((int)Target, mipCount, (int)internalFormat, width, height);
         }
 
-        public Texture2D(Context context,
-                         int width, 
-                         int height, 
-                         int mipCount,
-                         Format internalFormat, 
-                         Func<int, IntPtr> getInitialDataForMip,
-                         FormatColor format, 
-                         FormatType type,
-                         Func<int, ByteAlignment> getRowByteAlignmentForMip)
-            : base(context, TextureTarget.Texture2D, width, height, 1, internalFormat, 1, mipCount)
+        public void SetData(int level, int xOffset, int yOffset, int width, int height, IntPtr data, FormatColor format, FormatType type)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            int mipHeight = height;
-            for (int i = 0; i < MipCount; i++)
-            {
-                Context.SetUnpackAlignment(getRowByteAlignmentForMip(i));
-                GL.TexImage2D((int)Target, i, (int)internalFormat, mipWidth, mipHeight, 0, (int)format, (int)type, getInitialDataForMip(i));
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
+            GL.TexSubImage2D((int)Target, level, xOffset, yOffset, width, height, (int)format, (int)type, data);
         }
 
-        public Texture2D(Context context,
-                         int width, 
-                         int height, 
-                         int mipCount,
-                         Format internalFormat, 
-                         Func<int, IntPtr> getCompressedInitialDataForMip,
-                         Func<int, int> getComressedImageSizeForMip)
-            : base(context, TextureTarget.Texture2D, width, height, 1, internalFormat, 1, mipCount)
+        public void SetDataCompressed(int level, int xOffset, int yOffset, int width, int height, IntPtr data, int compressedSize)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            int mipHeight = height;
-            for (int i = 0; i < MipCount; i++)
-            {
-                GL.CompressedTexImage2D((int)Target, i, (int)internalFormat, mipWidth, mipHeight, 0, getComressedImageSizeForMip(i), getCompressedInitialDataForMip(i));
-                mipWidth = Math.Max(mipWidth / 2, 1);
-                mipHeight = Math.Max(mipHeight / 2, 1);
-            }
-        }
-
-        public void Recreate(int level,IntPtr data, FormatColor format, FormatType type, ByteAlignment unpackAlignment = ByteAlignment.Four)
-        {
-            Context.SetUnpackAlignment(unpackAlignment);
-            Context.BindTexture(Target, this);
-            GL.TexImage2D((int)Target, level, (int)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), 0, (int)format, (int)type, data);
-        }
-
-        public void Recreate(int level, IntPtr data, int compressedSize)
-        {
-            Context.BindTexture(Target, this);
-            GL.CompressedTexImage2D((int)Target, level, (int)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), 0, compressedSize, data);
+            GL.CompressedTexSubImage2D((int)Target, level, xOffset, yOffset, width, height, (int)InternalFormat, compressedSize, data);
         }
     }
 }

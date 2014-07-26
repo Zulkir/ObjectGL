@@ -209,8 +209,9 @@ void main()
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
-                diffuseMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Rgba8,
-                                           i => textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte, i => ByteAlignment.Four);
+                diffuseMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Rgba8);
+                for (int i = 0; i < diffuseMap.MipCount; i++)
+                    diffuseMap.SetData(i, textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             sampler = Context.Create.Sampler();
@@ -291,7 +292,7 @@ void main()
 #if INTEL_WORKAROUND
             cameraOutsideBuffer.Recreate(BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #else
-            cameraBuffer.Recreate(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
 #endif
             Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Ccw;
 

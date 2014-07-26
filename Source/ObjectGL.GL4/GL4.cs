@@ -184,6 +184,11 @@ namespace ObjectGL.GL4
             GL.CompressedTexImage3D((TextureTarget)target, level, (PixelInternalFormat)internalFormat, width, height, depth, border, imageSize, data);
         }
 
+        public void CompressedTexSubImage1D(int target, int level, int xoffset, int width, int format, int imageSize, IntPtr data)
+        {
+            GL.CompressedTexSubImage1D((TextureTarget)target, level, xoffset, width, (PixelFormat)format, imageSize, data);
+        }
+
         public void CompressedTexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int imageSize, IntPtr data)
         {
             GL.CompressedTexSubImage2D((TextureTarget)target, level, xoffset, yoffset, width, height, (PixelFormat)format, imageSize, data);
@@ -599,14 +604,34 @@ namespace ObjectGL.GL4
             GL.TexParameter((TextureTarget)target, (TextureParameterName)pname, param);
         }
 
+        public void TexStorage1D(int target, int levels, int internalformat, int width)
+        {
+            GL.TexStorage1D((TextureTarget1d)target, levels, (SizedInternalFormat)internalformat, width);
+        }
+
+        public void TexStorage2D(int target, int levels, int internalformat, int width, int height)
+        {
+            GL.TexStorage2D((TextureTarget2d)target, levels, (SizedInternalFormat)internalformat, width, height);
+        }
+
         public void TexStorage2DMultisample(int target, int samples, int internalformat, int width, int height, bool fixedsamplelocations)
         {
             GL.TexStorage2DMultisample((TextureTargetMultisample2d)target, samples, (SizedInternalFormat)internalformat, width, height, fixedsamplelocations);
         }
 
+        public void TexStorage3D(int target, int levels, int internalformat, int width, int height, int depth)
+        {
+            GL.TexStorage3D((TextureTarget3d)target, levels, (SizedInternalFormat)internalformat, width, height, depth);
+        }
+
         public void TexStorage3DMultisample(int target, int samples, int internalformat, int width, int height, int depth, bool fixedsamplelocations)
         {
             GL.TexStorage3DMultisample((TextureTargetMultisample3d)target, samples, (SizedInternalFormat)internalformat, width, height, depth, fixedsamplelocations);
+        }
+
+        public void TexSubImage1D(int target, int level, int xoffset, int width, int format, int type, IntPtr data)
+        {
+            GL.TexSubImage1D((TextureTarget)target, level, xoffset, width, (PixelFormat)format, (PixelType)type, data);
         }
 
         public void TexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr data)

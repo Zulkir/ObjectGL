@@ -39,5 +39,10 @@ namespace ObjectGL
              }
              return count;
          }
+
+         public static int CalculateMipSize(int level, int size)
+         {
+             return Math.Max(size >> level, 1);
+         }
     }
 }

@@ -23,85 +23,29 @@ THE SOFTWARE.
 #endregion
 
 using System;
-using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class TextureCubemap : Texture, ITextureCubemap
     {
-        public TextureCubemap(Context context, 
-                              int width, 
-                              int mipCount, 
-                              Format internalFormat)
+        public TextureCubemap(Context context, int width, int mipCount, Format internalFormat)
             : base(context, TextureTarget.TextureCubeMap, width, width, 1, internalFormat, 1, mipCount)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            for (int j = (int)CubemapFace.PositiveX; j < (int)CubemapFace.PositiveX + 6; j++)
-            {
-                for (int i = 0; i < MipCount; i++)
-                {
-                    GL.TexImage2D(j, i, (int)internalFormat, mipWidth, mipWidth, 0, (int)GetAppropriateFormatColor(internalFormat), (int)GetAppropriateFormatType(internalFormat), IntPtr.Zero);
-                    mipWidth = Math.Max(mipWidth / 2, 1);
-                }
-            }
+            GL.TexStorage2D((int)Target, mipCount, (int)internalFormat, width, 6);
         }
 
-        public TextureCubemap(Context context,
-                              int width, 
-                              int mipCount,
-                              Format internalFormat, 
-                              Func<CubemapFace, int, IntPtr> getInitialDataForMip, 
-                              FormatColor format, 
-                              FormatType type,
-                              Func<CubemapFace, int, ByteAlignment> getRowByteAlignmentForMip)
-            : base(context, TextureTarget.TextureCubeMap, width, width, 1, internalFormat, 1, mipCount)
+        public void SetData(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, FormatColor format, FormatType type)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            for (int j = (int)CubemapFace.PositiveX; j < (int)CubemapFace.PositiveX + 6; j++)
-            {
-                for (int i = 0; i < MipCount; i++)
-                {
-                    Context.SetUnpackAlignment(getRowByteAlignmentForMip((CubemapFace)j, i));
-                    GL.TexImage2D(j, i, (int)internalFormat, mipWidth, mipWidth, 0, (int)format, (int)type, getInitialDataForMip((CubemapFace)j, i));
-                    mipWidth = Math.Max(mipWidth / 2, 1);
-                }
-            }
+            GL.TexSubImage2D((int)(All.TextureCubeMapPositiveX + (uint)faceIndex), level, xOffset, yOffset, width, height, (int)format, (int)type, data);
         }
 
-        public TextureCubemap(Context context,
-                              int width, 
-                              int mipCount,
-                              Format internalFormat, 
-                              Func<CubemapFace, int, IntPtr> getCompressedInitialDataForMip,
-                              Func<CubemapFace, int, int> getComressedImageSizeForMip)
-            : base(context, TextureTarget.TextureCubeMap, width, width, 1, internalFormat, 1, mipCount)
+        public void SetDataCompressed(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, int compressedSize)
         {
             Context.BindTexture(Target, this);
-            int mipWidth = width;
-            for (int j = (int)CubemapFace.PositiveX; j < (int)CubemapFace.PositiveX + 6; j++)
-            {
-                for (int i = 0; i < MipCount; i++)
-                {
-                    GL.CompressedTexImage2D(j, i, (int)internalFormat, mipWidth, mipWidth, 0, getComressedImageSizeForMip((CubemapFace)j, i), getCompressedInitialDataForMip((CubemapFace)j, i));
-                    mipWidth = Math.Max(mipWidth / 2, 1);
-                }
-            }
-        }
-
-        public void Recreate(CubemapFace face, int level, IntPtr data, FormatColor format, FormatType type, ByteAlignment unpackAlignment = ByteAlignment.Four)
-        {
-            Context.SetUnpackAlignment(unpackAlignment);
-            Context.BindTexture(Target, this);
-            GL.TexImage2D((int)face, level, (int)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), 0, (int)format, (int)type, data);
-        }
-
-        public void Recreate(CubemapFace face, int level, IntPtr data, int compressedSize)
-        {
-            Context.BindTexture(Target, this);
-            GL.CompressedTexImage2D((int)face, level, (int)InternalFormat, CalculateMipSize(level, Width), CalculateMipSize(level, Height), 0, compressedSize, data);
+            GL.CompressedTexSubImage2D((int)(All.TextureCubeMapPositiveX + (uint)faceIndex), level, xOffset, yOffset, width, height, (int)InternalFormat, compressedSize, data);
         }
     }
 }
