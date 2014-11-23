@@ -26,7 +26,7 @@ using ObjectGL.Api;
 
 namespace ObjectGL.CachingImpl
 {
-    internal class Implementation : IImplementation
+    public class Implementation : IImplementation
     {
         public string Vendor { get; private set; }
         public string Renderer { get; private set; }

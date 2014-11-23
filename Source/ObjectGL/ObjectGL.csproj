@@ -36,12 +36,42 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <Folder Include="Api\ContextAspects\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\BeginFeedbackMode.cs" />
     <Compile Include="Api\BeginMode.cs" />
     <Compile Include="Api\BlitFramebufferFilter.cs" />
     <Compile Include="Api\ClearBufferMask.cs" />
+    <Compile Include="Api\Objects\Resources\BufferRange.cs" />
+    <Compile Include="Api\Raw\BlendEquation.cs" />
+    <Compile Include="Api\Raw\BlendFunction.cs" />
+    <Compile Include="Api\Raw\ContextRasterizerBindings.cs" />
+    <Compile Include="Api\Raw\DepthRangeDouble.cs" />
+    <Compile Include="Api\Raw\DepthRangeFloat.cs" />
+    <Compile Include="Api\Raw\IContextBlendBindings.cs" />
+    <Compile Include="Api\Raw\IContextBlendTargetBindings.cs" />
+    <Compile Include="Api\Raw\IContextBufferBindings.cs" />
+    <Compile Include="Api\Raw\IContext.cs" />
+    <Compile Include="Api\Raw\IContextDepthRangeBindings.cs" />
+    <Compile Include="Api\Raw\IContextDepthStencilBindings.cs" />
+    <Compile Include="Api\Raw\IContextDepthStencilSideBindings.cs" />
+    <Compile Include="Api\Raw\IContextFramebufferBindings.cs" />
+    <Compile Include="Api\Raw\IContextRasterizerBindings.cs" />
+    <Compile Include="Api\Raw\IContextTextureBindings.cs" />
+    <Compile Include="Api\Raw\IContextViewportBindings.cs" />
+    <Compile Include="Api\Raw\IContextScissorBoxBindings.cs" />
+    <Compile Include="Api\Raw\ScissorBox.cs" />
+    <Compile Include="Api\Raw\StencilFunctionSettings.cs" />
+    <Compile Include="Api\Raw\StencilOperationSettings.cs" />
+    <Compile Include="Api\Raw\ViewportFloat.cs" />
+    <Compile Include="Api\Raw\ViewportInt.cs" />
+    <Compile Include="CachingImpl\Raw\BufferBinding.cs" />
+    <Compile Include="Api\Raw\IBinding.cs" />
+    <Compile Include="CachingImpl\Raw\EnableCapBinding.cs" />
+    <Compile Include="CachingImpl\Raw\RawContext.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextBlendBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextBufferBindings.cs" />
     <Compile Include="Api\ContextObjectExtensions.cs" />
     <Compile Include="Api\ContextObjectType.cs" />
     <Compile Include="Api\DepthStencil.cs" />
@@ -187,6 +217,14 @@
     <Compile Include="CachingImpl\PipelineAspects\PipelineUniformBuffersAspect.cs" />
     <Compile Include="CachingImpl\PipelineAspects\PipelineViewport.cs" />
     <Compile Include="CachingImpl\PipelineAspects\PipelineViewportsAspect.cs" />
+    <Compile Include="CachingImpl\Raw\Binding.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextDepthRangeBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextDepthStencilBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextDepthStencilSideBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextFramebufferBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextScissorBoxBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextTextureBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextViewportBindings.cs" />
     <Compile Include="CachingImpl\Utilitties\RedundantBase.cs" />
     <Compile Include="CachingImpl\Utilitties\RedundantBool.cs" />
     <Compile Include="CachingImpl\Utilitties\RedundantEnable.cs" />

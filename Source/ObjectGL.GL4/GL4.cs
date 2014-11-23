@@ -59,6 +59,11 @@ namespace ObjectGL.GL4
             GL.BindBufferBase((BufferRangeTarget)target, index, buffer);
         }
 
+        public void BindBufferRange(int target, uint index, uint buffer, IntPtr offset, IntPtr size)
+        {
+            GL.BindBufferRange((BufferRangeTarget)target, index, buffer, offset, size);
+        }
+
         public void BindFramebuffer(int target, uint framebuffer)
         {
             GL.BindFramebuffer((FramebufferTarget)target, framebuffer);

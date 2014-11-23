@@ -34,6 +34,7 @@ namespace ObjectGL
         void BindAttribLocation(uint program, uint index, string name);
         void BindBuffer(int target, uint buffer);
         void BindBufferBase(int target, uint index, uint buffer);
+        void BindBufferRange(int target, uint index, uint buffer, IntPtr offset, IntPtr size);
         void BindFramebuffer(int target, uint framebuffer);
         void BindRenderbuffer(int target, uint renderbuffer);
         void BindSampler(uint unit, uint sampler);
