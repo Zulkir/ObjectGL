@@ -28,13 +28,13 @@ namespace ObjectGL.CachingImpl.ContextAspects
 {
     internal struct ContextBlendTargetPart
     {
-        public BlendFunc EquationMode;
+        public BlendMode EquationMode;
         public BlendFactor SrcFactor;
         public BlendFactor DestFactor;
 
         public void Initialize()
         {
-            EquationMode = BlendFunc.Add;
+            EquationMode = BlendMode.Add;
             SrcFactor = BlendFactor.One;
             DestFactor = BlendFactor.Zero;
         } 

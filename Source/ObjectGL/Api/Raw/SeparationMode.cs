@@ -22,33 +22,11 @@ THE SOFTWARE.
 */
 #endregion
 
-using System.Collections.Generic;
-using ObjectGL.Api.Objects;
-using ObjectGL.Api.Objects.Resources;
-
 namespace ObjectGL.Api.Raw
 {
-    public interface IContext
+    public enum SeparationMode
     {
-        IGL GL { get; }
-        IImplementation Implementation { get; }
-
-        IContextBufferBindings Buffers { get; }
-        IContextTextureBindings Textures { get; }
-        IContextFramebufferBindings Framebuffer { get; }
-        IContextViewportBindings Viewports { get; }
-        IContextDepthRangeBindings DepthRanges { get; }
-        IContextScissorBoxBindings ScissorBoxes { get; }
-        IContextRasterizerBindings Rasterizer { get; }
-        IContextDepthStencilBindings DepthStencil { get; }
-        IContextBlendBindings Blend { get; }
-
-        IBinding<IShaderProgram> Program { get; } 
-        IBinding<int> PatchVertexCount { get; }
-        IBinding<IVertexArray> VertexArray { get; }
-        IBinding<ITransformFeedback> TransformFeedback { get; }
-        IBinding<IRenderbuffer> Renderbuffer { get; }
-        IBinding<int> UnpackAlignment { get; }
-        IReadOnlyList<IBinding<ISampler>> Samplers { get; }
+        United = 0,
+        Separate = 1
     }
 }

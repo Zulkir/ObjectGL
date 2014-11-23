@@ -62,6 +62,7 @@
     <Compile Include="Api\Raw\IContextViewportBindings.cs" />
     <Compile Include="Api\Raw\IContextScissorBoxBindings.cs" />
     <Compile Include="Api\Raw\ScissorBox.cs" />
+    <Compile Include="Api\Raw\SeparationMode.cs" />
     <Compile Include="Api\Raw\StencilFunctionSettings.cs" />
     <Compile Include="Api\Raw\StencilOperationSettings.cs" />
     <Compile Include="Api\Raw\ViewportFloat.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="CachingImpl\Raw\EnableCapBinding.cs" />
     <Compile Include="CachingImpl\Raw\RawContext.cs" />
     <Compile Include="CachingImpl\Raw\RawContextBlendBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextBlendTargetBinding.cs" />
     <Compile Include="CachingImpl\Raw\RawContextBufferBindings.cs" />
     <Compile Include="Api\ContextObjectExtensions.cs" />
     <Compile Include="Api\ContextObjectType.cs" />
@@ -129,7 +131,7 @@
     <Compile Include="Api\Objects\VertexAttribPointerType.cs" />
     <Compile Include="Api\Objects\VertexAttributeDimension.cs" />
     <Compile Include="Api\PipelineAspects\BlendFactor.cs" />
-    <Compile Include="Api\PipelineAspects\BlendFunc.cs" />
+    <Compile Include="Api\PipelineAspects\BlendMode.cs" />
     <Compile Include="Api\PipelineAspects\CullFaceMode.cs" />
     <Compile Include="Api\PipelineAspects\DepthFunction.cs" />
     <Compile Include="Api\PipelineAspects\FrontFaceDirection.cs" />

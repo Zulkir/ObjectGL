@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-#region License
+﻿#region License
 /*
 Copyright (c) 2012-2014 ObjectGL Project - Daniil Rodin
 
@@ -24,6 +22,8 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using ObjectGL.Api;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
@@ -45,6 +45,7 @@ namespace ObjectGL.CachingImpl.Raw
         public IContextScissorBoxBindings ScissorBoxes { get; private set; }
         public IContextRasterizerBindings Rasterizer { get; private set; }
         public IContextDepthStencilBindings DepthStencil { get; private set; }
+        public IContextBlendBindings Blend { get; private set; }
 
         public IBinding<IShaderProgram> Program { get; private set; }
         public IBinding<int> PatchVertexCount { get; private set; }
@@ -67,6 +68,7 @@ namespace ObjectGL.CachingImpl.Raw
             ScissorBoxes = new RawContextScissorBoxBindings(this, implementation);
             Rasterizer = new ContextRasterizerBindings(this);
             DepthStencil = new RawContextDepthStencilBindings(this);
+            Blend = new RawContextBlendBindings(this, implementation);
 
             Program = new Binding<IShaderProgram>(this, (c, o) => c.GL.UseProgram(o.SafeGetHandle()));
             PatchVertexCount = new Binding<int>(this, (c, x) => { if (x != 0) c.GL.PatchParameter((int)All.PatchVertices, x); });

@@ -22,10 +22,40 @@ THE SOFTWARE.
 */
 #endregion
 
+using System;
+using ObjectGL.Api.PipelineAspects;
+
 namespace ObjectGL.Api.Raw
 {
-    public struct BlendFunction
+    public struct BlendFunction : IEquatable<BlendFunction>
     {
-         
+        public BlendFactor SourceRgb;
+        public BlendFactor DestinationRgb;
+        public BlendFactor SourceAlpha;
+        public BlendFactor DestinationAlpha;
+
+        public bool Equals(BlendFunction other)
+        {
+            return SourceRgb == other.SourceRgb &&
+                   DestinationRgb == other.DestinationRgb &&
+                   SourceAlpha == other.SourceAlpha &&
+                   DestinationAlpha == other.DestinationAlpha;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is BlendFunction && Equals((BlendFunction)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)SourceRgb ^ (int)DestinationRgb ^ (int)SourceAlpha ^ (int)DestinationAlpha;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("[SrcRGB: {0}; DstRGB: {1}; SrcAlpha: {2}; DstAlpha: {3}]",
+                SourceRgb, DestinationRgb, SourceAlpha, DestinationAlpha);
+        }
     }
 }

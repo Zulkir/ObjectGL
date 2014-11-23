@@ -70,12 +70,12 @@ namespace ObjectGL.CachingImpl.Raw
             currentValueUnkown = false;
         }
 
-        public void OnOutsideChange()
+        public void OnExternalChange()
         {
             currentValueUnkown = true;
         }
 
-        public void OnOutsideChange(T value)
+        public void OnExternalChange(T value)
         {
             currentValue = value;
             currentValueUnkown = false;

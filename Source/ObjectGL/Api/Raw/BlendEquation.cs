@@ -29,8 +29,8 @@ namespace ObjectGL.Api.Raw
 {
     public struct BlendEquation : IEquatable<BlendEquation>
     {
-        public BlendFunc Rgb;
-        public BlendFunc Alpha;
+        public BlendMode Rgb;
+        public BlendMode Alpha;
 
         public bool Equals(BlendEquation other)
         {

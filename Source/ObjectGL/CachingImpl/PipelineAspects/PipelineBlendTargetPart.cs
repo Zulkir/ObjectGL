@@ -28,7 +28,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
 {
     internal class PipelineBlendTargetPart : IPipelineBlendTargetPart
     {
-        public BlendFunc EquationMode { get; set; }
+        public BlendMode EquationMode { get; set; }
         public BlendFactor SrcFactor { get; set; }
         public BlendFactor DestFactor { get; set; }
 
@@ -39,7 +39,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
 
         public void SetDefault()
         {
-            EquationMode = BlendFunc.Add;
+            EquationMode = BlendMode.Add;
             SrcFactor = BlendFactor.One;
             DestFactor = BlendFactor.Zero;
         }

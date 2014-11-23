@@ -26,7 +26,7 @@ namespace ObjectGL.Api.PipelineAspects
 {
     public interface IPipelineBlendTargetPart
     {
-        BlendFunc EquationMode { get; set; }
+        BlendMode EquationMode { get; set; }
         BlendFactor SrcFactor { get; set; }
         BlendFactor DestFactor { get; set; }
 

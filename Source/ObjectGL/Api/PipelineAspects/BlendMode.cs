@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 namespace ObjectGL.Api.PipelineAspects
 {
-    public enum BlendFunc
+    public enum BlendMode
     {
         Add = 0x8006,
         Subtract = 0x800A,

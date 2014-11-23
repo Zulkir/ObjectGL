@@ -22,12 +22,40 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
+using ObjectGL.Api;
 using ObjectGL.Api.Raw;
+using IContext = ObjectGL.Api.Raw.IContext;
 
 namespace ObjectGL.CachingImpl.Raw
 {
     public class RawContextBlendBindings : IContextBlendBindings
     {
-         
+        public IContextBlendTargetBindings United { get; private set; }
+        public IReadOnlyList<IContextBlendTargetBindings> Separate { get; private set; }
+        private SeparationMode separationModeCache;
+
+        public RawContextBlendBindings(IContext context, IImplementation implementation)
+        {
+            United = new RawContextBlendTargetBinding(context, null);
+            Separate = Enumerable.Range(0, implementation.MaxDrawBuffers)
+                .Select(i => new RawContextBlendTargetBinding(context, i))
+                .ToArray();
+        }
+
+        public SeparationMode SeparationModeCache
+        {
+            get { return separationModeCache; }
+            set
+            {
+                separationModeCache = value;
+                if (separationModeCache == SeparationMode.United)
+                    foreach (var targetBindings in Separate)
+                        targetBindings.OnExternalChange();
+                else
+                    United.OnExternalChange();
+            }
+        }
     }
 }

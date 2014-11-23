@@ -27,7 +27,7 @@ namespace ObjectGL.Api.Raw
     public interface IBinding
     {
         IContext Context { get; }
-        void OnOutsideChange();
+        void OnExternalChange();
     }
 
     public interface IBinding<T> : IBinding
@@ -36,6 +36,6 @@ namespace ObjectGL.Api.Raw
         void Set(T value);
         void Force(T value);
         bool IsSetTo(T value);
-        void OnOutsideChange(T value);
+        void OnExternalChange(T value);
     }
 }

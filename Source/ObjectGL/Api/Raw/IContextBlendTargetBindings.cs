@@ -26,6 +26,8 @@ namespace ObjectGL.Api.Raw
 {
     public interface IContextBlendTargetBindings
     {
-         IBinding<BlendEquation> Equation { get; }
+        IBinding<BlendEquation> Equation { get; }
+        IBinding<BlendFunction> Function { get; }
+        void OnExternalChange();
     }
 }

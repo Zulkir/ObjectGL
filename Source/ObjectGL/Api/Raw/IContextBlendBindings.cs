@@ -22,10 +22,14 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Collections.Generic;
+
 namespace ObjectGL.Api.Raw
 {
     public interface IContextBlendBindings
     {
-         
+        IContextBlendTargetBindings United { get; }
+        IReadOnlyList<IContextBlendTargetBindings> Separate { get; }
+        SeparationMode SeparationModeCache { get; set; }
     }
 }
