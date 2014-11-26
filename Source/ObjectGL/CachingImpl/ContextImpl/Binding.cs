@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using ObjectGL.Api.Context;
 
-namespace ObjectGL.CachingImpl.ContextImpl.Subsets
+namespace ObjectGL.CachingImpl.ContextImpl
 {
     public class Binding<T> : IBinding<T>
     {

@@ -22,17 +22,17 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api.Context;
+using ObjectGL.Api;
+using ObjectGL.Api.Objects.Resources;
+using IContext = ObjectGL.Api.Context.IContext;
 
-namespace ObjectGL.CachingImpl.ContextImpl.Subsets
+namespace ObjectGL.CachingImpl.ContextImpl
 {
-    public class EnableCapBinding : Binding<bool>
+    public class BufferBinding : Binding<IBuffer>
     {
-        public EnableCapBinding(IContext context, int enableCap)
-            : base(context, (c, x) => { if (x) c.GL.Enable(enableCap); else c.GL.Disable(enableCap); })
+        public BufferBinding(IContext context, BufferTarget target) 
+            : base(context, (c, o) => c.GL.BindBuffer((int)target, o.SafeGetHandle()))
         {
         }
-
-        internal EnableCapBinding(IContext context, EnableCap enableCap) : this(context, (int)enableCap) { }
     }
 }

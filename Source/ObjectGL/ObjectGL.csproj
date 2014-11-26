@@ -66,10 +66,10 @@
     <Compile Include="Api\Context\StencilOperationSettings.cs" />
     <Compile Include="Api\Context\ViewportFloat.cs" />
     <Compile Include="Api\Context\ViewportInt.cs" />
-    <Compile Include="CachingImpl\ContextImpl\Subsets\BufferBinding.cs" />
+    <Compile Include="CachingImpl\ContextImpl\BufferBinding.cs" />
     <Compile Include="Api\Context\IBinding.cs" />
-    <Compile Include="CachingImpl\ContextImpl\Subsets\EnableCapBinding.cs" />
-    <Compile Include="CachingImpl\ContextImpl\Subsets\RawContext.cs" />
+    <Compile Include="CachingImpl\ContextImpl\EnableCapBinding.cs" />
+    <Compile Include="CachingImpl\ContextImpl\RawContext.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\RawContextBlendBindings.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\RawContextBlendTargetBinding.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\RawContextBufferBindings.cs" />
@@ -218,7 +218,7 @@
     <Compile Include="CachingImpl\PipelineAspects\PipelineUniformBuffersAspect.cs" />
     <Compile Include="CachingImpl\PipelineAspects\PipelineViewport.cs" />
     <Compile Include="CachingImpl\PipelineAspects\PipelineViewportsAspect.cs" />
-    <Compile Include="CachingImpl\ContextImpl\Subsets\Binding.cs" />
+    <Compile Include="CachingImpl\ContextImpl\Binding.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\RawContextDepthStencilBindings.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\RawContextDepthStencilSideBindings.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\RawContextFramebufferBindings.cs" />

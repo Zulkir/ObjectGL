@@ -29,9 +29,10 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
+using ObjectGL.CachingImpl.ContextImpl.Subsets;
 using IContext = ObjectGL.Api.Context.IContext;
 
-namespace ObjectGL.CachingImpl.ContextImpl.Subsets
+namespace ObjectGL.CachingImpl.ContextImpl
 {
     public class RawContext : IContext
     {
