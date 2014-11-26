@@ -36,9 +36,7 @@ namespace ObjectGL.Api.Raw
         IContextBufferBindings Buffers { get; }
         IContextTextureBindings Textures { get; }
         IContextFramebufferBindings Framebuffer { get; }
-        IContextViewportBindings Viewports { get; }
-        IContextDepthRangeBindings DepthRanges { get; }
-        IContextScissorBoxBindings ScissorBoxes { get; }
+        IContextScreenClippingBindings ScreenClipping { get; }
         IContextRasterizerBindings Rasterizer { get; }
         IContextDepthStencilBindings DepthStencil { get; }
         IContextBlendBindings Blend { get; }

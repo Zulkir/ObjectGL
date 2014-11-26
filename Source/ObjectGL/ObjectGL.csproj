@@ -47,6 +47,7 @@
     <Compile Include="Api\Raw\BlendEquation.cs" />
     <Compile Include="Api\Raw\BlendFunction.cs" />
     <Compile Include="Api\Raw\ContextRasterizerBindings.cs" />
+    <Compile Include="Api\Raw\IContextScreenClippingSeparateBindings.cs" />
     <Compile Include="Api\Raw\DepthRangeDouble.cs" />
     <Compile Include="Api\Raw\DepthRangeFloat.cs" />
     <Compile Include="Api\Raw\IContextBlendBindings.cs" />
@@ -58,6 +59,8 @@
     <Compile Include="Api\Raw\IContextDepthStencilSideBindings.cs" />
     <Compile Include="Api\Raw\IContextFramebufferBindings.cs" />
     <Compile Include="Api\Raw\IContextRasterizerBindings.cs" />
+    <Compile Include="Api\Raw\IContextScreenClippingBindings.cs" />
+    <Compile Include="Api\Raw\IContextScreenClippingUnitedBindings.cs" />
     <Compile Include="Api\Raw\IContextTextureBindings.cs" />
     <Compile Include="Api\Raw\IContextViewportBindings.cs" />
     <Compile Include="Api\Raw\IContextScissorBoxBindings.cs" />
@@ -225,6 +228,9 @@
     <Compile Include="CachingImpl\Raw\RawContextDepthStencilSideBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextFramebufferBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextScissorBoxBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextScreenClippingBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextScreenClippingSeparateBindings.cs" />
+    <Compile Include="CachingImpl\Raw\RawContextScreenClippingUnitedBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextTextureBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextViewportBindings.cs" />
     <Compile Include="CachingImpl\Utilitties\RedundantBase.cs" />

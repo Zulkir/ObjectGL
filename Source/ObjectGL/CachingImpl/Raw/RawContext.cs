@@ -40,9 +40,7 @@ namespace ObjectGL.CachingImpl.Raw
         public IContextBufferBindings Buffers { get; private set; }
         public IContextTextureBindings Textures { get; private set; }
         public IContextFramebufferBindings Framebuffer { get; private set; }
-        public IContextViewportBindings Viewports { get; private set; }
-        public IContextDepthRangeBindings DepthRanges { get; private set; }
-        public IContextScissorBoxBindings ScissorBoxes { get; private set; }
+        public IContextScreenClippingBindings ScreenClipping { get; private set; }
         public IContextRasterizerBindings Rasterizer { get; private set; }
         public IContextDepthStencilBindings DepthStencil { get; private set; }
         public IContextBlendBindings Blend { get; private set; }
@@ -63,9 +61,7 @@ namespace ObjectGL.CachingImpl.Raw
             Buffers = new RawContextBufferBindings(this, implementation);
             Textures = new RawContextTextureBindings(this, implementation);
             Framebuffer = new RawContextFramebufferBindings(this);
-            Viewports = new RawContextViewportBindings(this, implementation);
-            DepthRanges = new RawContextDepthRangeBindings(this, implementation);
-            ScissorBoxes = new RawContextScissorBoxBindings(this, implementation);
+            ScreenClipping = new RawContextScreenClippingBindings(this, implementation);
             Rasterizer = new ContextRasterizerBindings(this);
             DepthStencil = new RawContextDepthStencilBindings(this);
             Blend = new RawContextBlendBindings(this, implementation);
