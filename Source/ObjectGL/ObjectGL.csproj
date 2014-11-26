@@ -54,7 +54,6 @@
     <Compile Include="Api\Raw\IContextBlendTargetBindings.cs" />
     <Compile Include="Api\Raw\IContextBufferBindings.cs" />
     <Compile Include="Api\Raw\IContext.cs" />
-    <Compile Include="Api\Raw\IContextDepthRangeBindings.cs" />
     <Compile Include="Api\Raw\IContextDepthStencilBindings.cs" />
     <Compile Include="Api\Raw\IContextDepthStencilSideBindings.cs" />
     <Compile Include="Api\Raw\IContextFramebufferBindings.cs" />
@@ -62,8 +61,6 @@
     <Compile Include="Api\Raw\IContextScreenClippingBindings.cs" />
     <Compile Include="Api\Raw\IContextScreenClippingUnitedBindings.cs" />
     <Compile Include="Api\Raw\IContextTextureBindings.cs" />
-    <Compile Include="Api\Raw\IContextViewportBindings.cs" />
-    <Compile Include="Api\Raw\IContextScissorBoxBindings.cs" />
     <Compile Include="Api\Raw\ScissorBox.cs" />
     <Compile Include="Api\Raw\SeparationMode.cs" />
     <Compile Include="Api\Raw\StencilFunctionSettings.cs" />
@@ -223,16 +220,13 @@
     <Compile Include="CachingImpl\PipelineAspects\PipelineViewport.cs" />
     <Compile Include="CachingImpl\PipelineAspects\PipelineViewportsAspect.cs" />
     <Compile Include="CachingImpl\Raw\Binding.cs" />
-    <Compile Include="CachingImpl\Raw\RawContextDepthRangeBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextDepthStencilBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextDepthStencilSideBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextFramebufferBindings.cs" />
-    <Compile Include="CachingImpl\Raw\RawContextScissorBoxBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextScreenClippingBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextScreenClippingSeparateBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextScreenClippingUnitedBindings.cs" />
     <Compile Include="CachingImpl\Raw\RawContextTextureBindings.cs" />
-    <Compile Include="CachingImpl\Raw\RawContextViewportBindings.cs" />
     <Compile Include="CachingImpl\Utilitties\RedundantBase.cs" />
     <Compile Include="CachingImpl\Utilitties\RedundantBool.cs" />
     <Compile Include="CachingImpl\Utilitties\RedundantEnable.cs" />
