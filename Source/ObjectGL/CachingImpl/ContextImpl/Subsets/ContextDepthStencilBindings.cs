@@ -27,17 +27,23 @@ using ObjectGL.Api.Context.Subsets;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextDepthStencilSideBindings : IContextDepthStencilSideBindings
+    public class ContextDepthStencilBindings : IContextDepthStencilBindings
     {
-        public IBinding<StencilFunctionSettings> StencilFunctionSettings { get; private set; }
-        public IBinding<StencilOperationSettings> StencilOperationSettings { get; private set; }
-        public IBinding<int> StencilWriteMask { get; set; }
+        public IContextDepthStencilSideBindings Front { get; private set; }
+        public IContextDepthStencilSideBindings Back { get; private set; }
+        public IBinding<bool> DepthTestEnable { get; set; }
+        public IBinding<bool> DepthMask { get; set; }
+        public IBinding<DepthFunction> DepthFunc { get; set; }
+        public IBinding<bool> StencilTestEnable { get; set; }
 
-        public RawContextDepthStencilSideBindings(IContext context, int face)
+        public ContextDepthStencilBindings(IContext context)
         {
-            StencilFunctionSettings = new Binding<StencilFunctionSettings>(context, (c, x) => c.GL.StencilFuncSeparate(face, (int)x.Function, x.Reference, x.Mask));
-            StencilOperationSettings = new Binding<StencilOperationSettings>(context, (c, x) => c.GL.StencilOpSeparate(face, (int)x.StencilFail, (int)x.DepthFail, (int)x.DepthPass));
-            StencilWriteMask = new Binding<int>(context, (c, x) => c.GL.StencilMaskSeparate(face, (uint)x));
+            Front = new ContextDepthStencilSideBindings(context, (int)All.Front);
+            Back = new ContextDepthStencilSideBindings(context, (int)All.Back);
+            DepthTestEnable = new EnableCapBinding(context, EnableCap.DepthTest);
+            DepthMask = new Binding<bool>(context, (c, x) => c.GL.DepthMask(x));
+            DepthFunc = new Binding<DepthFunction>(context, (c, x) => c.GL.DepthFunc((int)x));
+            StencilTestEnable = new EnableCapBinding(context, EnableCap.StencilTest);
         }
     }
 }

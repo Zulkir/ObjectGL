@@ -22,31 +22,22 @@ THE SOFTWARE.
 */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects.Resources;
-using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextTextureBindings : IContextTextureBindings
+    public class ContextDepthStencilSideBindings : IContextDepthStencilSideBindings
     {
-        public IBinding<int> ActiveUnit { get; private set; }
-        public IReadOnlyList<IBinding<ITexture>> Units { get; private set; }
+        public IBinding<StencilFunctionSettings> StencilFunctionSettings { get; private set; }
+        public IBinding<StencilOperationSettings> StencilOperationSettings { get; private set; }
+        public IBinding<int> StencilWriteMask { get; set; }
 
-        public RawContextTextureBindings(IContext context, IImplementation implementation)
+        public ContextDepthStencilSideBindings(IContext context, int face)
         {
-            ActiveUnit = new Binding<int>(context, (c, x) => c.GL.ActiveTexture(x));
-            Units = Enumerable.Range(0, implementation.MaxCombinedTextureImageUnits)
-                .Select(i => new Binding<ITexture>(context, (c, o) =>
-                {
-                    ActiveUnit.Set(i);
-                    c.GL.BindTexture((int)o.Target, o.SafeGetHandle());
-                }))
-                .ToArray();
+            StencilFunctionSettings = new Binding<StencilFunctionSettings>(context, (c, x) => c.GL.StencilFuncSeparate(face, (int)x.Function, x.Reference, x.Mask));
+            StencilOperationSettings = new Binding<StencilOperationSettings>(context, (c, x) => c.GL.StencilOpSeparate(face, (int)x.StencilFail, (int)x.DepthFail, (int)x.DepthPass));
+            StencilWriteMask = new Binding<int>(context, (c, x) => c.GL.StencilMaskSeparate(face, (uint)x));
         }
     }
 }

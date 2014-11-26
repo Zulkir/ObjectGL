@@ -31,17 +31,17 @@ using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextBlendBindings : IContextBlendBindings
+    public class ContextBlendBindings : IContextBlendBindings
     {
         public IContextBlendTargetBindings United { get; private set; }
         public IReadOnlyList<IContextBlendTargetBindings> Separate { get; private set; }
         private SeparationMode separationModeCache;
 
-        public RawContextBlendBindings(IContext context, IImplementation implementation)
+        public ContextBlendBindings(IContext context, IImplementation implementation)
         {
-            United = new RawContextBlendTargetBinding(context, null);
+            United = new ContextBlendTargetBinding(context, null);
             Separate = Enumerable.Range(0, implementation.MaxDrawBuffers)
-                .Select(i => new RawContextBlendTargetBinding(context, i))
+                .Select(i => new ContextBlendTargetBinding(context, i))
                 .ToArray();
         }
 

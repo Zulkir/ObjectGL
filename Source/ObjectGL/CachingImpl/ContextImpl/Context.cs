@@ -34,7 +34,7 @@ using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl
 {
-    public class RawContext : IContext
+    public class Context : IContext
     {
         public IGL GL { get; private set; }
         public IImplementation Implementation { get; private set; }
@@ -55,18 +55,18 @@ namespace ObjectGL.CachingImpl.ContextImpl
         public IBinding<int> UnpackAlignment { get; private set; }
         public IReadOnlyList<IBinding<ISampler>> Samplers { get; private set; }
 
-        public RawContext(IGL gl, IImplementation implementation)
+        public Context(IGL gl, IImplementation implementation)
         {
             GL = gl;
             Implementation = implementation;
 
-            Buffers = new RawContextBufferBindings(this, implementation);
-            Textures = new RawContextTextureBindings(this, implementation);
-            Framebuffer = new RawContextFramebufferBindings(this);
-            ScreenClipping = new RawContextScreenClippingBindings(this, implementation);
-            Rasterizer = new RawContextRasterizerBindings(this);
-            DepthStencil = new RawContextDepthStencilBindings(this);
-            Blend = new RawContextBlendBindings(this, implementation);
+            Buffers = new ContextBufferBindings(this, implementation);
+            Textures = new ContextTextureBindings(this, implementation);
+            Framebuffer = new ContextFramebufferBindings(this);
+            ScreenClipping = new ContextScreenClippingBindings(this, implementation);
+            Rasterizer = new ContextRasterizerBindings(this);
+            DepthStencil = new ContextDepthStencilBindings(this);
+            Blend = new ContextBlendBindings(this, implementation);
 
             Program = new Binding<IShaderProgram>(this, (c, o) => c.GL.UseProgram(o.SafeGetHandle()));
             PatchVertexCount = new Binding<int>(this, (c, x) => { if (x != 0) c.GL.PatchParameter((int)All.PatchVertices, x); });

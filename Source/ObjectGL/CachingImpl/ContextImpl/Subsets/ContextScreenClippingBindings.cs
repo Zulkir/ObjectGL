@@ -5,16 +5,16 @@ using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextScreenClippingBindings : IContextScreenClippingBindings
+    public class ContextScreenClippingBindings : IContextScreenClippingBindings
     {
         public IContextScreenClippingUnitedBindings United { get; private set; }
         public IContextScreenClippingSeparateBindings Separate { get; private set; }
         private SeparationMode separationModeCache;
 
-        public RawContextScreenClippingBindings(IContext context, IImplementation implementation)
+        public ContextScreenClippingBindings(IContext context, IImplementation implementation)
         {
-            United = new RawContextScreenClippingUnitedBindings(context);
-            Separate = new RawContextScreenClippingSeparateBindings(context, implementation);
+            United = new ContextScreenClippingUnitedBindings(context);
+            Separate = new ContextScreenClippingSeparateBindings(context, implementation);
         }
 
         public SeparationMode SeparationModeCache

@@ -22,23 +22,31 @@ THE SOFTWARE.
 */
 #endregion
 
+using System.Collections.Generic;
+using System.Linq;
 using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects;
+using ObjectGL.Api.Objects.Resources;
 using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextFramebufferBindings : IContextFramebufferBindings
+    public class ContextTextureBindings : IContextTextureBindings
     {
-        public IBinding<IFramebuffer> Draw { get; private set; }
-        public IBinding<IFramebuffer> Read { get; private set; }
+        public IBinding<int> ActiveUnit { get; private set; }
+        public IReadOnlyList<IBinding<ITexture>> Units { get; private set; }
 
-        public RawContextFramebufferBindings(IContext context)
+        public ContextTextureBindings(IContext context, IImplementation implementation)
         {
-            Draw = new Binding<IFramebuffer>(context, (c, o) => c.GL.BindFramebuffer((int)All.DrawFramebuffer, o.SafeGetHandle()));
-            Read = new Binding<IFramebuffer>(context, (c, o) => c.GL.BindFramebuffer((int)All.ReadFramebuffer, o.SafeGetHandle()));
+            ActiveUnit = new Binding<int>(context, (c, x) => c.GL.ActiveTexture(x));
+            Units = Enumerable.Range(0, implementation.MaxCombinedTextureImageUnits)
+                .Select(i => new Binding<ITexture>(context, (c, o) =>
+                {
+                    ActiveUnit.Set(i);
+                    c.GL.BindTexture((int)o.Target, o.SafeGetHandle());
+                }))
+                .ToArray();
         }
     }
 }

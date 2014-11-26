@@ -7,13 +7,13 @@ using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextScreenClippingSeparateBindings : IContextScreenClippingSeparateBindings
+    public class ContextScreenClippingSeparateBindings : IContextScreenClippingSeparateBindings
     {
         public IReadOnlyList<IBinding<ViewportFloat>> Viewports { get; private set; }
         public IReadOnlyList<IBinding<DepthRangeDouble>> DepthRanges { get; private set; }
         public IReadOnlyList<IBinding<ScissorBox>> ScissorBoxes { get; private set; }
 
-        public RawContextScreenClippingSeparateBindings(IContext context, IImplementation implementation)
+        public ContextScreenClippingSeparateBindings(IContext context, IImplementation implementation)
         {
             Viewports = Enumerable.Range(0, implementation.MaxViewports)
                 .Select(i => new Binding<ViewportFloat>(context, (c, x) =>

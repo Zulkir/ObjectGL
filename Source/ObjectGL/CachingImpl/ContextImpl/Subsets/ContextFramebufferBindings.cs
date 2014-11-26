@@ -22,28 +22,23 @@ THE SOFTWARE.
 */
 #endregion
 
+using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
+using ObjectGL.Api.Objects;
+using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextDepthStencilBindings : IContextDepthStencilBindings
+    public class ContextFramebufferBindings : IContextFramebufferBindings
     {
-        public IContextDepthStencilSideBindings Front { get; private set; }
-        public IContextDepthStencilSideBindings Back { get; private set; }
-        public IBinding<bool> DepthTestEnable { get; set; }
-        public IBinding<bool> DepthMask { get; set; }
-        public IBinding<DepthFunction> DepthFunc { get; set; }
-        public IBinding<bool> StencilTestEnable { get; set; }
+        public IBinding<IFramebuffer> Draw { get; private set; }
+        public IBinding<IFramebuffer> Read { get; private set; }
 
-        public RawContextDepthStencilBindings(IContext context)
+        public ContextFramebufferBindings(IContext context)
         {
-            Front = new RawContextDepthStencilSideBindings(context, (int)All.Front);
-            Back = new RawContextDepthStencilSideBindings(context, (int)All.Back);
-            DepthTestEnable = new EnableCapBinding(context, EnableCap.DepthTest);
-            DepthMask = new Binding<bool>(context, (c, x) => c.GL.DepthMask(x));
-            DepthFunc = new Binding<DepthFunction>(context, (c, x) => c.GL.DepthFunc((int)x));
-            StencilTestEnable = new EnableCapBinding(context, EnableCap.StencilTest);
+            Draw = new Binding<IFramebuffer>(context, (c, o) => c.GL.BindFramebuffer((int)All.DrawFramebuffer, o.SafeGetHandle()));
+            Read = new Binding<IFramebuffer>(context, (c, o) => c.GL.BindFramebuffer((int)All.ReadFramebuffer, o.SafeGetHandle()));
         }
     }
 }

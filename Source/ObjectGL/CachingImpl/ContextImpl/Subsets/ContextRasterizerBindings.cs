@@ -27,7 +27,7 @@ using ObjectGL.Api.Context.Subsets;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextRasterizerBindings : IContextRasterizerBindings
+    public class ContextRasterizerBindings : IContextRasterizerBindings
     {
         public IBinding<PolygonMode> PolygonModeFront { get; set; }
         public IBinding<PolygonMode> PolygonModeBack { get; set; }
@@ -38,7 +38,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         public IBinding<bool> MultisampleEnable { get; set; }
         public IBinding<bool> LineSmoothEnable { get; set; }
 
-        public RawContextRasterizerBindings(IContext context)
+        public ContextRasterizerBindings(IContext context)
         {
             PolygonModeFront = new Binding<PolygonMode>(context, (c, x) => c.GL.PolygonMode((int)All.Front, (int)x));
             PolygonModeBack = new Binding<PolygonMode>(context, (c, x) => c.GL.PolygonMode((int)All.Back, (int)x));

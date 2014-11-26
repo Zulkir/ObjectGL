@@ -27,12 +27,12 @@ using ObjectGL.Api.Context.Subsets;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextBlendTargetBinding : IContextBlendTargetBindings
+    public class ContextBlendTargetBinding : IContextBlendTargetBindings
     {
         public IBinding<BlendEquation> Equation { get; private set; }
         public IBinding<BlendFunction> Function { get; private set; }
 
-        public RawContextBlendTargetBinding(IContext context, int? index)
+        public ContextBlendTargetBinding(IContext context, int? index)
         {
             if (!index.HasValue)
             {

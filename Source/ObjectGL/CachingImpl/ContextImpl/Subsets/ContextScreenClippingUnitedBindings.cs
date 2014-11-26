@@ -3,13 +3,13 @@ using ObjectGL.Api.Context.Subsets;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextScreenClippingUnitedBindings : IContextScreenClippingUnitedBindings
+    public class ContextScreenClippingUnitedBindings : IContextScreenClippingUnitedBindings
     {
         public IBinding<ViewportInt> Viewport { get; private set; }
         public IBinding<DepthRangeFloat> DepthRange { get; private set; }
         public IBinding<ScissorBox> ScissorBox { get; private set; }
 
-        public RawContextScreenClippingUnitedBindings(IContext context)
+        public ContextScreenClippingUnitedBindings(IContext context)
         {
             Viewport = new Binding<ViewportInt>(context, (c, x) =>
             {

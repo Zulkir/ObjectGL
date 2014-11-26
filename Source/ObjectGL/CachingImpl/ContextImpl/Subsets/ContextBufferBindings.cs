@@ -33,7 +33,7 @@ using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class RawContextBufferBindings : IContextBufferBindings
+    public class ContextBufferBindings : IContextBufferBindings
     {
         private readonly BufferBinding array;
         private readonly BufferBinding copyRead;
@@ -47,7 +47,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         private readonly BufferBinding uniform;
         private readonly Binding<BufferRange>[] uniformIndexed;
 
-        public RawContextBufferBindings(IContext context, IImplementation implementation)
+        public ContextBufferBindings(IContext context, IImplementation implementation)
         {
             array = new BufferBinding(context, BufferTarget.ArrayBuffer);
             copyRead = new BufferBinding(context, BufferTarget.CopyReadBuffer);
