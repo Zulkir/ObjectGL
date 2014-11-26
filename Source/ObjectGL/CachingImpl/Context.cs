@@ -24,10 +24,12 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using ObjectGL.CachingImpl.ContextAspects;
 using ObjectGL.CachingImpl.PipelineAspects;
+using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.CachingImpl
 {

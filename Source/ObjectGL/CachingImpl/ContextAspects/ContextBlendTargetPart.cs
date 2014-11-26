@@ -22,7 +22,7 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api.PipelineAspects;
+using ObjectGL.Api.Context;
 
 namespace ObjectGL.CachingImpl.ContextAspects
 {

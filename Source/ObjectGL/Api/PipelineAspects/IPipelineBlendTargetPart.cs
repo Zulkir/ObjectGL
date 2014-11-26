@@ -22,6 +22,8 @@ THE SOFTWARE.
 */
 #endregion
 
+using ObjectGL.Api.Context;
+
 namespace ObjectGL.Api.PipelineAspects
 {
     public interface IPipelineBlendTargetPart
