@@ -49,6 +49,8 @@ namespace ObjectGL.CachingImpl.Raw
             get { return separationModeCache; }
             set
             {
+                if (separationModeCache == value)
+                    return;
                 separationModeCache = value;
                 if (separationModeCache == SeparationMode.United)
                     foreach (var targetBindings in Separate)
