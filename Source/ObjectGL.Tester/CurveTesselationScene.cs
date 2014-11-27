@@ -29,7 +29,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -122,7 +121,7 @@ void main()
 
         public override void Initialize()
         {
-            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 12 * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, new Vertex[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.Array, 12 * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, new Vertex[]
             {
                 new Vertex(-1f, 1/3f), new Vertex(4f, 1f), new Vertex(-4f, 1f), new Vertex(1f, 1/3f),    
                 new Vertex(-1f, -1/3f), new Vertex(4f, 1/3f), new Vertex(-4f, 1/3f), new Vertex(1f, -1/3f),    
@@ -132,7 +131,7 @@ void main()
             vertexArray = Context.Create.VertexArray();
             vertexArray.SetVertexAttributeF(0, vertexBuffer, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
 
-            tessFactorBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, sizeof(int), BufferUsageHint.DynamicDraw);
+            tessFactorBuffer = Context.Create.Buffer(BufferTarget.Uniform, sizeof(int), BufferUsageHint.DynamicDraw);
 
             var vsh = Context.Create.VertexShader(VertexShaderText);
             var tcsh = Context.Create.TesselationControlShader(TessControlShaderText);
@@ -151,24 +150,26 @@ void main()
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            Context.ClearWindowColor(new Color4(0.5f, 0.0f, 0.75f, 1.0f));
+            Context.Actions.ClearWindowColor(new Color4(0.5f, 0.0f, 0.75f, 1.0f));
 
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArray;
-            Context.Pipeline.PatchVertexCount = 4;
-            Context.Pipeline.UniformBuffers[0] = tessFactorBuffer;
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
+            Context.States.PatchVertexCount.Set(4);
+
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArray);
+            Context.Bindings.Buffers.UniformIndexed[0].Set(tessFactorBuffer);
 
             int tessFactor = 4;
             tessFactorBuffer.SetDataByMapping((IntPtr)(&tessFactor));
-            Context.DrawArrays(BeginMode.Patches, 0, 4);
+            Context.Actions.Draw.Arrays(BeginMode.Patches, 0, 4);
 
             tessFactor = 64;
             tessFactorBuffer.SetDataByMapping((IntPtr)(&tessFactor));
-            Context.DrawArrays(BeginMode.Patches, 4, 4);
+            Context.Actions.Draw.Arrays(BeginMode.Patches, 4, 4);
             
             tessFactor = (int)(32.0 * (Math.Sin((totalSeconds - Math.PI) / 2.0) + 1.0)) + 1;
             tessFactorBuffer.SetDataByMapping((IntPtr)(&tessFactor));
-            Context.DrawArrays(BeginMode.Patches, 8, 4);
+            Context.Actions.Draw.Arrays(BeginMode.Patches, 8, 4);
         }
     }
 }

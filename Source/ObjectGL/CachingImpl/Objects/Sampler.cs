@@ -23,13 +23,14 @@ THE SOFTWARE.
 #endregion
 
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 
 namespace ObjectGL.CachingImpl.Objects
 {
     internal class Sampler : ISampler
     {
-        private readonly Context context;
+        private readonly IContext context;
         private readonly uint handle;
 
         private TextureMinFilter minFilter = TextureMinFilter.Linear;
@@ -47,9 +48,9 @@ namespace ObjectGL.CachingImpl.Objects
         private IGL GL { get { return context.GL; }}
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.Sampler; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.Sampler; } }
 
-        public unsafe Sampler(Context context)
+        public unsafe Sampler(IContext context)
         {
             this.context = context;
             uint handleProxy;

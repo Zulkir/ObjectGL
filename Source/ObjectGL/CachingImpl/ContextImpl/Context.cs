@@ -22,63 +22,34 @@ THE SOFTWARE.
 */
 #endregion
 
-using System.Collections.Generic;
-using System.Linq;
 using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects;
-using ObjectGL.Api.Objects.Resources;
 using ObjectGL.CachingImpl.ContextImpl.Subsets;
-using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl
 {
     public class Context : IContext
     {
         public IGL GL { get; private set; }
+        public INativeGraphicsContext NativeContext { get; private set; }
         public IImplementation Implementation { get; private set; }
 
-        public IContextBufferBindings Buffers { get; private set; }
-        public IContextTextureBindings Textures { get; private set; }
-        public IContextFramebufferBindings Framebuffer { get; private set; }
-        public IContextScreenClippingBindings ScreenClipping { get; private set; }
-        public IContextRasterizerBindings Rasterizer { get; private set; }
-        public IContextDepthStencilBindings DepthStencil { get; private set; }
-        public IContextBlendBindings Blend { get; private set; }
+        public IContextObjectFactory Create { get; private set; }
+        public IContextBindings Bindings { get; private set; }
+        public IContextStates States { get; private set; }
+        public IContextActions Actions { get; private set; }
 
-        public IBinding<IShaderProgram> Program { get; private set; }
-        public IBinding<int> PatchVertexCount { get; private set; }
-        public IBinding<IVertexArray> VertexArray { get; private set; }
-        public IBinding<ITransformFeedback> TransformFeedback { get; private set; }
-        public IBinding<IRenderbuffer> Renderbuffer { get; private set; }
-        public IBinding<int> UnpackAlignment { get; private set; }
-        public IReadOnlyList<IBinding<ISampler>> Samplers { get; private set; }
-
-        public Context(IGL gl, IImplementation implementation)
+        public Context(IGL gl, INativeGraphicsContext nativeContext)
         {
             GL = gl;
-            Implementation = implementation;
+            NativeContext = nativeContext;
+            Implementation = new Implementation(gl);
 
-            Buffers = new ContextBufferBindings(this, implementation);
-            Textures = new ContextTextureBindings(this, implementation);
-            Framebuffer = new ContextFramebufferBindings(this);
-            ScreenClipping = new ContextScreenClippingBindings(this, implementation);
-            Rasterizer = new ContextRasterizerBindings(this);
-            DepthStencil = new ContextDepthStencilBindings(this);
-            Blend = new ContextBlendBindings(this, implementation);
-
-            Program = new Binding<IShaderProgram>(this, (c, o) => c.GL.UseProgram(o.SafeGetHandle()));
-            PatchVertexCount = new Binding<int>(this, (c, x) => { if (x != 0) c.GL.PatchParameter((int)All.PatchVertices, x); });
-            VertexArray = new Binding<IVertexArray>(this, (c, o) => c.GL.BindVertexArray(o.SafeGetHandle()));
-            TransformFeedback = new Binding<ITransformFeedback>(this, (c, o) => c.GL.BindTransformFeedback((int)All.TransformFeedback, o.SafeGetHandle()));
-            Renderbuffer = new Binding<IRenderbuffer>(this, (c, o) => c.GL.BindRenderbuffer((int)RenderbufferTarget.Renderbuffer, o.SafeGetHandle()));
-            UnpackAlignment = new Binding<int>(this, (c, x) => c.GL.PixelStore((int)All.UnpackAlignment, x));
-            Samplers = Enumerable.Range(0, implementation.MaxCombinedTextureImageUnits)
-                .Select(i => new Binding<ISampler>(this, (c, o) => c.GL.BindSampler((uint)i, o.SafeGetHandle())))
-                .ToArray();
+            Create = new ContextObjectFactory(this);
+            Bindings = new ContextBindings(this, Implementation);
+            States = new ContextStates(this, Implementation);
+            Actions = new ContextActions(this);
         }
-
-        
     }
 }

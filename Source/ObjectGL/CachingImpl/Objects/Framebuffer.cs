@@ -32,7 +32,7 @@ namespace ObjectGL.CachingImpl.Objects
 {
     internal class Framebuffer : IFramebuffer
     {
-        private readonly Context context;
+        private readonly IContext context;
         private readonly uint handle;
         private readonly FramebufferAttachmentDescription[] colorAttachments;
         private int enabledColorAttachmentsRange;
@@ -43,9 +43,9 @@ namespace ObjectGL.CachingImpl.Objects
         private IGL GL { get { return context.GL; } }
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.Framebuffer; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.Framebuffer; } }
 
-        public unsafe Framebuffer(Context context)
+        public unsafe Framebuffer(IContext context)
         {
             this.context = context;
             uint handleProxy;
@@ -118,7 +118,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferRenderbuffer((int)framebufferTarget, (int)attachmentPoint, (int)RenderbufferTarget.Renderbuffer, renderbuffer.Handle);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
         }
@@ -135,7 +136,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture((int)framebufferTarget, (int)attachmentPoint, texture.Handle, level);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -154,7 +156,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferTextureLayer((int)framebufferTarget, (int)attachmentPoint, texture.Handle, level, layer);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
         }
@@ -171,7 +174,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture((int)framebufferTarget, (int)attachmentPoint, texture.Handle, level);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -189,7 +193,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture((int)framebufferTarget, (int)attachmentPoint, texture.Handle, level);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -208,7 +213,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferTextureLayer((int)framebufferTarget, (int)attachmentPoint, texture.Handle, level, layer);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
         }
@@ -225,7 +231,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture((int)framebufferTarget, (int)attachmentPoint, texture.Handle, level);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -242,7 +249,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture((int)framebufferTarget, (int)attachmentPoint, texture.Handle, 0);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, 0);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -260,7 +268,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferTextureLayer((int)framebufferTarget, (int)attachmentPoint, texture.Handle, 0, layer);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
         }
@@ -276,7 +285,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture((int)framebufferTarget, (int)attachmentPoint, texture.Handle, 0);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, 0);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -295,7 +305,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferTextureLayer((int)framebufferTarget, (int)attachmentPoint, texture.Handle, level, depthLayer);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
         }
@@ -313,7 +324,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)cubemapFace, texture.Handle, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
         }
@@ -330,7 +342,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -350,7 +363,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferTextureLayer((int)framebufferTarget, (int)attachmentPoint, texture.Handle, layer, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
         }
@@ -367,7 +381,8 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (IsRedundant(attachmentPoint, ref newDesc))
                 return;
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             //gl.FramebufferTexture(ft, fa, d.Texture.Handle, d.Level);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)texture.Target, texture.Handle, level);
             UpdateStoredDescription(attachmentPoint, ref newDesc);
@@ -400,7 +415,8 @@ namespace ObjectGL.CachingImpl.Objects
             }
             #endregion
 
-            var framebufferTarget = context.BindAnyFramebuffer(this);
+            var framebufferTarget = context.Bindings.Framebuffers.EditingTarget;
+            context.Bindings.Framebuffers.ByTarget(framebufferTarget).Set(this);
             GL.FramebufferTexture2D((int)framebufferTarget, (int)attachmentPoint, (int)TextureTarget.Texture2D, 0, 0);
 
             #region Update stored description
@@ -438,15 +454,13 @@ namespace ObjectGL.CachingImpl.Objects
 
         public unsafe void ClearColor(int index, Color4 color)
         {
-            context.BindDrawFramebuffer(this);
-            context.PrepareForClear();
+            context.Bindings.Framebuffers.Draw.Set(this);
             GL.ClearBuffer((int)All.Color, index, (float*)&color);
         }
 
         public unsafe void ClearDepthStencil(DepthStencil target, float depth, int stencil)
         {
-            context.BindDrawFramebuffer(this);
-            context.PrepareForClear();
+            context.Bindings.Framebuffers.Draw.Set(this);
 
             switch (target)
             {

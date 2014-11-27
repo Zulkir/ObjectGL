@@ -24,8 +24,10 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
+using ObjectGL.CachingImpl.ContextImpl;
 using ObjectGL.CachingImpl.Objects;
 using ObjectGL.CachingImpl.Objects.Resources;
 using Buffer = ObjectGL.CachingImpl.Objects.Resources.Buffer;

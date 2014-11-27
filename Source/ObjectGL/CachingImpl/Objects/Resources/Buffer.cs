@@ -24,13 +24,14 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal unsafe class Buffer : IBuffer
     {
-        private readonly Context context;
+        private readonly IContext context;
         private readonly uint handle;
         private readonly BufferTarget target;
         private readonly int sizeInBytes;
@@ -39,13 +40,13 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         private IGL GL { get { return context.GL; } }
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.Resource; } }
         public ResourceType ResourceType { get { return ResourceType.Buffer; } }
         public BufferTarget Target { get { return target; } }
         public int SizeInBytes { get { return sizeInBytes; } }
         public BufferUsageHint Usage { get { return usage; } }
 
-        public Buffer(Context context, BufferTarget target, int sizeInBytes, BufferUsageHint usage, IntPtr initialData)
+        public Buffer(IContext context, BufferTarget target, int sizeInBytes, BufferUsageHint usage, IntPtr initialData)
         {
             this.context = context;
             this.target = target;
@@ -56,7 +57,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             GL.GenBuffers(1, &handleProxy);
             handle = handleProxy;
 
-            context.BindBuffer(target, this);
+            context.Bindings.Buffers.ByTarget(target).Set(this);
             GL.BufferData((int)target, (IntPtr)sizeInBytes, initialData, (int)usage);
         }
 
@@ -68,25 +69,25 @@ namespace ObjectGL.CachingImpl.Objects.Resources
 
         public IntPtr Map(int offset, int length, MapAccess access)
         {
-            context.BindBuffer(target, this);
+            context.Bindings.Buffers.ByTarget(target).Set(this);
             return GL.MapBufferRange((int)target, (IntPtr)offset, (IntPtr)length, (int)access);
         }
 
         public bool Unmap()
         {
-            context.BindBuffer(target, this);
+            context.Bindings.Buffers.ByTarget(target).Set(this);
             return GL.UnmapBuffer((int)target);
         }
 
         public void SetData(int offset, int size, IntPtr data)
         {
-            context.BindBuffer(target, this);
+            context.Bindings.Buffers.ByTarget(target).Set(this);
             GL.BufferSubData((int)target, (IntPtr)offset, (IntPtr)size, data);
         }
 
         public void Recreate(IntPtr data)
         {
-            context.BindBuffer(target, this);
+            context.Bindings.Buffers.ByTarget(target).Set(this);
             GL.BufferData((int)target, (IntPtr)sizeInBytes, data, (int)usage);
         }
     }

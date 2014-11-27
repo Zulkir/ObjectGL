@@ -23,30 +23,31 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class Texture1DArray : Texture, ITexture1DArray
     {
-        public Texture1DArray(Context context, int width, int sliceCount, int mipCount, Format internalFormat)
+        public Texture1DArray(IContext context, int width, int sliceCount, int mipCount, Format internalFormat)
             : base(context, TextureTarget.Texture1DArray, width, 1, 1, internalFormat, sliceCount, mipCount)
         {
-            Context.BindTexture(Target, this);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexStorage2D((int)Target, mipCount, (int)internalFormat, width, sliceCount);
         }
 
         public void SetData(int level, int xOffset, int sliceOffset, int width, int sliceCount, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexSubImage2D((int)Target, level, xOffset, sliceOffset, width, sliceCount, (int)format, (int)type, data);
         }
 
         public void SetDataCompressed(int level, int xOffset, int sliceOffset, int width, int sliceCount, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.CompressedTexSubImage2D((int)Target, level, xOffset, sliceOffset, width, sliceCount, (int)InternalFormat, compressedSize, data);
         }
     }

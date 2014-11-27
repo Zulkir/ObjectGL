@@ -28,7 +28,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -76,14 +75,14 @@ void main()
 
         public override void Initialize()
         {
-            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 3 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.Array, 3 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
             {
                 new Vertex { Position = new Vector4(-0.5f, -0.5f, 0f, 1f), Color = new Color4(1, 0, 0, 1)},
                 new Vertex { Position = new Vector4(0.0f, 0.5f, 0f, 1f), Color = new Color4(0, 1, 0, 1)},
                 new Vertex { Position = new Vector4(0.5f, -0.5f, 0f, 1f), Color = new Color4(1, 1, 0, 1)}
             });
 
-            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArrayBuffer, 3 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[] { 0, 1, 2 });
+            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArray, 3 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[] { 0, 1, 2 });
 
             vertexArray = Context.Create.VertexArray();
             vertexArray.SetElementArrayBuffer(indexBuffer);
@@ -102,13 +101,15 @@ void main()
 
         public override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            Context.ClearWindowColor(new Color4(0.4f, 0.6f, 0.9f, 1.0f));
-            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
+            Context.Actions.ClearWindowColor(new Color4(0.4f, 0.6f, 0.9f, 1.0f));
+            Context.Actions.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArray;
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 
-            Context.DrawElements(BeginMode.Triangles, 3, DrawElementsType.UnsignedShort, 0);
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArray);
+
+            Context.Actions.Draw.Elements(BeginMode.Triangles, 3, DrawElementsType.UnsignedShort, 0);
         }
     }
 }

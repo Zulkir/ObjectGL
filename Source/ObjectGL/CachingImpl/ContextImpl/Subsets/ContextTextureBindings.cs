@@ -36,14 +36,15 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
     {
         public IBinding<int> ActiveUnit { get; private set; }
         public IReadOnlyList<IBinding<ITexture>> Units { get; private set; }
+        public int EditingIndex { get; set; }
 
         public ContextTextureBindings(IContext context, IImplementation implementation)
         {
-            ActiveUnit = new Binding<int>(context, (c, x) => c.GL.ActiveTexture(x));
+            ActiveUnit = new Binding<int>(context, (c, x) => c.GL.ActiveTexture((int)All.Texture0 + x));
             Units = Enumerable.Range(0, implementation.MaxCombinedTextureImageUnits)
                 .Select(i => new Binding<ITexture>(context, (c, o) =>
                 {
-                    ActiveUnit.Set(i);
+                    c.Bindings.Textures.ActiveUnit.Set(i);
                     c.GL.BindTexture((int)o.Target, o.SafeGetHandle());
                 }))
                 .ToArray();

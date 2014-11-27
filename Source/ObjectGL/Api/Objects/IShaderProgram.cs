@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 namespace ObjectGL.Api.Objects
 {
-    public interface IShaderProgram : IContextObject
+    public interface IShaderProgram : IGLObject
     {
          
     }

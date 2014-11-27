@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 namespace ObjectGL.Api.Objects.Resources
 {
-    public interface IResource : IContextObject
+    public interface IResource : IGLObject
     {
         ResourceType ResourceType { get; } 
     }

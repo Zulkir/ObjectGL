@@ -27,7 +27,7 @@ using ObjectGL.Api.Objects;
 
 namespace ObjectGL.Api
 {
-    public interface IContext
+    public interface IOldContext
     {
         IGL GL { get; }
         IImplementation Implementation { get; }

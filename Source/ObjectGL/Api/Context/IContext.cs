@@ -22,32 +22,20 @@ THE SOFTWARE.
 */
 #endregion
 
-using System.Collections.Generic;
 using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects;
-using ObjectGL.Api.Objects.Resources;
+using ObjectGL.CachingImpl;
 
 namespace ObjectGL.Api.Context
 {
     public interface IContext
     {
         IGL GL { get; }
+        INativeGraphicsContext NativeContext { get; }
         IImplementation Implementation { get; }
 
-        IContextBufferBindings Buffers { get; }
-        IContextTextureBindings Textures { get; }
-        IContextFramebufferBindings Framebuffer { get; }
-        IContextScreenClippingBindings ScreenClipping { get; }
-        IContextRasterizerBindings Rasterizer { get; }
-        IContextDepthStencilBindings DepthStencil { get; }
-        IContextBlendBindings Blend { get; }
-
-        IBinding<IShaderProgram> Program { get; } 
-        IBinding<int> PatchVertexCount { get; }
-        IBinding<IVertexArray> VertexArray { get; }
-        IBinding<ITransformFeedback> TransformFeedback { get; }
-        IBinding<IRenderbuffer> Renderbuffer { get; }
-        IBinding<int> UnpackAlignment { get; }
-        IReadOnlyList<IBinding<ISampler>> Samplers { get; }
+        IContextObjectFactory Create { get; }
+        IContextBindings Bindings { get; }
+        IContextStates States { get; }
+        IContextActions Actions { get; }
     }
 }

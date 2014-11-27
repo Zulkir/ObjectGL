@@ -49,7 +49,7 @@ namespace ObjectGL.CachingImpl
         private readonly IPipelineDepthStencilAspect depthStencil;
         private readonly IPipelineBlendAspect blend;
 
-        internal Pipeline(Context context)
+        internal Pipeline(OldContext context)
         {
             uniformBuffers = new PipelineUniformBuffersAspect(context);
             textures = new PipelineTexturesAspect(context);

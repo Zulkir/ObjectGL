@@ -35,7 +35,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
         public bool AlphaToCoverageEnable { get; set; }
         public bool IndependentBlendEnable { get; set; }
 
-        internal PipelineBlendAspect(Context context)
+        internal PipelineBlendAspect(OldContext context)
         {
             Targets = new PipelineBlendTargetCollection(context.Implementation.MaxDrawBuffers);
             BlendColor = new Color4(0f, 0f, 0f, 0f);

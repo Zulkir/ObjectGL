@@ -36,7 +36,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
         public int EnabledUniformBufferRange { get { return enabledUniformBufferRange; } }
         public int Count { get { return uniformBuffers.Length; } }
 
-        internal PipelineUniformBuffersAspect(Context context)
+        internal PipelineUniformBuffersAspect(OldContext context)
         {
             uniformBuffers = new IBuffer[context.Implementation.MaxUniformBufferBindings];
         }

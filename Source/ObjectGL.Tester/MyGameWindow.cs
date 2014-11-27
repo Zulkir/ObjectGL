@@ -23,11 +23,12 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Context;
 using ObjectGL.CachingImpl;
+using ObjectGL.CachingImpl.ContextImpl;
 using ObjectGL.GL4;
 using OpenTK;
 using OpenTK.Graphics;
-using Context = ObjectGL.CachingImpl.Context;
 
 namespace ObjectGL.Tester
 {
@@ -35,7 +36,7 @@ namespace ObjectGL.Tester
     {
         private readonly IGL gl;
         private readonly INativeGraphicsContext nativeGraphicsContext;
-        private Context context;
+        private IContext context;
         private Scene scene;
         private double totalSeconds;
 
@@ -57,9 +58,9 @@ namespace ObjectGL.Tester
 
             //scene = new TriangleScene(context, this);
             //scene = new TexturedQuadScene(context, this);
-            scene = new PixelStreamingScene(context, this);
+            //scene = new PixelStreamingScene(context, this);
             //scene = new TexturedCubeScene(context, this);
-            //scene = new RenderToTextureScene(context, this);
+            scene = new RenderToTextureScene(context, this);
             //scene = new ColorfulSpaceScene(context, this);
             //scene = new PatrticleFountainScene(context, this);
             //scene = new CurveTesselationScene(context, this);
@@ -72,7 +73,7 @@ namespace ObjectGL.Tester
             totalSeconds += e.Time;
 
             scene.OnNewFrame((float)totalSeconds, (float)e.Time);
-            context.SwapBuffers();
+            context.NativeContext.SwapBuffers();
 
             base.OnRenderFrame(e);
         }

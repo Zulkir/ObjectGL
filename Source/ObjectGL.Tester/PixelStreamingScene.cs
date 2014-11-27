@@ -30,7 +30,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -101,7 +100,7 @@ void main()
 
         public override void Initialize()
         {
-            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.Array, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
             {
                 new Vertex(-1f, -1f, 0f, 1f),
                 new Vertex(-1f, 1f, 0f, 0f),
@@ -109,7 +108,7 @@ void main()
                 new Vertex(1f, -1f, 1f, 1f),
             });
 
-            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[]
+            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArray, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[]
             { 
                 0, 1, 2, 0, 2, 3
             });
@@ -119,7 +118,7 @@ void main()
             vertexArray.SetVertexAttributeF(0, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 0);
             vertexArray.SetVertexAttributeF(1, vertexBuffer, VertexAttributeDimension.Four, VertexAttribPointerType.Float, false, 32, 16);
 
-            pixelUnpackBuffer = Context.Create.Buffer(BufferTarget.PixelUnpackBuffer, 1024 * 1024 * 4, BufferUsageHint.StreamDraw);
+            pixelUnpackBuffer = Context.Create.Buffer(BufferTarget.PixelUnpack, 1024 * 1024 * 4, BufferUsageHint.StreamDraw);
 
             data = Enumerable.Range(0, 1024 * 1024 * 4 * 2).Select(x => (byte)(128.0 + 128.0 * Math.Sin((2.0 / 3.0) * Math.PI * (x % 4) + (double)x / 4 / 11111))).ToArray();
 
@@ -143,22 +142,23 @@ void main()
 
         public unsafe override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            Context.ClearWindowColor(new Color4(0, 0, 0, 0));
-            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
-
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArray;
-            Context.Pipeline.Viewports[0].Set(GameWindow.Width, GameWindow.Height);
-
             fixed (byte* pData = data)
                 pixelUnpackBuffer.SetDataByMapping((IntPtr)pData + offset);
             offset = (offset + 1024) % (data.Length / 2);
             diffuseMap.SetData(0, IntPtr.Zero, FormatColor.Rgba, FormatType.UnsignedByte, pixelUnpackBuffer);
-            
-            Context.Pipeline.Textures[0] = diffuseMap;
-            Context.Pipeline.Samplers[0] = sampler;
 
-            Context.DrawElements(BeginMode.Triangles, 6, DrawElementsType.UnsignedShort, 0);
+            Context.Actions.ClearWindowColor(new Color4(0, 0, 0, 0));
+            Context.Actions.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
+
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.Width, GameWindow.Height);
+            
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArray);
+
+            Context.Bindings.Textures.Units[0].Set(diffuseMap);
+            Context.Bindings.Samplers[0].Set(sampler);
+
+            Context.Actions.Draw.Elements(BeginMode.Triangles, 6, DrawElementsType.UnsignedShort, 0);
         }
     }
 }

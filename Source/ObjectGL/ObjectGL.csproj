@@ -40,11 +40,20 @@
   <ItemGroup>
     <Compile Include="Api\Context\BeginFeedbackMode.cs" />
     <Compile Include="Api\Context\BeginMode.cs" />
+    <Compile Include="Api\Context\BindingExtensions.cs" />
     <Compile Include="Api\Context\BlitFramebufferFilter.cs" />
     <Compile Include="Api\Context\ClearBufferMask.cs" />
-    <Compile Include="Api\Objects\Resources\BufferRange.cs" />
+    <Compile Include="Api\Context\FramebufferTarget.cs" />
+    <Compile Include="Api\Context\Subsets\IContextActions.cs" />
+    <Compile Include="Api\Context\Subsets\IContextBindings.cs" />
+    <Compile Include="Api\Context\Subsets\IContextDrawActions.cs" />
+    <Compile Include="Api\Context\Subsets\IContextStates.cs" />
+    <Compile Include="Api\Context\BufferRange.cs" />
     <Compile Include="Api\Context\BlendEquation.cs" />
     <Compile Include="Api\Context\BlendFunction.cs" />
+    <Compile Include="CachingImpl\ContextAspects\ContextDrawActions.cs" />
+    <Compile Include="CachingImpl\ContextImpl\Subsets\ContextActions.cs" />
+    <Compile Include="CachingImpl\ContextImpl\Subsets\ContextBindings.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\ContextRasterizerBindings.cs" />
     <Compile Include="Api\Context\Subsets\IContextScreenClippingSeparateBindings.cs" />
     <Compile Include="Api\Context\DepthRangeDouble.cs" />
@@ -74,11 +83,11 @@
     <Compile Include="CachingImpl\ContextImpl\Subsets\ContextBlendTargetBinding.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\ContextBufferBindings.cs" />
     <Compile Include="Api\ContextObjectExtensions.cs" />
-    <Compile Include="Api\ContextObjectType.cs" />
+    <Compile Include="Api\GLObjectType.cs" />
     <Compile Include="Api\Context\DepthStencil.cs" />
     <Compile Include="Api\Context\DrawElementsType.cs" />
-    <Compile Include="Api\IContext.cs" />
-    <Compile Include="Api\IContextObject.cs" />
+    <Compile Include="Api\IOldContext.cs" />
+    <Compile Include="Api\IGLObject.cs" />
     <Compile Include="Api\IContextObjectFactory.cs" />
     <Compile Include="Api\IImplementation.cs" />
     <Compile Include="Api\IPipeline.cs" />
@@ -98,7 +107,7 @@
     <Compile Include="Api\Objects\IVertexShader.cs" />
     <Compile Include="Api\Objects\Resources\BufferExtensions.cs" />
     <Compile Include="Api\Objects\Resources\MapAccess.cs" />
-    <Compile Include="Api\Objects\Resources\BufferTarget.cs" />
+    <Compile Include="Api\Context\BufferTarget.cs" />
     <Compile Include="Api\Objects\Resources\BufferUsageHint.cs" />
     <Compile Include="Api\Objects\Resources\ByteAlignment.cs" />
     <Compile Include="Api\Objects\Resources\Format.cs" />
@@ -155,7 +164,7 @@
     <Compile Include="Api\ShaderProgramDescription.cs" />
     <Compile Include="Api\TransformFeedbackMode.cs" />
     <Compile Include="CachingImpl\All.cs" />
-    <Compile Include="CachingImpl\Context.cs" />
+    <Compile Include="CachingImpl\OldContext.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextBlendAspect.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextBlendTarget.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextBlendTargetPart.cs" />
@@ -173,6 +182,7 @@
     <Compile Include="CachingImpl\ContextAspects\ContextVertexAndBuffersAspect.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextViewport.cs" />
     <Compile Include="CachingImpl\ContextAspects\ContextViewportsAspect.cs" />
+    <Compile Include="CachingImpl\ContextImpl\Subsets\ContextStates.cs" />
     <Compile Include="CachingImpl\ContextObjectFactory.cs" />
     <Compile Include="CachingImpl\EnableCap.cs" />
     <Compile Include="CachingImpl\Implementation.cs" />

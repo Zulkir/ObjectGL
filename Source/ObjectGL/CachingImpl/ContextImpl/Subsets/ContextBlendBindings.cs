@@ -27,18 +27,31 @@ using System.Linq;
 using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
-using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
     public class ContextBlendBindings : IContextBlendBindings
     {
+        public IBinding<bool> BlendEnable { get; set; }
+        public IBinding<Color4> BlendColor { get; set; }
+        public IBinding<bool> SampleMaskEnable { get; set; }
+        public IReadOnlyList<IBinding<uint>> SampleMasks { get; set; }
+        public IBinding<bool> AlphaToCoverageEnable { get; set; }
+
         public IContextBlendTargetBindings United { get; private set; }
         public IReadOnlyList<IContextBlendTargetBindings> Separate { get; private set; }
         private SeparationMode separationModeCache;
 
         public ContextBlendBindings(IContext context, IImplementation implementation)
         {
+            BlendEnable = new EnableCapBinding(context, EnableCap.Blend);
+            BlendColor = new Binding<Color4>(context, (c, x) => c.GL.BlendColor(x.Red, x.Green, x.Blue, x.Alpha));
+            SampleMaskEnable = new EnableCapBinding(context, EnableCap.SampleMask);
+            SampleMasks = Enumerable.Range(0, implementation.MaxSampleMaskWords)
+                .Select(i => new Binding<uint>(context, (c, x) => c.GL.SampleMask((uint)i, x)))
+                .ToArray();
+            AlphaToCoverageEnable = new EnableCapBinding(context, EnableCap.SampleAlphaToCoverage);
+
             United = new ContextBlendTargetBinding(context, null);
             Separate = Enumerable.Range(0, implementation.MaxDrawBuffers)
                 .Select(i => new ContextBlendTargetBinding(context, i))

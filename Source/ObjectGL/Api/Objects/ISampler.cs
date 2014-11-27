@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 namespace ObjectGL.Api.Objects
 {
-    public interface ISampler : IContextObject
+    public interface ISampler : IGLObject
     {
         void SetMinFilter(TextureMinFilter filter);
         void SetMagFilter(TextureMagFilter filter);

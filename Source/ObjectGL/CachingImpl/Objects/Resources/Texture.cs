@@ -24,13 +24,14 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal abstract class Texture : ITexture
     {
-        private readonly Context context;
+        private readonly IContext context;
         readonly uint handle;
         readonly ResourceType resourceType;
 
@@ -47,11 +48,11 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         int maxLevel;
         float lodBias;
 
-        protected Context Context { get { return context; } }
+        protected IContext Context { get { return context; } }
         protected IGL GL { get { return context.GL; }}
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.Resource; } }
         public ResourceType ResourceType { get { return resourceType; } }
 
         public int Width { get { return width; } }
@@ -79,7 +80,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         float maxAnisotropy = 16f;
         */
 
-        protected unsafe Texture(Context context, TextureTarget target,
+        protected unsafe Texture(IContext context, TextureTarget target,
             int width, int height, int depth,
             Format internalFormat, int sliceCount, int mipCount)
         {
@@ -123,7 +124,8 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         {
             if (baseLevel == value) 
                 return;
-            context.BindTexture(target, this);
+
+            context.Bindings.Textures.Units[context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexParameter((int)target, (int)All.TextureBaseLevel, value);
             baseLevel = value;
         }
@@ -132,7 +134,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         {
             if (maxLevel == value) 
                 return;
-            context.BindTexture(target, this);
+            context.Bindings.Textures.Units[context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexParameter((int)target, (int)All.TextureMaxLevel, value);
             maxLevel = value;
         }
@@ -141,14 +143,14 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         {
             if (lodBias == value) 
                 return;
-            context.BindTexture(target, this);
+            context.Bindings.Textures.Units[context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexParameter((int)target, (int)All.TextureLodBias, value);
             lodBias = value;
         }
 
         public void GenerateMipmap()
         {
-            context.BindTexture(target, this);
+            context.Bindings.Textures.Units[context.Bindings.Textures.EditingIndex].Set(this);
             GL.GenerateMipmap((int)target);
         }
 

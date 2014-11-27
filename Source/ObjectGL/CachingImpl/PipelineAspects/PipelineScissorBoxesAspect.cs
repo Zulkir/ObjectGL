@@ -35,7 +35,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
             get { return scissorBoxes[viewportIndex]; }
         }
 
-        internal unsafe PipelineScissorBoxesAspect(Context context)
+        internal unsafe PipelineScissorBoxesAspect(OldContext context)
         {
             var gl = context.GL;
             var scissorData = new int[4];

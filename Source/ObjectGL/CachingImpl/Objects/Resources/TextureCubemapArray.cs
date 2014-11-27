@@ -23,30 +23,31 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class TextureCubemapArray : Texture, ITextureCubemapArray
     {
-        public TextureCubemapArray(Context context, int width, int cubeCount, int mipCount, Format internalFormat)
+        public TextureCubemapArray(IContext context, int width, int cubeCount, int mipCount, Format internalFormat)
             : base(context, TextureTarget.TextureCubeMapArray, width, width, 1, internalFormat, cubeCount * 6, mipCount)
         {
-            Context.BindTexture(Target, this);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexStorage3D((int)Target, mipCount, (int)internalFormat, width, width, cubeCount * 6);
         }
 
         public void SetData(int level, int xOffset, int yOffset, int faceOffset, int width, int height, int faceCount, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexSubImage3D((int)Target, level, xOffset, yOffset, faceOffset, width, height, faceCount, (int)format, (int)type, data);
         }
 
         public void SetDataCompressed(int level, int xOffset, int yOffset, int faceOffset, int width, int height, int faceCount, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.CompressedTexSubImage3D((int)Target, level, xOffset, yOffset, faceOffset, width, height, faceCount, (int)InternalFormat, compressedSize, data);
         }
     }

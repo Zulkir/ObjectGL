@@ -27,7 +27,7 @@ using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.Api.Objects
 {
-    public interface IFramebuffer : IContextObject
+    public interface IFramebuffer : IGLObject
     {
         void AttachRenderbuffer(FramebufferAttachmentPoint attachmentPoint, IRenderbuffer renderbuffer);
         void AttachTextureImage(FramebufferAttachmentPoint attachmentPoint, ITexture1D texture, int level);

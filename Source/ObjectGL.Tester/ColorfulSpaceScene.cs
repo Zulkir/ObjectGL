@@ -54,7 +54,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -192,13 +191,13 @@ void main()
             for (int i = 0; i < vertexData.Length; i++)
                 vertexData[i] = new Vertex((float) i/ParticleCount);
 
-            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, ParticleCount * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, vertexData);
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.Array, ParticleCount * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, vertexData);
             vertexArray = Context.Create.VertexArray();
             vertexArray.SetVertexAttributeF(0, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
             vertexArray.SetVertexAttributeF(1, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 3 * sizeof(float));
 
-            timeBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, sizeof(float), BufferUsageHint.DynamicDraw);
-            cameraBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, sizeof(float), BufferUsageHint.DynamicDraw);
+            timeBuffer = Context.Create.Buffer(BufferTarget.Uniform, sizeof(float), BufferUsageHint.DynamicDraw);
+            cameraBuffer = Context.Create.Buffer(BufferTarget.Uniform, sizeof(float), BufferUsageHint.DynamicDraw);
 
             var vsh = Context.Create.VertexShader(VertexShaderText);
             var gsh = Context.Create.GeometryShader(GeometryShaderText);
@@ -220,22 +219,23 @@ void main()
             timeBuffer.SetDataByMapping((IntPtr)(&time));
             cameraBuffer.SetDataByMapping((IntPtr)(&aspectRatio));
 
-            Context.ClearWindowColor(new Color4(0, 0, 0, 1));
-            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
+            Context.Actions.ClearWindowColor(new Color4(0, 0, 0, 1));
+            Context.Actions.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.DepthStencil.DepthMask = false;
-            Context.Pipeline.DepthStencil.DepthTestEnable = false;
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 
-            Context.Pipeline.Blend.BlendEnable = true;
-            Context.Pipeline.Blend.Targets[0].Color.SrcFactor = BlendFactor.One;
-            Context.Pipeline.Blend.Targets[0].Color.DestFactor = BlendFactor.One;
+            Context.States.DepthStencil.DepthMask.Set(false);
+            Context.States.DepthStencil.DepthTestEnable.Set(false);
 
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArray;
-            Context.Pipeline.UniformBuffers[0] = timeBuffer;
-            Context.Pipeline.UniformBuffers[1] = cameraBuffer;
+            Context.States.Blend.BlendEnable.Set(true);
+            Context.States.Blend.United.Function.Set(BlendFactor.One, BlendFactor.One);
 
-            Context.DrawArrays(BeginMode.Points, 0, ParticleCount);
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArray);
+            Context.Bindings.Buffers.UniformIndexed[0].Set(timeBuffer);
+            Context.Bindings.Buffers.UniformIndexed[1].Set(cameraBuffer);
+
+            Context.Actions.Draw.Arrays(BeginMode.Points, 0, ParticleCount);
         }
     }
 }

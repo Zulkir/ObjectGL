@@ -22,7 +22,7 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using OpenTK;
 
 namespace ObjectGL.Tester

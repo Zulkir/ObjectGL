@@ -39,6 +39,12 @@ namespace ObjectGL.Api.Context.Subsets
         IBinding<IBuffer> DrawIndirect { get; }
         IBinding<IBuffer> TransformFeedback { get; }
         IBinding<IBuffer> Uniform { get; }
+        IBinding<IBuffer> ShaderStorage { get; }
+        IBinding<IBuffer> DispatchIndirect { get; }
+        IBinding<IBuffer> Query { get; }
+        IBinding<IBuffer> AtomicCounter { get; }
         IReadOnlyList<IBinding<BufferRange>> UniformIndexed { get; }
+
+        IBinding<IBuffer> ByTarget(BufferTarget target);
     }
 }

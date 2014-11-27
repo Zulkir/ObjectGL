@@ -50,6 +50,8 @@ namespace ObjectGL.CachingImpl
         public int MaxViewports { get; private set; }
         public float ViewportBoundsRange { get; private set; }
         public float MaxViewportDims { get; private set; }
+        
+        public int MaxSampleMaskWords { get; private set; }
 
         public int MaxTextureBufferSize { get; private set; }
 
@@ -107,6 +109,9 @@ namespace ObjectGL.CachingImpl
 
             gl.GetFloat((int)All.MaxViewportDims, &localFloat);
             MaxViewportDims = localFloat;
+
+            gl.GetInteger((int)All.MaxSampleMaskWords, &localInt);
+            MaxSampleMaskWords = localInt;
 
             gl.GetInteger((int)All.MaxTextureBufferSize, &localInt);
             MaxTextureBufferSize = localInt;

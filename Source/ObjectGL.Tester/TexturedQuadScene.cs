@@ -28,7 +28,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -95,7 +94,7 @@ void main()
 
         public override void Initialize()
         {
-            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.Array, 4 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
             {
                 new Vertex(-1f, -1f, 0f, 1f),
                 new Vertex(-1f, 1f, 0f, 0f),
@@ -103,7 +102,7 @@ void main()
                 new Vertex(1f, -1f, 1f, 1f),
             });
 
-            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArrayBuffer, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[]
+            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArray, 6 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[]
             { 
                 0, 1, 2, 0, 2, 3
             });
@@ -138,15 +137,17 @@ void main()
 
         public override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            Context.ClearWindowColor(new Color4(0, 0, 0, 0));
-            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
+            Context.Actions.ClearWindowColor(new Color4(0, 0, 0, 0));
+            Context.Actions.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArray;
-            Context.Pipeline.Textures[0] = diffuseMap;
-            Context.Pipeline.Samplers[0] = sampler;
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 
-            Context.DrawElements(BeginMode.Triangles, 6, DrawElementsType.UnsignedShort, 0);
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArray);
+            Context.Bindings.Textures.Units[0].Set(diffuseMap);
+            Context.Bindings.Samplers[0].Set(sampler);
+
+            Context.Actions.Draw.Elements(BeginMode.Triangles, 6, DrawElementsType.UnsignedShort, 0);
         }
     }
 }

@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 
@@ -31,7 +32,7 @@ namespace ObjectGL.CachingImpl.Objects
 {
     internal class VertexArray : IVertexArray
     {
-        private readonly Context context;
+        private readonly IContext context;
         private readonly uint handle;
 
         private readonly VertexAttributeDescription[] vertexAttributes;
@@ -41,9 +42,9 @@ namespace ObjectGL.CachingImpl.Objects
         private IGL GL { get { return context.GL; } }
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.VertexArray; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.VertexArray; } }
 
-        public unsafe VertexArray(Context context)
+        public unsafe VertexArray(IContext context)
         {
             this.context = context;
 
@@ -59,8 +60,8 @@ namespace ObjectGL.CachingImpl.Objects
         {
             if (elementArrayBuffer == buffer) 
                 return;
-            context.BindVertexArray(this);
-            GL.BindBuffer((int)BufferTarget.ElementArrayBuffer, buffer.SafeGetHandle());
+            context.Bindings.VertexArray.Set(this);
+            GL.BindBuffer((int)BufferTarget.ElementArray, buffer.SafeGetHandle());
             elementArrayBuffer = buffer;
         }
 
@@ -81,12 +82,12 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (VertexAttributeDescription.Equals(ref vertexAttributes[index], ref newDesc)) return;
 
-            context.BindVertexArray(this);
+            context.Bindings.VertexArray.Set(this);
 
             if (!vertexAttributes[index].IsEnabled)
                 GL.EnableVertexAttribArray(index);
 
-            context.BindBuffer(BufferTarget.ArrayBuffer, buffer);
+            context.Bindings.Buffers.Array.Set(buffer);
             GL.VertexAttribPointer(index, (int)dimension, (int)type, normalized, stride, (IntPtr)offset);
 
             if (vertexAttributes[index].Divisor != divisor)
@@ -114,12 +115,12 @@ namespace ObjectGL.CachingImpl.Objects
 
             if (VertexAttributeDescription.Equals(ref vertexAttributes[index], ref newDesc)) return;
 
-            context.BindVertexArray(this);
+            context.Bindings.VertexArray.Set(this);
 
             if (!vertexAttributes[index].IsEnabled)
                 GL.EnableVertexAttribArray(index);
 
-            context.BindBuffer(BufferTarget.ArrayBuffer, buffer);
+            context.Bindings.Buffers.Array.Set(buffer);
             GL.VertexAttribIPointer(index, (int)dimension, (int)type, stride, (IntPtr)offset);
 
             if (vertexAttributes[index].Divisor != divisor)
@@ -136,7 +137,7 @@ namespace ObjectGL.CachingImpl.Objects
             if (index >= enabledVertexAttributesRange) return;
             if (!vertexAttributes[index].IsEnabled) return;
 
-            context.BindVertexArray(this);
+            context.Bindings.VertexArray.Set(this);
             GL.DisableVertexAttribArray(index);
 
             vertexAttributes[index].IsEnabled = false;

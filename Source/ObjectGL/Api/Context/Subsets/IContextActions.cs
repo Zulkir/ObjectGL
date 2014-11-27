@@ -22,26 +22,18 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api.Context;
-using ObjectGL.Api.Objects.Resources;
+using ObjectGL.Api.Objects;
 
-namespace ObjectGL.CachingImpl.Objects.Resources
+namespace ObjectGL.Api.Context.Subsets
 {
-    internal class Texture2DMultisample : Texture, ITexture2DMultisample
+    public interface IContextActions
     {
-        private readonly int samples;
-        private readonly bool fixedSampleLocations;
+        IContextDrawActions Draw { get; }
 
-        public int Samples { get { return samples; } }
-        public bool FixedSampleLocations { get { return fixedSampleLocations; } }
-
-        public Texture2DMultisample(IContext context, int width, int height, int samples, Format internalFormat, bool fixedSampleLocations = false)
-            : base(context, TextureTarget.Texture2DMultisample, width, height, 1, internalFormat, 1, 1)
-        {
-            this.samples = samples;
-            this.fixedSampleLocations = fixedSampleLocations;
-            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
-            GL.TexStorage2DMultisample((int)Target, samples, (int)internalFormat, width, height, fixedSampleLocations);
-        }
+        void ClearWindowColor(Color4 color);
+        void ClearWindowDepthStencil(DepthStencil target, float depth, int stencil);
+        void BlitFramebuffer(IFramebuffer src, IFramebuffer dst, int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, ClearBufferMask mask, BlitFramebufferFilter filter);
+        void BeginTransformFeedback(ITransformFeedback transformFeedback, BeginFeedbackMode beginFeedbackMode);
+        void EndTransformFeedback();
     }
 }

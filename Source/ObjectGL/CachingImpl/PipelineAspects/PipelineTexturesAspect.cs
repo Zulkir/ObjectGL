@@ -35,7 +35,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
 
         public int EnabledTextureRange { get { return enabledTextureRange; } }
 
-        internal PipelineTexturesAspect(Context context)
+        internal PipelineTexturesAspect(OldContext context)
         {
             textures = new ITexture[context.Implementation.MaxCombinedTextureImageUnits];
         }

@@ -29,11 +29,10 @@ using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using ObjectGL.CachingImpl.ContextAspects;
 using ObjectGL.CachingImpl.PipelineAspects;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.CachingImpl
 {
-    public class Context : IContext
+    public class OldContext : IOldContext
     {
         private readonly IGL gl;
         private readonly INativeGraphicsContext nativeContext;
@@ -60,7 +59,7 @@ namespace ObjectGL.CachingImpl
         public IPipeline Pipeline { get { return pipeline; } }
         public IContextObjectFactory Create { get { return factory; } }
 
-        public Context(IGL gl, INativeGraphicsContext nativeContext)
+        public OldContext(IGL gl, INativeGraphicsContext nativeContext)
         {
             this.gl = gl;
             if (nativeContext == null)
@@ -72,7 +71,7 @@ namespace ObjectGL.CachingImpl
 
             implementation = new Implementation(gl);
             pipeline = new Pipeline(this);
-            factory = new ContextObjectFactory(this);
+            //factory = new ContextObjectFactory(this);
 
             programAspect = new ContextProgramAspect(gl);
             vertexAndBuffersAspect = new ContextVertexAndBuffersAspect(gl, implementation);

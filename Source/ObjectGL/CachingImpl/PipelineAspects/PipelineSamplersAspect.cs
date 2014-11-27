@@ -31,7 +31,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
     {
         private readonly ISampler[] samplers;
 
-        internal PipelineSamplersAspect(Context context)
+        internal PipelineSamplersAspect(OldContext context)
         {
             samplers = new ISampler[context.Implementation.MaxCombinedTextureImageUnits];
         }

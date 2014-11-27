@@ -28,7 +28,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -142,7 +141,7 @@ void main()
 
         public override void Initialize()
         {
-            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.Array, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
             {
                 new Vertex(1f, -1f, 1f, 1f, 0.0f, 0.0f, 0f, 0f),
                 new Vertex(1f, 1f, 1f, 1f, 0.0f, 0.0f, 1f, 0f),
@@ -175,7 +174,7 @@ void main()
                 new Vertex(1f, 1f, -1f, 0.0f, 0.0f, -1f, 0f, 1f)
             });
 
-            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[]
+            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArray, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[]
             {
                 0, 1, 2, 0, 2, 3,
                 4, 5, 6, 4, 6, 7,
@@ -191,10 +190,10 @@ void main()
             vertexArray.SetVertexAttributeF(1, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 12);
             vertexArray.SetVertexAttributeF(2, vertexBuffer, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, 32, 24);
 
-            transformBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
-            cameraBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
-            cameraExtraBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
-            lightBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
+            transformBuffer = Context.Create.Buffer(BufferTarget.Uniform, 64, BufferUsageHint.DynamicDraw);
+            cameraBuffer = Context.Create.Buffer(BufferTarget.Uniform, 64, BufferUsageHint.DynamicDraw);
+            cameraExtraBuffer = Context.Create.Buffer(BufferTarget.Uniform, 12, BufferUsageHint.DynamicDraw);
+            lightBuffer = Context.Create.Buffer(BufferTarget.Uniform, 12, BufferUsageHint.DynamicDraw);
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
@@ -207,7 +206,7 @@ void main()
             {
                 specularMap = Context.Create.Texture2D(textureLoader.Width, textureLoader.Height, TextureHelper.CalculateMipCount(textureLoader.Width, textureLoader.Height, 1), Format.Rgba8);
                 for (int i = 0; i < diffuseMap.MipCount; i++)
-                    diffuseMap.SetData(i, textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
+                    specularMap.SetData(i, textureLoader.GetMipData(i), FormatColor.Rgba, FormatType.UnsignedByte);
             }
 
             sampler = Context.Create.Sampler();
@@ -247,24 +246,26 @@ void main()
             cameraExtraBuffer.SetDataByMapping((IntPtr)(&cameraPosition));
             lightBuffer.SetDataByMapping((IntPtr)(&lightPosition));
 
-            Context.ClearWindowColor(new Color4(0, 0, 0, 1));
-            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
+            Context.Actions.ClearWindowColor(new Color4(0, 0, 0, 1));
+            Context.Actions.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.DepthStencil.DepthTestEnable = true;
-            Context.Pipeline.DepthStencil.DepthMask = true;
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArray;
-            Context.Pipeline.UniformBuffers[0] = transformBuffer;
-            Context.Pipeline.UniformBuffers[1] = cameraBuffer;
-            Context.Pipeline.UniformBuffers[2] = cameraExtraBuffer;
-            Context.Pipeline.UniformBuffers[3] = lightBuffer;
-            Context.Pipeline.Textures[0] = diffuseMap;
-            Context.Pipeline.Samplers[0] = sampler;
-            Context.Pipeline.Textures[1] = specularMap;
-            Context.Pipeline.Samplers[1] = sampler;
+            Context.States.DepthStencil.DepthTestEnable.Set(true);
+            Context.States.DepthStencil.DepthMask.Set(true);
 
-            Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArray);
+            Context.Bindings.Buffers.UniformIndexed[0].Set(transformBuffer);
+            Context.Bindings.Buffers.UniformIndexed[1].Set(cameraBuffer);
+            Context.Bindings.Buffers.UniformIndexed[2].Set(cameraExtraBuffer);
+            Context.Bindings.Buffers.UniformIndexed[3].Set(lightBuffer);
+            Context.Bindings.Textures.Units[0].Set(diffuseMap);
+            Context.Bindings.Textures.Units[1].Set(specularMap);
+            Context.Bindings.Samplers[0].Set(sampler);
+            Context.Bindings.Samplers[1].Set(sampler);
+
+            Context.Actions.Draw.Elements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
         }
     }
 }

@@ -22,26 +22,23 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api.Context;
-using ObjectGL.Api.Objects.Resources;
-
-namespace ObjectGL.CachingImpl.Objects.Resources
+namespace ObjectGL.Api.Context
 {
-    internal class Texture2DMultisample : Texture, ITexture2DMultisample
+    public enum BufferTarget
     {
-        private readonly int samples;
-        private readonly bool fixedSampleLocations;
-
-        public int Samples { get { return samples; } }
-        public bool FixedSampleLocations { get { return fixedSampleLocations; } }
-
-        public Texture2DMultisample(IContext context, int width, int height, int samples, Format internalFormat, bool fixedSampleLocations = false)
-            : base(context, TextureTarget.Texture2DMultisample, width, height, 1, internalFormat, 1, 1)
-        {
-            this.samples = samples;
-            this.fixedSampleLocations = fixedSampleLocations;
-            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
-            GL.TexStorage2DMultisample((int)Target, samples, (int)internalFormat, width, height, fixedSampleLocations);
-        }
+        Array = 34962,
+        ElementArray = 34963,
+        PixelPack = 35051,
+        PixelUnpack = 35052,
+        Uniform = 35345,
+        Texture = 35882,
+        TransformFeedback = 35982,
+        CopyRead = 36662,
+        CopyWrite = 36663,
+        DrawIndirect = 36671,
+        ShaderStorage = 37074,
+        DispatchIndirect = 37102,
+        Query = 37266,
+        AtomicCounter = 37568
     }
 }

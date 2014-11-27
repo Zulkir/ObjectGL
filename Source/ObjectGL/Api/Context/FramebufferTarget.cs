@@ -22,13 +22,11 @@ THE SOFTWARE.
 */
 #endregion
 
-using System;
-
-namespace ObjectGL.Api
+namespace ObjectGL.Api.Context
 {
-    public interface IContextObject : IDisposable
+    public enum FramebufferTarget
     {
-        uint Handle { get; }
-        ContextObjectType ContextObjectType { get; } 
+        Read = 36008,
+        Draw = 36009,
     }
 }

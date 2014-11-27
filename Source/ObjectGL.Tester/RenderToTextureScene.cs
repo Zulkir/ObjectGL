@@ -22,7 +22,7 @@ THE SOFTWARE.
 */
 #endregion
 
-#define INTEL_WORKAROUND
+//#define INTEL_WORKAROUND
 
 using System;
 using System.Runtime.InteropServices;
@@ -31,7 +31,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -151,7 +150,7 @@ void main()
             framebuffer.AttachTextureImage(FramebufferAttachmentPoint.Color0, renderTarget, 0);
             framebuffer.AttachRenderbuffer(FramebufferAttachmentPoint.DepthStencil, depthStencil);
 
-            var vertexBuffer = Context.Create.Buffer(BufferTarget.ArrayBuffer, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
+            var vertexBuffer = Context.Create.Buffer(BufferTarget.Array, 24 * 8 * sizeof(float), BufferUsageHint.StaticDraw, new[]
             {
                 new Vertex(1f, -1f, 1f, 1f, 0f, 0f, 0f, 0f),
                 new Vertex(1f, 1f, 1f, 1f, 0f, 0f, 1f, 0f),
@@ -184,7 +183,7 @@ void main()
                 new Vertex(1f, 1f, -1f, 0f, 0f, -1f, 0f, 1f)
             });
 
-            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArrayBuffer, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[] 
+            var indexBuffer = Context.Create.Buffer(BufferTarget.ElementArray, 36 * sizeof(ushort), BufferUsageHint.StaticDraw, new ushort[] 
             { 
                 0, 1, 2, 0, 2, 3,
                 4, 5, 6, 4, 6, 7,
@@ -200,13 +199,13 @@ void main()
             vertexArray.SetVertexAttributeF(1, vertexBuffer, VertexAttributeDimension.Three, VertexAttribPointerType.Float, false, 32, 12);
             vertexArray.SetVertexAttributeF(2, vertexBuffer, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, 32, 24);
 
-            transformBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
-            cameraBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            transformBuffer = Context.Create.Buffer(BufferTarget.Uniform, 64, BufferUsageHint.DynamicDraw);
+            cameraBuffer = Context.Create.Buffer(BufferTarget.Uniform, 64, BufferUsageHint.DynamicDraw);
 #if INTEL_WORKAROUND
-            cameraOutsideBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 64, BufferUsageHint.DynamicDraw);
+            cameraOutsideBuffer = Context.Create.Buffer(BufferTarget.Uniform, 64, BufferUsageHint.DynamicDraw);
 #endif
-            cameraExtraBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
-            lightBuffer = Context.Create.Buffer(BufferTarget.UniformBuffer, 12, BufferUsageHint.DynamicDraw);
+            cameraExtraBuffer = Context.Create.Buffer(BufferTarget.Uniform, 12, BufferUsageHint.DynamicDraw);
+            lightBuffer = Context.Create.Buffer(BufferTarget.Uniform, 12, BufferUsageHint.DynamicDraw);
 
             using (var textureLoader = new TextureLoader("../Textures/DiffuseTest.png"))
             {
@@ -257,31 +256,31 @@ void main()
             framebuffer.ClearColor(0, new Color4(0.4f, 0.6f, 0.9f, 1.0f));
             framebuffer.ClearDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.ClearWindowColor(new Color4(0, 0, 0, 1));
-            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
+            Context.Actions.ClearWindowColor(new Color4(0, 0, 0, 1));
+            Context.Actions.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.DepthStencil.DepthTestEnable = true;
-            Context.Pipeline.DepthStencil.DepthMask = true;
+            Context.States.ScreenClipping.United.Viewport.Set(RenderTargetSize, RenderTargetSize);
 
-            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Cw;
-            Context.Pipeline.Rasterizer.CullFaceEnable = true;
-            Context.Pipeline.Rasterizer.CullFace = CullFaceMode.Front;
+            Context.States.Rasterizer.FrontFace.Set(FrontFaceDirection.Cw);
+            Context.States.Rasterizer.CullFaceEnable.Set(true);
+            Context.States.Rasterizer.CullFace.Set(CullFaceMode.Front);
 
-            Context.Pipeline.Framebuffer = framebuffer;
-            Context.Pipeline.Viewports[0].Width = RenderTargetSize;
-            Context.Pipeline.Viewports[0].Height = RenderTargetSize;
+            Context.States.DepthStencil.DepthTestEnable.Set(true);
+            Context.States.DepthStencil.DepthMask.Set(true);
 
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArray;
-            Context.Pipeline.UniformBuffers[0] = transformBuffer;
-            Context.Pipeline.UniformBuffers[1] = cameraBuffer;
-            Context.Pipeline.UniformBuffers[2] = lightBuffer;
-            Context.Pipeline.Textures[0] = diffuseMap;
-            Context.Pipeline.Samplers[0] = sampler;
+            Context.Bindings.Framebuffers.Draw.Set(framebuffer);
+            
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArray);
+            Context.Bindings.Buffers.UniformIndexed[0].Set(transformBuffer);
+            Context.Bindings.Buffers.UniformIndexed[1].Set(cameraBuffer);
+            Context.Bindings.Buffers.UniformIndexed[2].Set(lightBuffer);
+            Context.Bindings.Textures.Units[0].Set(diffuseMap);
+            Context.Bindings.Samplers[0].Set(sampler);
 
             // Inside cube
 
-            Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
+            Context.Actions.Draw.Elements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
             renderTarget.GenerateMipmap();
 
             // Outside cube
@@ -293,20 +292,19 @@ void main()
 #if INTEL_WORKAROUND
             cameraOutsideBuffer.SetDataByMapping((IntPtr)(&viewProjection));
 #else
-            cameraBuffer.SetData(Context, BufferTarget.UniformBuffer, (IntPtr)(&viewProjection));
+            cameraBuffer.SetDataByMapping((IntPtr)(&viewProjection));
 #endif
-            Context.Pipeline.Rasterizer.FrontFace = FrontFaceDirection.Ccw;
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
+            Context.States.Rasterizer.FrontFace.Set(FrontFaceDirection.Ccw);
 
-            Context.Pipeline.Framebuffer = null;
-            Context.Pipeline.Viewports[0].Width = GameWindow.ClientSize.Width;
-            Context.Pipeline.Viewports[0].Height = GameWindow.ClientSize.Height;
+            Context.Bindings.Framebuffers.Draw.Set(null);
 #if INTEL_WORKAROUND
             Context.Pipeline.UniformBuffers[1] = cameraOutsideBuffer;
 #endif
-            Context.Pipeline.Textures[0] = renderTarget;
-            Context.Pipeline.Samplers[0] = sampler;
+            Context.Bindings.Textures.Units[0].Set(renderTarget);
+            Context.Bindings.Samplers[0].Set(sampler);
             
-            Context.DrawElements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
+            Context.Actions.Draw.Elements(BeginMode.Triangles, 36, DrawElementsType.UnsignedShort, 0);
         }
     }
 }

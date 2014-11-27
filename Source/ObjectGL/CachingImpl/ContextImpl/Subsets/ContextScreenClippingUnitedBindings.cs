@@ -13,17 +13,17 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         {
             Viewport = new Binding<ViewportInt>(context, (c, x) =>
             {
-                c.ScreenClipping.SeparationModeCache = SeparationMode.United;
+                c.States.ScreenClipping.SeparationModeCache = SeparationMode.United;
                 c.GL.Viewport(x.X, x.Y, x.Width, x.Height);
             });
             DepthRange = new Binding<DepthRangeFloat>(context, (c, x) =>
             {
-                c.ScreenClipping.SeparationModeCache = SeparationMode.United;
+                c.States.ScreenClipping.SeparationModeCache = SeparationMode.United;
                 c.GL.DepthRange(x.Near, x.Far);
             });
             ScissorBox = new Binding<ScissorBox>(context, (c, x) =>
             {
-                c.ScreenClipping.SeparationModeCache = SeparationMode.United;
+                c.States.ScreenClipping.SeparationModeCache = SeparationMode.United;
                 c.GL.Scissor(x.X, x.Y, x.Width, x.Height);
             });
         }

@@ -25,26 +25,28 @@ THE SOFTWARE.
 using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
-    public class ContextFramebufferBindings : IContextFramebufferBindings
+    public class ContextStates : IContextStates
     {
-        public IBinding<IFramebuffer> Draw { get; private set; }
-        public IBinding<IFramebuffer> Read { get; private set; }
-        public FramebufferTarget EditingTarget { get; set; }
+        public IContextScreenClippingBindings ScreenClipping { get; private set; }
+        public IContextRasterizerBindings Rasterizer { get; private set; }
+        public IContextDepthStencilBindings DepthStencil { get; private set; }
+        public IContextBlendBindings Blend { get; private set; }
 
-        public ContextFramebufferBindings(IContext context)
-        {
-            Draw = new Binding<IFramebuffer>(context, (c, o) => c.GL.BindFramebuffer((int)All.DrawFramebuffer, o.SafeGetHandle()));
-            Read = new Binding<IFramebuffer>(context, (c, o) => c.GL.BindFramebuffer((int)All.ReadFramebuffer, o.SafeGetHandle()));
-            EditingTarget = FramebufferTarget.Draw;
-        }
+        public IBinding<int> PatchVertexCount { get; private set; }
+        public IBinding<int> UnpackAlignment { get; private set; }
 
-        public IBinding<IFramebuffer> ByTarget(FramebufferTarget target)
+        public ContextStates(IContext context, IImplementation implementation)
         {
-            return target == FramebufferTarget.Draw ? Draw : Read;
+            ScreenClipping = new ContextScreenClippingBindings(context, implementation);
+            Rasterizer = new ContextRasterizerBindings(context);
+            DepthStencil = new ContextDepthStencilBindings(context);
+            Blend = new ContextBlendBindings(context, implementation);
+
+            PatchVertexCount = new Binding<int>(context, (c, x) => { if (x != 0) c.GL.PatchParameter((int)All.PatchVertices, x); });
+            UnpackAlignment = new Binding<int>(context, (c, x) => c.GL.PixelStore((int)All.UnpackAlignment, x));
         }
     }
 }

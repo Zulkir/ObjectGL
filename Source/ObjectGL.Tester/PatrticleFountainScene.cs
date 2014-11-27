@@ -29,7 +29,6 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using OpenTK;
-using IContext = ObjectGL.Api.IContext;
 
 namespace ObjectGL.Tester
 {
@@ -149,8 +148,8 @@ void main()
             for (int i = 0; i < vertexData.Length; i++)
                 vertexData[i] = new Vertex(i * ParticleTicksDelta);
 
-            var vertexBufferSource = Context.Create.Buffer(BufferTarget.TransformFeedbackBuffer, ParticleCount * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, vertexData);
-            var vertexBufferTarget = Context.Create.Buffer(BufferTarget.TransformFeedbackBuffer, ParticleCount*Vertex.SizeInBytes, BufferUsageHint.StaticDraw, IntPtr.Zero);
+            var vertexBufferSource = Context.Create.Buffer(BufferTarget.TransformFeedback, ParticleCount * Vertex.SizeInBytes, BufferUsageHint.StaticDraw, vertexData);
+            var vertexBufferTarget = Context.Create.Buffer(BufferTarget.TransformFeedback, ParticleCount*Vertex.SizeInBytes, BufferUsageHint.StaticDraw, IntPtr.Zero);
 
             vertexArraySource = Context.Create.VertexArray();
             vertexArraySource.SetVertexAttributeF(0, vertexBufferSource, VertexAttributeDimension.Two, VertexAttribPointerType.Float, false, Vertex.SizeInBytes, 0);
@@ -186,15 +185,17 @@ void main()
 
         public override void OnNewFrame(float totalSeconds, float elapsedSeconds)
         {
-            Context.ClearWindowColor(new Color4(0, 0, 0, 1));
-            Context.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
+            Context.Actions.ClearWindowColor(new Color4(0, 0, 0, 1));
+            Context.Actions.ClearWindowDepthStencil(DepthStencil.Both, 1f, 0);
 
-            Context.Pipeline.Program = program;
-            Context.Pipeline.VertexArray = vertexArraySource;
+            Context.States.ScreenClipping.United.Viewport.Set(GameWindow.ClientSize.Width, GameWindow.ClientSize.Height);
 
-            Context.BeginTransformFeedback(transformFeedbackTarget, BeginFeedbackMode.Points);
-            Context.DrawArrays(BeginMode.Points, 0, ParticleCount);
-            Context.EndTransformFeedback();
+            Context.Bindings.Program.Set(program);
+            Context.Bindings.VertexArray.Set(vertexArraySource);
+
+            Context.Actions.BeginTransformFeedback(transformFeedbackTarget, BeginFeedbackMode.Points);
+            Context.Actions.Draw.Arrays(BeginMode.Points, 0, ParticleCount);
+            Context.Actions.EndTransformFeedback();
             
             Swap(ref vertexArraySource, ref vertexArrayTarget);
             Swap(ref transformFeedbackSource, ref transformFeedbackTarget);

@@ -38,7 +38,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
             {
                 Equation = new Binding<BlendEquation>(context, (c, x) =>
                 {
-                    c.Blend.SeparationModeCache = SeparationMode.United;
+                    c.States.Blend.SeparationModeCache = SeparationMode.United;
                     if (x.Rgb == x.Alpha)
                         c.GL.BlendEquation((int)x.Rgb);
                     else
@@ -46,7 +46,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
                 });
                 Function = new Binding<BlendFunction>(context, (c, x) =>
                 {
-                    c.Blend.SeparationModeCache = SeparationMode.United;
+                    c.States.Blend.SeparationModeCache = SeparationMode.United;
                     if (x.SourceRgb == x.SourceAlpha && x.DestinationRgb == x.DestinationAlpha)
                         c.GL.BlendFunc((int)x.SourceRgb, (int)x.DestinationRgb);
                     else
@@ -59,7 +59,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
                 var indexLoc = (uint)index.Value;
                 Equation = new Binding<BlendEquation>(context, (c, x) =>
                 {
-                    c.Blend.SeparationModeCache = SeparationMode.Separate;
+                    c.States.Blend.SeparationModeCache = SeparationMode.Separate;
                     if (x.Rgb == x.Alpha)
                         c.GL.BlendEquation(indexLoc, (int)x.Rgb);
                     else
@@ -67,7 +67,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
                 });
                 Function = new Binding<BlendFunction>(context, (c, x) =>
                 {
-                    c.Blend.SeparationModeCache = SeparationMode.Separate;
+                    c.States.Blend.SeparationModeCache = SeparationMode.Separate;
                     if (x.SourceRgb == x.SourceAlpha && x.DestinationRgb == x.DestinationAlpha)
                         c.GL.BlendFunc(indexLoc, (int)x.SourceRgb, (int)x.DestinationRgb);
                     else

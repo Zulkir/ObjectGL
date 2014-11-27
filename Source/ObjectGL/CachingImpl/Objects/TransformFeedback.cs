@@ -23,6 +23,7 @@ THE SOFTWARE.
 #endregion
 
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 
@@ -30,7 +31,7 @@ namespace ObjectGL.CachingImpl.Objects
 {
     internal class TransformFeedback : ITransformFeedback
     {
-        private readonly Context context;
+        private readonly IContext context;
         private readonly uint handle;
 
         private readonly IBuffer[] transformFeedbackBuffers;
@@ -39,9 +40,9 @@ namespace ObjectGL.CachingImpl.Objects
         private IGL GL { get { return context.GL; } }
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.TransformFeedback; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.TransformFeedback; } }
 
-        public unsafe TransformFeedback(Context context)
+        public unsafe TransformFeedback(IContext context)
         {
             this.context = context;
             uint handleProxy;
@@ -55,8 +56,8 @@ namespace ObjectGL.CachingImpl.Objects
         {
             if (transformFeedbackBuffers[index] == buffer)
                 return;
-            context.BindTransformFeedback(this);
-            GL.BindBufferBase((int)BufferTarget.TransformFeedbackBuffer, index, buffer.SafeGetHandle());
+            context.Bindings.TransformFeedback.Set(this);
+            GL.BindBufferBase((int)BufferTarget.TransformFeedback, index, buffer.SafeGetHandle());
             transformFeedbackBuffers[index] = buffer;
 
             if (buffer != null)

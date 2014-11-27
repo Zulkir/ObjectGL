@@ -23,13 +23,14 @@ THE SOFTWARE.
 #endregion
 
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class Renderbuffer : IRenderbuffer
     {
-        private readonly Context context;
+        private readonly IContext context;
         private readonly uint handle;
 
         private readonly Format internalFormat;
@@ -41,7 +42,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         private IGL GL { get { return context.GL; } }
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.Resource; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.Resource; } }
         public ResourceType ResourceType { get { return ResourceType.Renderbuffer; } }
         public RenderbufferTarget Target { get { return RenderbufferTarget.Renderbuffer; } }
         public Format InternalFormat { get { return internalFormat; } }
@@ -50,7 +51,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
         public int Height { get { return height; } }
         public int Samples { get { return samples; } }
 
-        public unsafe Renderbuffer(Context context, int width, int height, Format internalFormat, int samples = 0)
+        public unsafe Renderbuffer(IContext context, int width, int height, Format internalFormat, int samples = 0)
         {
             this.context = context;
             this.internalFormat = internalFormat;
@@ -62,7 +63,7 @@ namespace ObjectGL.CachingImpl.Objects.Resources
             GL.GenRenderbuffers(1, &handleProxy);
             handle = handleProxy;
 
-            context.BindRenderbuffer(this);
+            context.Bindings.Renderbuffer.Set(this);
 
             if (samples == 0)
                 GL.RenderbufferStorage((int)RenderbufferTarget.Renderbuffer, (int)internalFormat, width, height);

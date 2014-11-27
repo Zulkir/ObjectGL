@@ -31,5 +31,7 @@ namespace ObjectGL.Api.Context.Subsets
     {
         IBinding<int> ActiveUnit { get; }
         IReadOnlyList<IBinding<ITexture>> Units { get; }
+
+        int EditingIndex { get; set; }
     }
 }

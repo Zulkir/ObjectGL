@@ -23,30 +23,31 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class Texture3D : Texture, ITexture3D
     {
-        public Texture3D(Context context, int width, int height, int depth, int mipCount, Format internalFormat)
+        public Texture3D(IContext context, int width, int height, int depth, int mipCount, Format internalFormat)
             : base(context, TextureTarget.ProxyTexture3D, width, height, depth, internalFormat, 1, mipCount)
         {
-            Context.BindTexture(Target, this);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexStorage3D((int)Target, mipCount, (int)internalFormat, width, height, depth);
         }
 
         public void SetData(int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexSubImage3D((int)Target, level, xOffset, yOffset, zOffset, width, height, depth, (int)format, (int)type, data);
         }
 
         public void SetDataCompressed(int level, int xOffset, int yOffset, int zOffset, int width, int height, int depth, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.CompressedTexSubImage3D((int)Target, level, xOffset, yOffset, zOffset, width, height, depth, (int)InternalFormat, compressedSize, data);
         }
     }

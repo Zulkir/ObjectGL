@@ -26,7 +26,7 @@ namespace ObjectGL.Api
 {
     public static class ContextObjectExtensions
     {
-        public static uint SafeGetHandle(this IContextObject o)
+        public static uint SafeGetHandle(this IGLObject o)
         {
             return o != null ? o.Handle : 0;
         }

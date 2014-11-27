@@ -23,30 +23,31 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class TextureCubemap : Texture, ITextureCubemap
     {
-        public TextureCubemap(Context context, int width, int mipCount, Format internalFormat)
+        public TextureCubemap(IContext context, int width, int mipCount, Format internalFormat)
             : base(context, TextureTarget.TextureCubeMap, width, width, 1, internalFormat, 1, mipCount)
         {
-            Context.BindTexture(Target, this);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexStorage2D((int)Target, mipCount, (int)internalFormat, width, 6);
         }
 
         public void SetData(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexSubImage2D((int)(All.TextureCubeMapPositiveX + (uint)faceIndex), level, xOffset, yOffset, width, height, (int)format, (int)type, data);
         }
 
         public void SetDataCompressed(int level, int faceIndex, int xOffset, int yOffset, int width, int height, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.CompressedTexSubImage2D((int)(All.TextureCubeMapPositiveX + (uint)faceIndex), level, xOffset, yOffset, width, height, (int)InternalFormat, compressedSize, data);
         }
     }

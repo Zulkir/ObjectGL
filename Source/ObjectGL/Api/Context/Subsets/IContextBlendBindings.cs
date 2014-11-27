@@ -31,5 +31,11 @@ namespace ObjectGL.Api.Context.Subsets
         IContextBlendTargetBindings United { get; }
         IReadOnlyList<IContextBlendTargetBindings> Separate { get; }
         SeparationMode SeparationModeCache { get; set; }
+
+        IBinding<bool> BlendEnable { get; set; }
+        IBinding<Color4> BlendColor { get; set; }
+        IBinding<bool> SampleMaskEnable { get; set; }
+        IReadOnlyList<IBinding<uint>> SampleMasks { get; set; }
+        IBinding<bool> AlphaToCoverageEnable { get; set; }
     }
 }

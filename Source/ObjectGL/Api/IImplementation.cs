@@ -49,6 +49,8 @@ namespace ObjectGL.Api
         float ViewportBoundsRange { get; }
         float MaxViewportDims { get; }
 
+        int MaxSampleMaskWords { get; }
+
         int MaxTextureBufferSize { get; }
     }
 }

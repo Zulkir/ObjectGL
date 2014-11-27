@@ -38,7 +38,7 @@ namespace ObjectGL.CachingImpl.PipelineAspects
             get { return viewports[viewportIndex]; }
         }
 
-        internal unsafe PipelineViewportsAspect(Context context)
+        internal unsafe PipelineViewportsAspect(OldContext context)
         {
             var gl = context.GL;
             var viewportData = new int[4];

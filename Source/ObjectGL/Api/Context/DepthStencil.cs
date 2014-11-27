@@ -22,16 +22,12 @@ THE SOFTWARE.
 */
 #endregion
 
-using System;
-
 namespace ObjectGL.Api.Context
 {
-    [Flags]
     public enum DepthStencil
     {
-        None = 0x0,
-        Depth = 0x1,
-        Stencil = 0x2,
-        Both = 0x3
+        Depth = 6145,
+        Stencil = 6146,
+        Both = 34041,
     }
 }

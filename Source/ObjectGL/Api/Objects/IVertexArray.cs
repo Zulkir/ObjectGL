@@ -26,7 +26,7 @@ using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.Api.Objects
 {
-    public interface IVertexArray : IContextObject
+    public interface IVertexArray : IGLObject
     {
         void SetElementArrayBuffer(IBuffer buffer);
         void SetVertexAttributeF(uint index, IBuffer buffer, VertexAttributeDimension dimension, VertexAttribPointerType type, bool normalized, int stride, int offset, uint divisor = 0);

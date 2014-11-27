@@ -35,7 +35,7 @@ namespace ObjectGL.CachingImpl.Objects
         readonly ShaderType type;
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.Shader; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.Shader; } }
         public ShaderType Type { get { return type; } }
 
         protected Shader(IGL gl, uint handle, ShaderType type)

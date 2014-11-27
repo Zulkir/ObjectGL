@@ -28,7 +28,11 @@ namespace ObjectGL.Api.Context.Subsets
 {
     public interface IContextFramebufferBindings
     {
-         IBinding<IFramebuffer> Draw { get; }
-         IBinding<IFramebuffer> Read { get; }
+        IBinding<IFramebuffer> Draw { get; }
+        IBinding<IFramebuffer> Read { get; }
+
+        FramebufferTarget EditingTarget { get; set; }
+
+        IBinding<IFramebuffer> ByTarget(FramebufferTarget target);
     }
 }

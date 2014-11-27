@@ -24,39 +24,11 @@ THE SOFTWARE.
 
 using System;
 
-namespace ObjectGL.Api.Objects.Resources
+namespace ObjectGL.Api
 {
-    public struct BufferRange : IEquatable<BufferRange>
+    public interface IGLObject : IDisposable
     {
-        public IBuffer Buffer;
-        public int Offset;
-        public int Size;
-
-        public BufferRange(IBuffer buffer, int offset, int size) : this()
-        {
-            Buffer = buffer;
-            Offset = offset;
-            Size = size;
-        }
-
-        public bool Equals(BufferRange other)
-        {
-            return ReferenceEquals(Buffer, other.Buffer) && Offset == other.Offset && Size == other.Offset;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is BufferRange && Equals((BufferRange)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return (int)Buffer.SafeGetHandle() ^ (Offset << 8) ^ (Size << 16);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("[Buffer: {0}; Offset: {1}; Size: {2}]", Buffer.SafeGetHandle(), Offset, Size);
-        }
+        uint Handle { get; }
+        GLObjectType GLObjectType { get; } 
     }
 }

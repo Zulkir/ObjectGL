@@ -26,7 +26,7 @@ using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.Api.Objects
 {
-    public interface ITransformFeedback : IContextObject
+    public interface ITransformFeedback : IGLObject
     {
         void SetBuffer(uint index, IBuffer buffer);
         void UnsetBuffersStartingFrom(uint startIndex);

@@ -18,19 +18,19 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
             Viewports = Enumerable.Range(0, implementation.MaxViewports)
                 .Select(i => new Binding<ViewportFloat>(context, (c, x) =>
                 {
-                    c.ScreenClipping.SeparationModeCache = SeparationMode.Separate;
+                    c.States.ScreenClipping.SeparationModeCache = SeparationMode.Separate;
                     c.GL.ViewportIndexed((uint)i, x.X, x.Y, x.Width, x.Height);
                 })).ToArray();
             DepthRanges = Enumerable.Range(0, implementation.MaxViewports)
                 .Select(i => new Binding<DepthRangeDouble>(context, (c, x) =>
                 {
-                    c.ScreenClipping.SeparationModeCache = SeparationMode.Separate;
+                    c.States.ScreenClipping.SeparationModeCache = SeparationMode.Separate;
                     c.GL.DepthRangeIndexed((uint)i, x.Near, x.Far);
                 })).ToArray();
             ScissorBoxes = Enumerable.Range(0, implementation.MaxViewports)
                 .Select(i => new Binding<ScissorBox>(context, (c, x) =>
                 {
-                    c.ScreenClipping.SeparationModeCache = SeparationMode.Separate;
+                    c.States.ScreenClipping.SeparationModeCache = SeparationMode.Separate;
                     c.GL.ScissorIndexed((uint)i, x.X, x.Y, x.Width, x.Height);
                 })).ToArray();
         }

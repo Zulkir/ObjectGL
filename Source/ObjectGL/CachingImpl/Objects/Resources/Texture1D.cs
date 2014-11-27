@@ -23,30 +23,31 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources
 {
     internal class Texture1D : Texture, ITexture1D
     {
-        public Texture1D(Context context, int width, int mipCount, Format internalFormat)
+        public Texture1D(IContext context, int width, int mipCount, Format internalFormat)
             : base(context, TextureTarget.Texture1D, width, 1, 1, internalFormat, 1, mipCount)
         {
-            Context.BindTexture(Target, this);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexStorage1D((int)Target, mipCount, (int)internalFormat, width);
         }
 
         public void SetData(int level, int xOffset, int width, IntPtr data, FormatColor format, FormatType type, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.TexSubImage1D((int)Target, level, xOffset, width, (int)format, (int)type, data);
         }
 
         public void SetDataCompressed(int level, int xOffset, int width, IntPtr data, int compressedSize, IBuffer pixelUnpackBuffer)
         {
-            Context.BindBuffer(BufferTarget.PixelUnpackBuffer, pixelUnpackBuffer);
-            Context.BindTexture(Target, this);
+            Context.Bindings.Buffers.PixelUnpack.Set(pixelUnpackBuffer);
+            Context.Bindings.Textures.Units[Context.Bindings.Textures.EditingIndex].Set(this);
             GL.CompressedTexSubImage1D((int)Target, level, xOffset, width, (int)InternalFormat, compressedSize, data);
         }
     }

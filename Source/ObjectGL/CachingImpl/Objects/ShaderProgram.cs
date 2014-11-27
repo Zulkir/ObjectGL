@@ -25,21 +25,22 @@ THE SOFTWARE.
 using System;
 using System.Linq;
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 
 namespace ObjectGL.CachingImpl.Objects
 {
     internal class ShaderProgram : IShaderProgram
     {
-        private readonly Context context;
+        private readonly IContext context;
         private readonly uint handle;
 
         private IGL GL { get { return context.GL; } }
 
         public uint Handle { get { return handle; } }
-        public ContextObjectType ContextObjectType { get { return ContextObjectType.ShaderProgram; } }
+        public GLObjectType GLObjectType { get { return GLObjectType.ShaderProgram; } }
 
-        private ShaderProgram(Context context, uint handle)
+        private ShaderProgram(IContext context, uint handle)
         {
             this.context = context;
             this.handle = handle;
@@ -56,7 +57,7 @@ namespace ObjectGL.CachingImpl.Objects
         static readonly GeometryShader[] EmptyGeometryShaderArray = new GeometryShader[0];
 
         public static unsafe bool TryLink(
-            Context context,
+            IContext context,
             ShaderProgramDescription description,
             out ShaderProgram program,
             out string errors)
@@ -138,7 +139,7 @@ namespace ObjectGL.CachingImpl.Objects
                 gl.UniformBlockBinding(handle, programSpecificIndex, i);
             }
 
-            context.UseProgram(program);
+            context.Bindings.Program.Set(program);
 
             for (int i = 0; i < description.SamplerNames.Length; i++)
             {

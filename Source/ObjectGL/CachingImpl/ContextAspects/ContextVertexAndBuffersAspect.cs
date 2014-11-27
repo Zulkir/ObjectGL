@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.Api;
+using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using ObjectGL.CachingImpl.PipelineAspects;
@@ -57,16 +58,16 @@ namespace ObjectGL.CachingImpl.ContextAspects
             vertexArrayBinding = new RedundantObject<IVertexArray>(gl, (g, o) => g.BindVertexArray(o.SafeGetHandle()));
             transformFeedbackBinding = new RedundantObject<ITransformFeedback>(gl, (g, o) => g.BindTransformFeedback((int)All.TransformFeedback, o.SafeGetHandle()));
 
-            arrayBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.ArrayBuffer, o.SafeGetHandle()));
-            copyReadBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.CopyReadBuffer, o.SafeGetHandle()));
-            copyWriteBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.CopyWriteBuffer, o.SafeGetHandle()));
-            elementArrayBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.ElementArrayBuffer, o.SafeGetHandle()));
-            pixelPackBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.PixelPackBuffer, o.SafeGetHandle()));
-            pixelUnpackBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.PixelUnpackBuffer, o.SafeGetHandle()));
-            textureBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.TextureBuffer, o.SafeGetHandle()));
-            drawIndirectBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.DrawIndirectBuffer, o.SafeGetHandle()));
-            transformFeedbackBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.TransformFeedbackBuffer, o.SafeGetHandle()));
-            uniformBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.UniformBuffer, o.SafeGetHandle()));
+            arrayBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.Array, o.SafeGetHandle()));
+            copyReadBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.CopyRead, o.SafeGetHandle()));
+            copyWriteBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.CopyWrite, o.SafeGetHandle()));
+            elementArrayBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.ElementArray, o.SafeGetHandle()));
+            pixelPackBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.PixelPack, o.SafeGetHandle()));
+            pixelUnpackBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.PixelUnpack, o.SafeGetHandle()));
+            textureBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.Texture, o.SafeGetHandle()));
+            drawIndirectBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.DrawIndirect, o.SafeGetHandle()));
+            transformFeedbackBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.TransformFeedback, o.SafeGetHandle()));
+            uniformBufferBinding = new RedundantObject<IBuffer>(gl, (g, o) => g.BindBuffer((int)BufferTarget.Uniform, o.SafeGetHandle()));
 
             uniformBufferIndexedBindingsArray = new RedundantObject<IBuffer>[implementation.MaxUniformBufferBindings];
             for (uint i = 0; i < implementation.MaxUniformBufferBindings; i++)
@@ -74,7 +75,7 @@ namespace ObjectGL.CachingImpl.ContextAspects
                 uint iLoc = i;
                 uniformBufferIndexedBindingsArray[i] = new RedundantObject<IBuffer>(gl, (g, o) =>
                 {
-                    g.BindBufferBase((int)BufferTarget.UniformBuffer, iLoc, o.SafeGetHandle());
+                    g.BindBufferBase((int)BufferTarget.Uniform, iLoc, o.SafeGetHandle());
                     uniformBufferBinding.OnOutsideChange(o);
                 });
             }
@@ -94,21 +95,21 @@ namespace ObjectGL.CachingImpl.ContextAspects
         {
             switch (target)
             {
-                case BufferTarget.ArrayBuffer: arrayBufferBinding.Set(buffer); return;
-                case BufferTarget.CopyReadBuffer: copyReadBufferBinding.Set(buffer); return;
-                case BufferTarget.CopyWriteBuffer: copyWriteBufferBinding.Set(buffer); return;
-                case BufferTarget.PixelPackBuffer: pixelPackBufferBinding.Set(buffer); return;
-                case BufferTarget.PixelUnpackBuffer: pixelUnpackBufferBinding.Set(buffer); return;
-                case BufferTarget.TextureBuffer: textureBufferBinding.Set(buffer); return;
-                case BufferTarget.DrawIndirectBuffer: drawIndirectBufferBinding.Set(buffer); return;
-                case BufferTarget.UniformBuffer: uniformBufferBinding.Set(buffer); return;
-                case BufferTarget.ElementArrayBuffer:
+                case BufferTarget.Array: arrayBufferBinding.Set(buffer); return;
+                case BufferTarget.CopyRead: copyReadBufferBinding.Set(buffer); return;
+                case BufferTarget.CopyWrite: copyWriteBufferBinding.Set(buffer); return;
+                case BufferTarget.PixelPack: pixelPackBufferBinding.Set(buffer); return;
+                case BufferTarget.PixelUnpack: pixelUnpackBufferBinding.Set(buffer); return;
+                case BufferTarget.Texture: textureBufferBinding.Set(buffer); return;
+                case BufferTarget.DrawIndirect: drawIndirectBufferBinding.Set(buffer); return;
+                case BufferTarget.Uniform: uniformBufferBinding.Set(buffer); return;
+                case BufferTarget.ElementArray:
                     {
                         vertexArrayBinding.Set(null);
                         elementArrayBufferBinding.Set(buffer);
                         return;
                     }
-                case BufferTarget.TransformFeedbackBuffer:
+                case BufferTarget.TransformFeedback:
                     {
                         transformFeedbackBinding.Set(null);
                         transformFeedbackBufferBinding.Set(buffer);
@@ -130,7 +131,7 @@ namespace ObjectGL.CachingImpl.ContextAspects
 
         public void ConsumePipelineDrawIndirectBuffer(IBuffer drawIndirectBuffer)
         {
-            BindBuffer(BufferTarget.DrawIndirectBuffer, drawIndirectBuffer);
+            BindBuffer(BufferTarget.DrawIndirect, drawIndirectBuffer);
         }
 
         public void ConsumePipelineUniformBuffers(PipelineUniformBuffersAspect pipelineUniformBuffers)

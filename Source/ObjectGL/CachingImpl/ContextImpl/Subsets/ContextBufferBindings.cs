@@ -35,52 +35,78 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
     public class ContextBufferBindings : IContextBufferBindings
     {
-        private readonly BufferBinding array;
-        private readonly BufferBinding copyRead;
-        private readonly BufferBinding copyWrite;
-        private readonly BufferBinding elementArray;
-        private readonly BufferBinding pixelPack;
-        private readonly BufferBinding pixelUnpack;
-        private readonly BufferBinding texture;
-        private readonly BufferBinding drawIndirect;
-        private readonly BufferBinding transformFeedback;
-        private readonly BufferBinding uniform;
-        private readonly Binding<BufferRange>[] uniformIndexed;
+        public IBinding<IBuffer> Array { get; private set; }
+        public IBinding<IBuffer> CopyRead { get; private set; }
+        public IBinding<IBuffer> CopyWrite { get; private set; }
+        public IBinding<IBuffer> ElementArray { get; private set; }
+        public IBinding<IBuffer> PixelPack { get; private set; }
+        public IBinding<IBuffer> PixelUnpack { get; private set; }
+        public IBinding<IBuffer> Texture { get; private set; }
+        public IBinding<IBuffer> DrawIndirect { get; private set; }
+        public IBinding<IBuffer> TransformFeedback { get; private set; }
+        public IBinding<IBuffer> Uniform { get; private set; }
+        public IBinding<IBuffer> ShaderStorage { get; private set; }
+        public IBinding<IBuffer> DispatchIndirect { get; private set; }
+        public IBinding<IBuffer> Query { get; private set; }
+        public IBinding<IBuffer> AtomicCounter { get; private set; }
+        public IReadOnlyList<IBinding<BufferRange>> UniformIndexed { get; private set; }
 
         public ContextBufferBindings(IContext context, IImplementation implementation)
         {
-            array = new BufferBinding(context, BufferTarget.ArrayBuffer);
-            copyRead = new BufferBinding(context, BufferTarget.CopyReadBuffer);
-            copyWrite = new BufferBinding(context, BufferTarget.CopyWriteBuffer);
-            elementArray = new BufferBinding(context, BufferTarget.ElementArrayBuffer);
-            pixelPack = new BufferBinding(context, BufferTarget.PixelPackBuffer);
-            pixelUnpack = new BufferBinding(context, BufferTarget.PixelUnpackBuffer);
-            texture = new BufferBinding(context, BufferTarget.TextureBuffer);
-            drawIndirect = new BufferBinding(context, BufferTarget.DrawIndirectBuffer);
-            transformFeedback = new BufferBinding(context, BufferTarget.TransformFeedbackBuffer);
-            uniform = new BufferBinding(context, BufferTarget.UniformBuffer);
-
-            uniformIndexed = Enumerable.Range(0, implementation.MaxUniformBufferBindings)
+            Array = new BufferBinding(context, BufferTarget.Array);
+            CopyRead = new BufferBinding(context, BufferTarget.CopyRead);
+            CopyWrite = new BufferBinding(context, BufferTarget.CopyWrite);
+            ElementArray = new Binding<IBuffer>(context, (c, o) =>
+            {
+                c.Bindings.VertexArray.Set(null);
+                c.GL.BindBuffer((int)All.ElementArrayBuffer, o.SafeGetHandle());
+            });
+            PixelPack = new BufferBinding(context, BufferTarget.PixelPack);
+            PixelUnpack = new BufferBinding(context, BufferTarget.PixelUnpack);
+            Texture = new BufferBinding(context, BufferTarget.Texture);
+            DrawIndirect = new BufferBinding(context, BufferTarget.DrawIndirect);
+            TransformFeedback = new Binding<IBuffer>(context, (c, o) =>
+            {
+                c.Bindings.TransformFeedback.Set(null);
+                c.GL.BindBuffer((int)All.TransformFeedbackBuffer, o.SafeGetHandle());
+            });
+            Uniform = new BufferBinding(context, BufferTarget.Uniform);
+            ShaderStorage = new BufferBinding(context, BufferTarget.ShaderStorage);
+            DispatchIndirect = new BufferBinding(context, BufferTarget.DispatchIndirect);
+            Query = new BufferBinding(context, BufferTarget.Query);
+            AtomicCounter = new BufferBinding(context, BufferTarget.AtomicCounter);
+            
+            UniformIndexed = Enumerable.Range(0, implementation.MaxUniformBufferBindings)
                 .Select(i => new Binding<BufferRange>(context, (c, o) =>
                 {
                     if (o.Buffer == null || o.Offset == 0 && o.Size == o.Buffer.SizeInBytes)
-                        c.GL.BindBufferBase((int)BufferTarget.UniformBuffer, (uint)i, o.Buffer.SafeGetHandle());
+                        c.GL.BindBufferBase((int)BufferTarget.Uniform, (uint)i, o.Buffer.SafeGetHandle());
                     else
-                        c.GL.BindBufferRange((int)BufferTarget.UniformBuffer, (uint)i, o.Buffer.SafeGetHandle(), (IntPtr)o.Offset, (IntPtr)o.Size);
+                        c.GL.BindBufferRange((int)BufferTarget.Uniform, (uint)i, o.Buffer.SafeGetHandle(), (IntPtr)o.Offset, (IntPtr)o.Size);
                 }))
                 .ToArray();
         }
 
-        public IBinding<IBuffer> Array { get { return array; } }
-        public IBinding<IBuffer> CopyRead { get { return copyRead; } }
-        public IBinding<IBuffer> CopyWrite { get { return copyWrite; } }
-        public IBinding<IBuffer> ElementArray { get { return elementArray; } }
-        public IBinding<IBuffer> PixelPack { get { return pixelPack; } }
-        public IBinding<IBuffer> PixelUnpack { get { return pixelUnpack; } }
-        public IBinding<IBuffer> Texture { get { return texture; } }
-        public IBinding<IBuffer> DrawIndirect { get { return drawIndirect; } }
-        public IBinding<IBuffer> TransformFeedback { get { return transformFeedback; } }
-        public IBinding<IBuffer> Uniform { get { return uniform; } }
-        public IReadOnlyList<IBinding<BufferRange>> UniformIndexed { get { return uniformIndexed; } }
+        public IBinding<IBuffer> ByTarget(BufferTarget target)
+        {
+            switch (target)
+            {
+                case BufferTarget.Array: return Array;
+                case BufferTarget.ElementArray: return ElementArray;
+                case BufferTarget.PixelPack: return PixelPack;
+                case BufferTarget.PixelUnpack: return PixelUnpack;
+                case BufferTarget.Uniform: return Uniform;
+                case BufferTarget.Texture: return Texture;
+                case BufferTarget.TransformFeedback: return TransformFeedback;
+                case BufferTarget.CopyRead: return CopyRead;
+                case BufferTarget.CopyWrite: return CopyWrite;
+                case BufferTarget.DrawIndirect: return DrawIndirect;
+                case BufferTarget.ShaderStorage: return ShaderStorage;
+                case BufferTarget.DispatchIndirect: return DispatchIndirect;
+                case BufferTarget.Query: return Query;
+                case BufferTarget.AtomicCounter: return AtomicCounter;
+                default: throw new ArgumentOutOfRangeException("target");
+            }
+        }
     }
 }
