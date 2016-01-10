@@ -27,7 +27,7 @@ using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 using ObjectGL.Api.Objects;
 
-namespace ObjectGL.CachingImpl.ContextAspects
+namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
     public class ContextDrawActions : IContextDrawActions
     {

@@ -51,7 +51,7 @@
     <Compile Include="Api\Context\BufferRange.cs" />
     <Compile Include="Api\Context\BlendEquation.cs" />
     <Compile Include="Api\Context\BlendFunction.cs" />
-    <Compile Include="CachingImpl\ContextAspects\ContextDrawActions.cs" />
+    <Compile Include="CachingImpl\ContextImpl\Subsets\ContextDrawActions.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\ContextActions.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\ContextBindings.cs" />
     <Compile Include="CachingImpl\ContextImpl\Subsets\ContextRasterizerBindings.cs" />
