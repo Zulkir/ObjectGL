@@ -1,6 +1,6 @@
 ﻿#region License
 /*
-Copyright (c) 2012-2014 ObjectGL Project - Daniil Rodin
+Copyright (c) 2012-2016 ObjectGL Project - Daniil Rodin
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
