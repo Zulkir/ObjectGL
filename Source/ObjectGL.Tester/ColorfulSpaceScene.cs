@@ -25,9 +25,14 @@ freely, subject to the following restrictions:
 
 using System;
 using System.Runtime.InteropServices;
+using ObjectGL.Api;
 using ObjectGL.Api.Context;
-using ObjectGL.Api.Objects;
-using ObjectGL.Api.Objects.Resources;
+using ObjectGL.Api.Context.Actions;
+using ObjectGL.Api.Context.States.Blend;
+using ObjectGL.Api.Objects.Framebuffers;
+using ObjectGL.Api.Objects.Resources.Buffers;
+using ObjectGL.Api.Objects.Shaders;
+using ObjectGL.Api.Objects.VertexArrays;
 using OpenTK;
 
 #region License

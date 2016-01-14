@@ -25,9 +25,15 @@ THE SOFTWARE.
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
+using ObjectGL.Api;
 using ObjectGL.Api.Context;
-using ObjectGL.Api.Objects;
-using ObjectGL.Api.Objects.Resources;
+using ObjectGL.Api.Context.Actions;
+using ObjectGL.Api.Objects.Framebuffers;
+using ObjectGL.Api.Objects.Resources.Buffers;
+using ObjectGL.Api.Objects.Resources.Images;
+using ObjectGL.Api.Objects.Samplers;
+using ObjectGL.Api.Objects.Shaders;
+using ObjectGL.Api.Objects.VertexArrays;
 using OpenTK;
 
 namespace ObjectGL.Tester

@@ -23,9 +23,9 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api;
 using ObjectGL.Api.Context;
-using ObjectGL.Api.Context.Subsets;
-using ObjectGL.CachingImpl.ContextImpl;
+using ObjectGL.CachingImpl.Context;
 using ObjectGL.GL4;
 using OpenTK;
 using OpenTK.Graphics;

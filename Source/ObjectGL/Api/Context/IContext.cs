@@ -22,8 +22,9 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects;
+using ObjectGL.Api.Context.Actions;
+using ObjectGL.Api.Context.ObjectBindings;
+using ObjectGL.Api.Context.States;
 
 namespace ObjectGL.Api.Context
 {

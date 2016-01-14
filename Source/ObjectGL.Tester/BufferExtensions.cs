@@ -23,7 +23,7 @@ THE SOFTWARE.
 #endregion
 
 using System;
-using ObjectGL.Api.Objects.Resources;
+using ObjectGL.Api.Objects.Resources.Buffers;
 
 namespace ObjectGL.Tester
 {

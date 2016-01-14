@@ -22,7 +22,10 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api.Objects.Resources;
+using ObjectGL.Api.Context.ObjectBindings;
+using ObjectGL.Api.Context.States.Blend;
+using ObjectGL.Api.Context.States.ScreenClipping;
+using ObjectGL.Api.Objects.Resources.Buffers;
 
 namespace ObjectGL.Api.Context
 {

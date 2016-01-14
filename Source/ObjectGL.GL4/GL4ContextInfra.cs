@@ -23,7 +23,7 @@ THE SOFTWARE.
 #endregion
 
 using System;
-using ObjectGL.Api.Context.Subsets;
+using ObjectGL.Api.Context;
 using OpenTK.Graphics;
 
 namespace ObjectGL.GL4

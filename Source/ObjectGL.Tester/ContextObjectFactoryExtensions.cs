@@ -25,8 +25,7 @@ THE SOFTWARE.
 using System;
 using System.Runtime.InteropServices;
 using ObjectGL.Api.Context;
-using ObjectGL.Api.Objects;
-using ObjectGL.Api.Objects.Resources;
+using ObjectGL.Api.Objects.Resources.Buffers;
 
 namespace ObjectGL.Tester
 {
