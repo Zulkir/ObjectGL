@@ -23,7 +23,6 @@ THE SOFTWARE.
 #endregion
 
 using System;
-using ObjectGL.Api;
 using ObjectGL.Api.Objects;
 
 namespace ObjectGL.CachingImpl.Objects

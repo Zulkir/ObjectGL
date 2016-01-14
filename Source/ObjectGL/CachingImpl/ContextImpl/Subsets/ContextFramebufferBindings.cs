@@ -22,7 +22,6 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 using ObjectGL.Api.Objects;

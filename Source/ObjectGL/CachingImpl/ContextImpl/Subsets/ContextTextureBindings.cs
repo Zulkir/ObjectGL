@@ -24,12 +24,10 @@ THE SOFTWARE.
 
 using System.Collections.Generic;
 using System.Linq;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
-using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
@@ -39,10 +37,10 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         public IReadOnlyList<IBinding<ITexture>> Units { get; private set; }
         public int EditingIndex { get; set; }
 
-        public ContextTextureBindings(IContext context, IImplementation implementation)
+        public ContextTextureBindings(IContext context, IContextCaps caps)
         {
             ActiveUnit = new Binding<int>(context, (c, x) => c.GL.ActiveTexture((int)All.Texture0 + x));
-            Units = Enumerable.Range(0, implementation.MaxCombinedTextureImageUnits)
+            Units = Enumerable.Range(0, caps.MaxCombinedTextureImageUnits)
                 .Select(i => new Binding<ITexture>(context, (c, o) =>
                 {
                     c.Bindings.Textures.ActiveUnit.Set(i);

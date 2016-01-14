@@ -24,7 +24,6 @@ THE SOFTWARE.
 
 using System;
 using System.Linq;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 

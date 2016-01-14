@@ -24,7 +24,6 @@ THE SOFTWARE.
 
 using System.Collections.Generic;
 using System.Linq;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 
@@ -42,18 +41,18 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         public IReadOnlyList<IContextBlendTargetBindings> Separate { get; private set; }
         private SeparationMode separationModeCache;
 
-        public ContextBlendBindings(IContext context, IImplementation implementation)
+        public ContextBlendBindings(IContext context, IContextCaps caps)
         {
             BlendEnable = new EnableCapBinding(context, EnableCap.Blend);
             BlendColor = new Binding<Color4>(context, (c, x) => c.GL.BlendColor(x.Red, x.Green, x.Blue, x.Alpha));
             SampleMaskEnable = new EnableCapBinding(context, EnableCap.SampleMask);
-            SampleMasks = Enumerable.Range(0, implementation.MaxSampleMaskWords)
+            SampleMasks = Enumerable.Range(0, caps.MaxSampleMaskWords)
                 .Select(i => new Binding<uint>(context, (c, x) => c.GL.SampleMask((uint)i, x)))
                 .ToArray();
             AlphaToCoverageEnable = new EnableCapBinding(context, EnableCap.SampleAlphaToCoverage);
 
             United = new ContextBlendTargetBinding(context, null);
-            Separate = Enumerable.Range(0, implementation.MaxDrawBuffers)
+            Separate = Enumerable.Range(0, caps.MaxDrawBuffers)
                 .Select(i => new ContextBlendTargetBinding(context, i))
                 .ToArray();
         }

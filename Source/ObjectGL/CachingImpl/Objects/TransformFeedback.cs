@@ -22,7 +22,6 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
@@ -49,7 +48,7 @@ namespace ObjectGL.CachingImpl.Objects
             GL.GenTransformFeedbacks(1, &handleProxy);
             handle = handleProxy;
 
-            transformFeedbackBuffers = new IBuffer[context.Implementation.MaxTransformFeedbackBuffers];
+            transformFeedbackBuffers = new IBuffer[context.Caps.MaxTransformFeedbackBuffers];
         }
 
         public void SetBuffer(uint index, IBuffer buffer)

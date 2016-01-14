@@ -22,7 +22,6 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 
@@ -38,12 +37,12 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         public IBinding<int> PatchVertexCount { get; private set; }
         public IBinding<int> UnpackAlignment { get; private set; }
 
-        public ContextStates(IContext context, IImplementation implementation)
+        public ContextStates(IContext context, IContextCaps caps)
         {
-            ScreenClipping = new ContextScreenClippingBindings(context, implementation);
+            ScreenClipping = new ContextScreenClippingBindings(context, caps);
             Rasterizer = new ContextRasterizerBindings(context);
             DepthStencil = new ContextDepthStencilBindings(context);
-            Blend = new ContextBlendBindings(context, implementation);
+            Blend = new ContextBlendBindings(context, caps);
 
             PatchVertexCount = new Binding<int>(context, (c, x) => { if (x != 0) c.GL.PatchParameter((int)All.PatchVertices, x); });
             UnpackAlignment = new Binding<int>(context, (c, x) => c.GL.PixelStore((int)All.UnpackAlignment, x));

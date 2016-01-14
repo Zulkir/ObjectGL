@@ -31,7 +31,7 @@ namespace ObjectGL.Api.Context
     {
         IGL GL { get; }
         IContextInfra Infra { get; }
-        IImplementation Implementation { get; }
+        IContextCaps Caps { get; }
 
         IContextObjectFactory Create { get; }
         IContextBindings Bindings { get; }

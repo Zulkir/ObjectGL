@@ -23,7 +23,6 @@ THE SOFTWARE.
 #endregion
 
 using System;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
@@ -52,7 +51,7 @@ namespace ObjectGL.CachingImpl.Objects
             GL.GenFramebuffers(1, &handleProxy);
             handle = handleProxy;
 
-            colorAttachments = new FramebufferAttachmentDescription[context.Implementation.MaxColorAttachments];
+            colorAttachments = new FramebufferAttachmentDescription[context.Caps.MaxColorAttachments];
         }
 
         private bool IsRedundant(FramebufferAttachmentPoint attachmentPoint, ref FramebufferAttachmentDescription newDesc)

@@ -24,7 +24,6 @@ THE SOFTWARE.
 
 using System.Collections.Generic;
 using System.Linq;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 using ObjectGL.Api.Objects;
@@ -43,16 +42,16 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         public IBinding<IRenderbuffer> Renderbuffer { get; private set; }
         public IReadOnlyList<IBinding<ISampler>> Samplers { get; private set; }
 
-        public ContextBindings(IContext context, IImplementation implementation)
+        public ContextBindings(IContext context, IContextCaps caps)
         {
-            Buffers = new ContextBufferBindings(context, implementation);
-            Textures = new ContextTextureBindings(context, implementation);
+            Buffers = new ContextBufferBindings(context, caps);
+            Textures = new ContextTextureBindings(context, caps);
             Framebuffers = new ContextFramebufferBindings(context);
             Program = new Binding<IShaderProgram>(context, (c, o) => c.GL.UseProgram(o.SafeGetHandle()));
             VertexArray = new Binding<IVertexArray>(context, (c, o) => c.GL.BindVertexArray(o.SafeGetHandle()));
             TransformFeedback = new Binding<ITransformFeedback>(context, (c, o) => c.GL.BindTransformFeedback((int)All.TransformFeedback, o.SafeGetHandle()));
             Renderbuffer = new Binding<IRenderbuffer>(context, (c, o) => c.GL.BindRenderbuffer((int)RenderbufferTarget.Renderbuffer, o.SafeGetHandle()));
-            Samplers = Enumerable.Range(0, implementation.MaxCombinedTextureImageUnits)
+            Samplers = Enumerable.Range(0, caps.MaxCombinedTextureImageUnits)
                 .Select(i => new Binding<ISampler>(context, (c, o) => c.GL.BindSampler((uint)i, o.SafeGetHandle())))
                 .ToArray();
         }

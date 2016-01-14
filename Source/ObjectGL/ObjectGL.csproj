@@ -88,7 +88,7 @@
     <Compile Include="Api\Context\DrawElementsType.cs" />
     <Compile Include="Api\Objects\IGLObject.cs" />
     <Compile Include="Api\Objects\IContextObjectFactory.cs" />
-    <Compile Include="Api\IImplementation.cs" />
+    <Compile Include="Api\Context\Subsets\IContextCaps.cs" />
     <Compile Include="Api\Objects\CompareFunc.cs" />
     <Compile Include="Api\Objects\CubemapFace.cs" />
     <Compile Include="Api\Objects\FramebufferAttachmentPoint.cs" />
@@ -151,7 +151,7 @@
     <Compile Include="CachingImpl\ContextImpl\Subsets\ContextStates.cs" />
     <Compile Include="CachingImpl\ContextObjectFactory.cs" />
     <Compile Include="CachingImpl\EnableCap.cs" />
-    <Compile Include="CachingImpl\Implementation.cs" />
+    <Compile Include="CachingImpl\Caps.cs" />
     <Compile Include="Api\Context\Subsets\IContextInfra.cs" />
     <Compile Include="CachingImpl\Objects\FragmentShader.cs" />
     <Compile Include="CachingImpl\Objects\Framebuffer.cs" />

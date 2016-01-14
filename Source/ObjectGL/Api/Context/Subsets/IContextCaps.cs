@@ -22,34 +22,35 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api.Context;
-using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects;
-using ObjectGL.CachingImpl.ContextImpl.Subsets;
-
-namespace ObjectGL.CachingImpl.ContextImpl
+namespace ObjectGL.Api.Context.Subsets
 {
-    public class Context : IContext
+    public interface IContextCaps
     {
-        public IGL GL { get; private set; }
-        public IContextInfra Infra { get; private set; }
-        public IContextCaps Caps { get; private set; }
+        string Vendor { get; }
+        string Renderer { get; }
+        string Version { get; }
+        string ShadingLanguageVersion { get; }
+        int MajorVersion { get; }
+        int MinorVersion { get; }
 
-        public IContextObjectFactory Create { get; private set; }
-        public IContextBindings Bindings { get; private set; }
-        public IContextStates States { get; private set; }
-        public IContextActions Actions { get; private set; }
+        int MaxPatchVertices { get; }
+        int MaxVertexAttributes { get; }
+        int MaxCombinedTextureImageUnits { get; }
+        int MaxUniformBufferBindings { get; }
+        int MaxTransformFeedbackBuffers { get; }
+        int MaxDrawBuffers { get; }
+        int MaxColorAttachments { get; }
 
-        public Context(IGL gl, IContextInfra infra)
-        {
-            GL = gl;
-            Infra = infra;
-            Caps = new Caps(gl);
+        int MaxTransformFeedbackInterleavedComponents { get; }
+        int MaxTransformFeedbackSeparateComponents { get; }
+        int MaxTransformFeedbackSeparateAttribs { get; }
 
-            Create = new ContextObjectFactory(this);
-            Bindings = new ContextBindings(this, Caps);
-            States = new ContextStates(this, Caps);
-            Actions = new ContextActions(this);
-        }
+        int MaxViewports { get; }
+        float ViewportBoundsRange { get; }
+        float MaxViewportDims { get; }
+
+        int MaxSampleMaskWords { get; }
+
+        int MaxTextureBufferSize { get; }
     }
 }

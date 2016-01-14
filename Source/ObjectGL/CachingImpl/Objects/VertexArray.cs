@@ -23,7 +23,6 @@ THE SOFTWARE.
 #endregion
 
 using System;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
@@ -53,7 +52,7 @@ namespace ObjectGL.CachingImpl.Objects
             handle = handleProxy;
 
             elementArrayBuffer = null;
-            vertexAttributes = new VertexAttributeDescription[context.Implementation.MaxVertexAttributes];
+            vertexAttributes = new VertexAttributeDescription[context.Caps.MaxVertexAttributes];
         }
 
         public void SetElementArrayBuffer(IBuffer buffer)

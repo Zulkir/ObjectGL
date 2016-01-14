@@ -25,7 +25,6 @@ THE SOFTWARE.
 using System;
 using System.Linq;
 using System.Runtime.InteropServices;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;

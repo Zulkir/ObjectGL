@@ -24,6 +24,12 @@ freely, subject to the following restrictions:
 #endregion
 
 using System;
+using System.Runtime.InteropServices;
+using ObjectGL.Api.Context;
+using ObjectGL.Api.Objects;
+using ObjectGL.Api.Objects.Resources;
+using OpenTK;
+
 #region License
 /*
 Copyright (c) 2012-2016 ObjectGL Project - Daniil Rodin
@@ -47,13 +53,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-
-using System.Runtime.InteropServices;
-using ObjectGL.Api;
-using ObjectGL.Api.Context;
-using ObjectGL.Api.Objects;
-using ObjectGL.Api.Objects.Resources;
-using OpenTK;
 
 namespace ObjectGL.Tester
 {

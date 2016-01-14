@@ -1,7 +1,5 @@
-﻿using ObjectGL.Api;
-using ObjectGL.Api.Context;
+﻿using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
-using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
@@ -11,10 +9,10 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         public IContextScreenClippingSeparateBindings Separate { get; private set; }
         private SeparationMode separationModeCache;
 
-        public ContextScreenClippingBindings(IContext context, IImplementation implementation)
+        public ContextScreenClippingBindings(IContext context, IContextCaps caps)
         {
             United = new ContextScreenClippingUnitedBindings(context);
-            Separate = new ContextScreenClippingSeparateBindings(context, implementation);
+            Separate = new ContextScreenClippingSeparateBindings(context, caps);
         }
 
         public SeparationMode SeparationModeCache

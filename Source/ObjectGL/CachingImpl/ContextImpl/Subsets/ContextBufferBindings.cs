@@ -25,12 +25,10 @@ THE SOFTWARE.
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
 using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
-using IContext = ObjectGL.Api.Context.IContext;
 
 namespace ObjectGL.CachingImpl.ContextImpl.Subsets
 {
@@ -52,7 +50,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
         public IBinding<IBuffer> AtomicCounter { get; private set; }
         public IReadOnlyList<IBinding<BufferRange>> UniformIndexed { get; private set; }
 
-        public ContextBufferBindings(IContext context, IImplementation implementation)
+        public ContextBufferBindings(IContext context, IContextCaps caps)
         {
             Array = new BufferBinding(context, BufferTarget.Array);
             CopyRead = new BufferBinding(context, BufferTarget.CopyRead);
@@ -77,7 +75,7 @@ namespace ObjectGL.CachingImpl.ContextImpl.Subsets
             Query = new BufferBinding(context, BufferTarget.Query);
             AtomicCounter = new BufferBinding(context, BufferTarget.AtomicCounter);
             
-            UniformIndexed = Enumerable.Range(0, implementation.MaxUniformBufferBindings)
+            UniformIndexed = Enumerable.Range(0, caps.MaxUniformBufferBindings)
                 .Select(i => new Binding<BufferRange>(context, (c, o) =>
                 {
                     if (o.Buffer == null || o.Offset == 0 && o.Size == o.Buffer.SizeInBytes)
