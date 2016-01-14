@@ -23,14 +23,13 @@ THE SOFTWARE.
 #endregion
 
 using ObjectGL.Api.Context.Subsets;
-using ObjectGL.CachingImpl;
 
 namespace ObjectGL.Api.Context
 {
     public interface IContext
     {
         IGL GL { get; }
-        INativeGraphicsContext NativeContext { get; }
+        IContextInfra Infra { get; }
         IImplementation Implementation { get; }
 
         IContextObjectFactory Create { get; }

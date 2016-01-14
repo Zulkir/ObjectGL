@@ -152,7 +152,7 @@
     <Compile Include="CachingImpl\ContextObjectFactory.cs" />
     <Compile Include="CachingImpl\EnableCap.cs" />
     <Compile Include="CachingImpl\Implementation.cs" />
-    <Compile Include="CachingImpl\INativeGraphicsContext.cs" />
+    <Compile Include="Api\Context\Subsets\IContextInfra.cs" />
     <Compile Include="CachingImpl\Objects\FragmentShader.cs" />
     <Compile Include="CachingImpl\Objects\Framebuffer.cs" />
     <Compile Include="CachingImpl\Objects\FramebufferAttachmentDescription.cs" />

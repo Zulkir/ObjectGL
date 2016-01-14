@@ -22,34 +22,27 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api;
-using ObjectGL.Api.Context;
+using System;
 using ObjectGL.Api.Context.Subsets;
-using ObjectGL.CachingImpl.ContextImpl.Subsets;
+using OpenTK.Graphics;
 
-namespace ObjectGL.CachingImpl.ContextImpl
+namespace ObjectGL.GL4
 {
-    public class Context : IContext
+    public class GL4ContextInfra : IContextInfra
     {
-        public IGL GL { get; private set; }
-        public IContextInfra Infra { get; private set; }
-        public IImplementation Implementation { get; private set; }
+        private readonly IGraphicsContext tkContext;
 
-        public IContextObjectFactory Create { get; private set; }
-        public IContextBindings Bindings { get; private set; }
-        public IContextStates States { get; private set; }
-        public IContextActions Actions { get; private set; }
-
-        public Context(IGL gl, IContextInfra infra)
+        public GL4ContextInfra(IGraphicsContext tkContext)
         {
-            GL = gl;
-            Infra = infra;
-            Implementation = new Implementation(gl);
+            this.tkContext = tkContext;
+        }
 
-            Create = new ContextObjectFactory(this);
-            Bindings = new ContextBindings(this, Implementation);
-            States = new ContextStates(this, Implementation);
-            Actions = new ContextActions(this);
+        public object ManagedContextObject { get { return tkContext; } }
+        public IntPtr? NativeContextPtr { get { return null; } }
+
+        public void SwapBuffers()
+        {
+            tkContext.SwapBuffers();
         }
     }
 }

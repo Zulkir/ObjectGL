@@ -24,7 +24,7 @@ THE SOFTWARE.
 
 using System;
 using ObjectGL.Api.Context;
-using ObjectGL.CachingImpl;
+using ObjectGL.Api.Context.Subsets;
 using ObjectGL.CachingImpl.ContextImpl;
 using ObjectGL.GL4;
 using OpenTK;
@@ -35,7 +35,7 @@ namespace ObjectGL.Tester
     public class MyGameWindow : GameWindow
     {
         private readonly IGL gl;
-        private readonly INativeGraphicsContext nativeGraphicsContext;
+        private readonly IContextInfra contextInfra;
         private IContext context;
         private Scene scene;
         private double totalSeconds;
@@ -45,7 +45,7 @@ namespace ObjectGL.Tester
             GameWindowFlags.Default, DisplayDevice.Default)
         {
             gl = new GL4.GL4();
-            nativeGraphicsContext = new GL4NativeGraphicsContextWrapper(Context);
+            contextInfra = new GL4ContextInfra(Context);
             VSync = VSyncMode.On;
             Context.SwapInterval = 1;
         }
@@ -54,14 +54,14 @@ namespace ObjectGL.Tester
         {
             base.OnLoad(e);
 
-            context = new Context(gl, nativeGraphicsContext);
+            context = new Context(gl, contextInfra);
 
             //scene = new TriangleScene(context, this);
             //scene = new TexturedQuadScene(context, this);
             //scene = new PixelStreamingScene(context, this);
             //scene = new TexturedCubeScene(context, this);
-            scene = new RenderToTextureScene(context, this);
-            //scene = new ColorfulSpaceScene(context, this);
+            //scene = new RenderToTextureScene(context, this);
+            scene = new ColorfulSpaceScene(context, this);
             //scene = new PatrticleFountainScene(context, this);
             //scene = new CurveTesselationScene(context, this);
             //scene = new FireworksScene(context, this);
@@ -73,7 +73,7 @@ namespace ObjectGL.Tester
             totalSeconds += e.Time;
 
             scene.OnNewFrame((float)totalSeconds, (float)e.Time);
-            context.NativeContext.SwapBuffers();
+            context.Infra.SwapBuffers();
 
             base.OnRenderFrame(e);
         }

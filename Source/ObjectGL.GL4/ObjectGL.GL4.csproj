@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GL4.cs" />
-    <Compile Include="GL4NativeGraphicsContextWrapper.cs" />
+    <Compile Include="GL4ContextInfra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
