@@ -25,6 +25,7 @@ THE SOFTWARE.
 using System;
 using ObjectGL.Api;
 using ObjectGL.Api.Context;
+using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.CachingImpl.Objects.Resources

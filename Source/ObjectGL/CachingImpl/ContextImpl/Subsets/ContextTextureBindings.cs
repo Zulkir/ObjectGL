@@ -27,6 +27,7 @@ using System.Linq;
 using ObjectGL.Api;
 using ObjectGL.Api.Context;
 using ObjectGL.Api.Context.Subsets;
+using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 using IContext = ObjectGL.Api.Context.IContext;
 

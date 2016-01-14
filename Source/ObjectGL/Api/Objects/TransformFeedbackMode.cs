@@ -22,35 +22,11 @@ THE SOFTWARE.
 */
 #endregion
 
-using ObjectGL.Api;
-using ObjectGL.Api.Context;
-using ObjectGL.Api.Context.Subsets;
-using ObjectGL.Api.Objects;
-using ObjectGL.CachingImpl.ContextImpl.Subsets;
-
-namespace ObjectGL.CachingImpl.ContextImpl
+namespace ObjectGL.Api.Objects
 {
-    public class Context : IContext
+    public enum TransformFeedbackMode
     {
-        public IGL GL { get; private set; }
-        public IContextInfra Infra { get; private set; }
-        public IImplementation Implementation { get; private set; }
-
-        public IContextObjectFactory Create { get; private set; }
-        public IContextBindings Bindings { get; private set; }
-        public IContextStates States { get; private set; }
-        public IContextActions Actions { get; private set; }
-
-        public Context(IGL gl, IContextInfra infra)
-        {
-            GL = gl;
-            Infra = infra;
-            Implementation = new Implementation(gl);
-
-            Create = new ContextObjectFactory(this);
-            Bindings = new ContextBindings(this, Implementation);
-            States = new ContextStates(this, Implementation);
-            Actions = new ContextActions(this);
-        }
+        InterleavedAttribs = 35980,
+        SeparateAttribs = 35981
     }
 }

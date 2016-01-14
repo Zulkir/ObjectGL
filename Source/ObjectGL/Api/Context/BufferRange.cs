@@ -23,6 +23,7 @@ THE SOFTWARE.
 #endregion
 
 using System;
+using ObjectGL.Api.Objects;
 using ObjectGL.Api.Objects.Resources;
 
 namespace ObjectGL.Api.Context
