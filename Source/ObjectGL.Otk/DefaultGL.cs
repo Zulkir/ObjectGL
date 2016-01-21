@@ -26,9 +26,9 @@ using System;
 using ObjectGL.Api;
 using OpenTK.Graphics.OpenGL;
 
-namespace ObjectGL.GL4
+namespace ObjectGL.Otk
 {
-    public unsafe class GL4 : IGL
+    public unsafe class DefaultGL : IGL
     {
         public void ActiveTexture(int texture)
         {

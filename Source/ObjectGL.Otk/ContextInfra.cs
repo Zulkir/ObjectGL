@@ -26,13 +26,13 @@ using System;
 using ObjectGL.Api.Context;
 using OpenTK.Graphics;
 
-namespace ObjectGL.GL4
+namespace ObjectGL.Otk
 {
-    public class GL4ContextInfra : IContextInfra
+    public class ContextInfra : IContextInfra
     {
         private readonly IGraphicsContext tkContext;
 
-        public GL4ContextInfra(IGraphicsContext tkContext)
+        public ContextInfra(IGraphicsContext tkContext)
         {
             this.tkContext = tkContext;
         }
