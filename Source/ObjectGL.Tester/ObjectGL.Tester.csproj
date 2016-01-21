@@ -89,9 +89,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ObjectGL.GL4\ObjectGL.GL4.csproj">
+    <ProjectReference Include="..\ObjectGL.Otk\ObjectGL.Otk.csproj">
       <Project>{d58ba319-894c-4763-b330-f1e7ebbca5e9}</Project>
-      <Name>ObjectGL.GL4</Name>
+      <Name>ObjectGL.Otk</Name>
     </ProjectReference>
     <ProjectReference Include="..\ObjectGL\ObjectGL.csproj">
       <Project>{4de82129-c01e-4f7a-bf6a-9e55fa7026f9}</Project>

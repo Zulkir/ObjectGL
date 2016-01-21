@@ -7,8 +7,8 @@
     <ProjectGuid>{D58BA319-894C-4763-B330-F1E7EBBCA5E9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ObjectGL.GL4</RootNamespace>
-    <AssemblyName>ObjectGL.GL4</AssemblyName>
+    <RootNamespace>ObjectGL.Otk</RootNamespace>
+    <AssemblyName>ObjectGL.Otk</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
